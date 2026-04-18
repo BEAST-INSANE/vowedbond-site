@@ -1,1 +1,0 @@
-import React from 'react'; export default function App(){return <div style={{padding:40,minHeight:'100vh',background:'#0f172a',color:'white'}}> <h1>Vowed Bond</h1><p>Fancy website export with chatbot enabled.</p></div>}
