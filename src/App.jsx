@@ -1,2 +1,0 @@
-import React from 'react';
-export default function App(){return <div style={{padding:20,color:'white',background:'#0f172a',minHeight:'100vh'}}>Vowed Bond project files exported. Replace with full canvas code if needed.</div>}
