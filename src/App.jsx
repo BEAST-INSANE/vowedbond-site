@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 export default function App(){ 
 const GlowCard=({title,text,color='34,211,238',titleClass='',textClass=''})=>{const[pos,setPos]=useState({x:50,y:50});return <div onMouseMove={(e)=>{const r=e.currentTarget.getBoundingClientRect();setPos({x:e.clientX-r.left,y:e.clientY-r.top});}} className='relative overflow-hidden min-h-[140px] p-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-2xl hover:scale-105 transition duration-300'><div className='absolute inset-0 opacity-100 pointer-events-none transition duration-150' style={{background:`radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`}}></div><div className='relative z-10'><h2 className={`font-semibold ${titleClass}`}>{title}</h2><p className={textClass}>{text}</p></div></div>};
-return <div className='min-h-screen px-8 pt-4 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white'><div className="flex flex-col gap-1">
+return <div className='min-h-screen px-8 pt-4 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white'><<div className="flex flex-col gap-0 -mt-8">
   <img
     src="/logo.png"
     alt="Vowed Bond Logo"
-    className="h-16 md:h-20 w-auto object-contain block -mt-20"
+    className="h-16 md:h-20 w-auto object-contain block"
   />
 
   <p className="text-slate-300 text-lg max-w-2xl">
