@@ -1,1 +1,0 @@
-import React from 'react';export default function App(){return <div style={{padding:40,color:'white',minHeight:'100vh',background:'linear-gradient(135deg,#000,#0f172a,#172554)'}}><h1>Vowed Bond</h1><p>Rebuilt version with cards, founders and demo bot placeholder.</p></div>}
