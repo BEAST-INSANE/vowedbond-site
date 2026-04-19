@@ -32,33 +32,42 @@ export default function App() {
     );
   };
 
+  const TraceCard = (props) => (
+    <div className="group rounded-3xl overflow-hidden relative">
+      <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
+        <div className="absolute inset-0 rounded-3xl border-[4px] border-transparent group-hover:border-orange-200 shadow-[0_0_42px_rgba(251,146,60,1),0_0_70px_rgba(251,146,60,0.95)] animate-[trace_1.8s_linear_infinite]"></div>
+      </div>
+      <GlowCard {...props} />
+    </div>
+  );
+
   return (
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
-      
-      {/* Logo + Subtitle */}
-<div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
-  <img
-    src="/logo.png"
-    alt="Vowed Bond Logo"
-    className="w-48 md:w-64 object-contain translate-y-14"
-  />
-</div>
 
-<p className="text-slate-300 text-lg max-w-2xl mb-4">
-  Professional AI chatbots for business websites.
-</p>
+      {/* Logo + Subtitle */}
+      <div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
+        <img
+          src="/logo.png"
+          alt="Vowed Bond Logo"
+          className="w-48 md:w-64 object-contain translate-y-14"
+        />
+      </div>
+
+      <p className="text-slate-300 text-lg max-w-2xl mb-4">
+        Professional AI chatbots for business websites.
+      </p>
 
       {/* Cards */}
       <section className="grid gap-4 md:grid-cols-3">
-        <GlowCard
+        <TraceCard
           title="Custom Bots"
           text="Trained on your business data."
         />
-        <GlowCard
+        <TraceCard
           title="24/7 Support"
           text="Instant replies for customers."
         />
-        <GlowCard
+        <TraceCard
           title="Lead Generation"
           text="Capture and qualify leads automatically."
         />
@@ -79,11 +88,21 @@ export default function App() {
       <div className="mt-10">
         <GlowCard
           title="Demo Bot"
-          text= "Chatbot widget placeholder ready for integration."
+          text="Chatbot widget placeholder ready for integration."
           titleClass="text-2xl font-bold"
           textClass="text-lg"
         />
       </div>
+
+      <style>{`
+        @keyframes trace {
+          0% { clip-path: inset(0 100% 98% 0); }
+          25% { clip-path: inset(0 0 98% 0); }
+          50% { clip-path: inset(0 0 0 98%); }
+          75% { clip-path: inset(98% 0 0 0); }
+          100% { clip-path: inset(0 98% 0 0); }
+        }
+      `}</style>
     </div>
   );
 }
