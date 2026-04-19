@@ -79,7 +79,7 @@ export default function App() {
       <div className="mt-10">
         <GlowCard
           title="Demo Bot"
-          text="Chatbot widget placeholder ready for integration."
+          text= "Chatbot widget placeholder ready for integration."
           titleClass="text-2xl font-bold"
           textClass="text-lg"
         />
