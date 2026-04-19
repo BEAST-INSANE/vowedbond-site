@@ -36,7 +36,14 @@ export default function App() {
 
     setMessages((prev) => [
       ...prev,
-      { role: "bot", text: data.reply || "No response." }
+{
+  role: "bot",
+  text:
+    data.reply ||
+    data.choices?.[0]?.message?.content ||
+    data.error?.message ||
+    "No response."
+}
     ]);
   } catch {
     setMessages((prev) => [
