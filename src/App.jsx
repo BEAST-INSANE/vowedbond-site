@@ -36,7 +36,7 @@ export default function App() {
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
       
       {/* Logo + Subtitle */}
-<div className="h-24 md:h-28 overflow-hidden -mt-11 mb-2 flex items-center">
+<div className="h-24 md:h-28 overflow-hidden -mt-13 mb-2 flex items-center">
   <img
     src="/logo.png"
     alt="Vowed Bond Logo"
