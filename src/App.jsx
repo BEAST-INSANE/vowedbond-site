@@ -139,6 +139,64 @@ export default function App() {
           textClass="text-lg"
         />
       </div>
+      {/* Chat Button */}
+<button
+  onClick={() => setChatOpen(!chatOpen)}
+  className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
+>
+  Chat
+</button>
+
+{/* Chat Popup */}
+{chatOpen && (
+  <div className="fixed bottom-24 right-6 w-80 bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
+    
+    <div className="p-3 font-bold border-b border-white/10">
+      Vowed Bond AI
+    </div>
+
+    <div
+      ref={chatRef}
+      className="h-80 overflow-y-auto p-3 space-y-2"
+    >
+      {messages.map((msg, i) => (
+        <div
+          key={i}
+          className={`p-2 rounded-xl max-w-[85%] ${
+            msg.role === "user"
+              ? "ml-auto bg-cyan-400 text-black"
+              : "bg-white/10 text-white"
+          }`}
+        >
+          {msg.text}
+        </div>
+      ))}
+
+      {loading && (
+        <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
+          Typing...
+        </div>
+      )}
+    </div>
+
+    <div className="p-3 border-t border-white/10 flex gap-2">
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+        placeholder="Type a message..."
+        className="flex-1 px-3 py-2 rounded-xl bg-white/10 text-white outline-none"
+      />
+
+      <button
+        onClick={sendMessage}
+        className="bg-cyan-400 text-black px-4 rounded-xl font-bold"
+      >
+        Send
+      </button>
+    </div>
+  </div>
+)}
 
       <style>{`
         @keyframes trace {
