@@ -1,6 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 export default function App() {
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: "bot", text: "Hi! I'm Vowed Bond AI. How can I help?" }
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
+  const sendMessage = async () => {
+  if (!input.trim()) return;
+
+  const userMsg = { role: "user", text: input };
+  setMessages((prev) => [...prev, userMsg]);
+  const current = input;
+  setInput("");
+  setLoading(true);
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: current })
+    });
+
+    const data = await res.json();
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: data.reply || "No response." }
+    ]);
+  } catch {
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: "Error contacting AI." }
+    ]);
+  }
+
+  setLoading(false);
+};
   const GlowCard = ({
     title,
     text,
