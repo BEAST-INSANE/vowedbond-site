@@ -33,17 +33,17 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen px-8 pt-2 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
+    <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
       
       {/* Logo + Subtitle */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-0 -mt-2">
         <img
           src="/logo.png"
           alt="Vowed Bond Logo"
           className="w-48 md:w-64 object-contain"
         />
 
-        <p className="text-slate-300 text-lg max-w-2xl -mt-2 mb-6">
+        <p className="text-slate-300 text-lg max-w-2xl -mt-4 mb-4">
           Professional AI chatbots for business websites.
         </p>
       </div>
