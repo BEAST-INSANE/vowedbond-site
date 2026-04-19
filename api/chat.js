@@ -9,15 +9,17 @@ export default async function handler(req, res) {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://vowedbond.vercel.app",
+        "X-Title": "Vowed Bond"
       },
       body: JSON.stringify({
-        model: "google/gemma-7b-it:free",
+        model: "openai/gpt-4o-mini",
         messages: [
           {
             role: "system",
-            content: "You are Vowed Bond AI. We build AI chatbots for websites, lead generation bots, and support bots. Reply professionally and briefly."
+            content: "You are Vowed Bond AI. Be helpful and professional."
           },
           {
             role: "user",
@@ -28,15 +30,9 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-console.log(data);
+    return res.status(200).json(data);
 
-const reply =
-  data.choices?.[0]?.message?.content ||
-  data.error?.message ||
-  "No response.";
-
-    res.status(200).json({ reply });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: error.message });
   }
 }
