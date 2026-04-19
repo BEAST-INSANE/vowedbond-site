@@ -36,17 +36,17 @@ export default function App() {
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
       
       {/* Logo + Subtitle */}
-      <div className="flex flex-col gap-0 -mt-2">
-        <img
-          src="/logo.png"
-          alt="Vowed Bond Logo"
-          className="w-48 md:w-64 object-contain"
-        />
+<div className="h-20 md:h-24 overflow-hidden -mt-2 mb-2 flex items-center">
+  <img
+    src="/logo.png"
+    alt="Vowed Bond Logo"
+    className="w-48 md:w-64 object-cover -translate-y-6"
+  />
+</div>
 
-        <p className="text-slate-300 text-lg max-w-2xl -mt-4 mb-4">
-          Professional AI chatbots for business websites.
-        </p>
-      </div>
+<p className="text-slate-300 text-lg max-w-2xl mb-4">
+  Professional AI chatbots for business websites.
+</p>
 
       {/* Cards */}
       <section className="grid gap-4 md:grid-cols-3">
