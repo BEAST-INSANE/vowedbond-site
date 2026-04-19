@@ -40,7 +40,7 @@ export default function App() {
   <img
     src="/logo.png"
     alt="Vowed Bond Logo"
-    className="w-48 md:w-64 object-contain translate-y-1"
+    className="w-48 md:w-64 object-contain translate-y-3"
   />
 </div>
 
