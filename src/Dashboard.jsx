@@ -20,12 +20,20 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (authorized) {
-      fetch("/api/chats")
-        .then((res) => res.json())
-        .then((data) => setRows(data));
-    }
-  }, [authorized]);
+  if (!authorized) return;
+
+  const loadChats = () => {
+    fetch("/api/chats")
+      .then((res) => res.json())
+      .then((data) => setRows(data));
+  };
+
+  loadChats(); // first load immediately
+
+  const interval = setInterval(loadChats, 3000);
+
+  return () => clearInterval(interval);
+}, [authorized]);
 
   if (!authorized) {
     return (
