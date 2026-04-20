@@ -6,7 +6,8 @@ export default async function handler(req, res) {
   try {
     const { message } = req.body;
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    // Ask AI
+    const aiRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
@@ -19,25 +20,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-content: `
-You are Vowed Bond AI, assistant for our chatbot agency.
-
-Main priority:
-Help users with our services, chatbot solutions, pricing, support, founders, and website automation.
-
-Business Info:
-- We build AI chatbots for websites
-- Services: custom bots, support bots, lead generation bots
-- Founders: Jaipreet Singh and Moksh Gagwani
-
-Behavior:
-- Be friendly and smart
-- Keep replies concise
-- Prioritize business questions
-- You may answer simple general questions too
-- If a request is really unrelated and very long, gently redirect back to our services
-- If a question about our bussiness, whose answer you do not know, ask the user to contact Vowed Bond itself.
-`
+            content: "You are Vowed Bond AI. Be helpful and professional."
           },
           {
             role: "user",
@@ -47,8 +30,28 @@ Behavior:
       })
     });
 
-    const data = await response.json();
-    return res.status(200).json(data);
+    const aiData = await aiRes.json();
+
+    const reply =
+      aiData.choices?.[0]?.message?.content ||
+      "No response.";
+
+    // Save to Supabase
+    await fetch(`${process.env.SUPABASE_URL}/rest/v1/chats`, {
+      method: "POST",
+      headers: {
+        apikey: process.env.SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify({
+        user_message: message,
+        bot_reply: reply
+      })
+    });
+
+    return res.status(200).json({ reply });
 
   } catch (error) {
     return res.status(500).json({ error: error.message });
