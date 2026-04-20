@@ -63,12 +63,41 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
       <div className="space-y-4">
-        {rows.map((chat) => (
-          <div key={chat.id} className="bg-white/10 p-4 rounded-2xl">
-            <p><strong>User:</strong> {chat.user_message}</p>
-            <p className="mt-2"><strong>AI:</strong> {chat.bot_reply}</p>
-          </div>
-        ))}
+      {rows.map((chat) => {
+  const isHuman = chat.user_message === "HUMAN SUPPORT REQUEST";
+
+  let preview = chat.bot_reply;
+
+  if (isHuman) {
+    try {
+      const parsed = JSON.parse(chat.bot_reply);
+      preview = parsed.map((m) => m.text).join(" | ");
+    } catch {}
+  }
+
+  return (
+    <div
+      key={chat.id}
+      className={`p-4 rounded-2xl border ${
+        isHuman
+          ? "bg-red-500/10 border-red-400"
+          : "bg-white/10 border-white/10"
+      }`}
+    >
+      {isHuman ? (
+        <p className="text-red-400 font-bold mb-2">
+          🚨 HUMAN SUPPORT REQUEST
+        </p>
+      ) : (
+        <p><strong>User:</strong> {chat.user_message}</p>
+      )}
+
+      <p className="mt-2">
+        <strong>{isHuman ? "Conversation:" : "AI:"}</strong> {preview}
+      </p>
+    </div>
+  );
+})}
       </div>
     </div>
   );
