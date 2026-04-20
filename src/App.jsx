@@ -184,12 +184,12 @@ export default function App() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
+              className="flex-1 px-3 py-2 rounded-xl bg-white/10 text-white outline-none"
             />
 
             <button
               onClick={sendMessage}
-              className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
+              className="bg-cyan-400 text-black px-3 py-2 rounded-xl font-bold"
             >
               Send
             </button>
