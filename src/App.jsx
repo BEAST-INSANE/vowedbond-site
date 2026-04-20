@@ -186,14 +186,44 @@ export default function App() {
       )}
     </div>
 
-    <div className="p-3 border-t border-white/10 flex gap-2">
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        placeholder="Type a message..."
-        className="flex-1 px-3 py-2 rounded-xl bg-white/10 text-white outline-none"
-      />
+   <div className="p-3 border-t border-white/10 flex gap-2">
+  <input
+    value={input}
+    onChange={(e) => setInput(e.target.value)}
+    placeholder="Type a message..."
+    className="flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
+  />
+
+  <button
+    onClick={sendMessage}
+    className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
+  >
+    Send
+  </button>
+
+  <button
+    onClick={async () => {
+      await fetch("/api/handoff", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ messages })
+      });
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "bot",
+          text: "A human support member has been notified."
+        }
+      ]);
+    }}
+    className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap"
+  >
+    Human
+  </button>
+</div>
 
       <button
         onClick={sendMessage}
