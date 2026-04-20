@@ -225,36 +225,9 @@ export default function App() {
   </button>
 </div>
 
-      <button
-        onClick={sendMessage}
-        className="bg-cyan-400 text-black px-4 rounded-xl font-bold"
-      >
-        Send
-      </button>
-      <button
-  onClick={async () => {
-    await fetch("/api/handoff", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        messages
-      })
-    });
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "bot",
-        text: "A human support member has been notified."
-      }
-    ]);
-  }}
-  className="bg-yellow-400 text-black px-4 rounded-xl font-bold"
->
-  Human
-</button>
+      <div className="p-3 border-t border-white/10 flex gap-2">
+  ...
+</div>
     </div>
   </div>
 )}
