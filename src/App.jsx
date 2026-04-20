@@ -156,37 +156,7 @@ export default function App() {
 
 {/* Chat Popup */}
 {chatOpen && (
-  <div className="fixed bottom-24 right-6 w-80 bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
-    
-    <div className="p-3 font-bold border-b border-white/10">
-      Vowed Bond AI
-    </div>
-
-    <div
-      ref={chatRef}
-      className="h-80 overflow-y-auto p-3 space-y-2"
-    >
-      {messages.map((msg, i) => (
-        <div
-          key={i}
-          className={`p-2 rounded-xl max-w-[85%] ${
-            msg.role === "user"
-              ? "ml-auto bg-cyan-400 text-black"
-              : "bg-white/10 text-white"
-          }`}
-        >
-          {msg.text}
-        </div>
-      ))}
-
-      {loading && (
-        <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
-          Typing...
-        </div>
-      )}
-    </div>
-
-   <div className="p-3 border-t border-white/10 flex gap-2">
+  <div className="p-3 border-t border-white/10 flex gap-2">
   <input
     value={input}
     onChange={(e) => setInput(e.target.value)}
@@ -224,9 +194,6 @@ export default function App() {
     Human
   </button>
 </div>
-
-      <div className="p-3 border-t border-white/10 flex gap-2">
-  ...
 </div>
     </div>
   </div>
