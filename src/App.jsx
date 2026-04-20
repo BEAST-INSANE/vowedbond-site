@@ -14,52 +14,55 @@ export default function App() {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages, loading]);
+
   const sendMessage = async () => {
-  if (!input.trim()) return;
+    if (!input.trim()) return;
 
-  const userMsg = { role: "user", text: input };
-  setMessages((prev) => [...prev, userMsg]);
-  const current = input;
-  setInput("");
-  setLoading(true);
+    const userMsg = { role: "user", text: input };
+    setMessages((prev) => [...prev, userMsg]);
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: current })
-    });
+    const current = input;
+    setInput("");
+    setLoading(true);
 
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: current })
+      });
 
-    setMessages((prev) => [
-      ...prev,
-{
-  role: "bot",
-  text:
-    data.reply ||
-    data.choices?.[0]?.message?.content ||
-    data.error?.message ||
-    "No response."
-}
-    ]);
-  } catch {
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", text: "Error contacting AI." }
-    ]);
-  }
+      const data = await res.json();
 
-  setLoading(false);
-};
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "bot",
+          text:
+            data.reply ||
+            data.choices?.[0]?.message?.content ||
+            data.error?.message ||
+            "No response."
+        }
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "Error contacting AI." }
+      ]);
+    }
+
+    setLoading(false);
+  };
+
   const GlowCard = ({
     title,
     text,
     color = "34,211,238",
     titleClass = "",
-    textClass = "",
+    textClass = ""
   }) => {
     const [pos, setPos] = useState({ x: 50, y: 50 });
 
@@ -74,7 +77,7 @@ export default function App() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`,
+            background: `radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`
           }}
         />
         <div className="relative z-10">
@@ -97,7 +100,7 @@ export default function App() {
   return (
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
 
-      {/* Logo + Subtitle */}
+      {/* Logo */}
       <div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
         <img
           src="/logo.png"
@@ -112,18 +115,9 @@ export default function App() {
 
       {/* Cards */}
       <section className="grid gap-4 md:grid-cols-3">
-        <TraceCard
-          title="Custom Bots"
-          text="Trained on your business data."
-        />
-        <TraceCard
-          title="24/7 Support"
-          text="Instant replies for customers."
-        />
-        <TraceCard
-          title="Lead Generation"
-          text="Capture and qualify leads automatically."
-        />
+        <TraceCard title="Custom Bots" text="Trained on your business data." />
+        <TraceCard title="24/7 Support" text="Instant replies for customers." />
+        <TraceCard title="Lead Generation" text="Capture and qualify leads automatically." />
       </section>
 
       {/* Founders */}
@@ -146,58 +140,84 @@ export default function App() {
           textClass="text-lg"
         />
       </div>
+
       {/* Chat Button */}
-<button
-  onClick={() => setChatOpen(!chatOpen)}
-  className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
->
-  Chat
-</button>
+      <button
+        onClick={() => setChatOpen(!chatOpen)}
+        className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
+      >
+        Chat
+      </button>
 
-{/* Chat Popup */}
-{chatOpen && (
-  <div className="p-3 border-t border-white/10 flex gap-2">
-  <input
-    value={input}
-    onChange={(e) => setInput(e.target.value)}
-    placeholder="Type a message..."
-    className="flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
-  />
+      {/* Chat Popup */}
+      {chatOpen && (
+        <div className="fixed bottom-24 right-6 w-80 bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
 
-  <button
-    onClick={sendMessage}
-    className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
-  >
-    Send
-  </button>
+          <div className="p-3 font-bold border-b border-white/10">
+            Vowed Bond AI
+          </div>
 
-  <button
-    onClick={async () => {
-      await fetch("/api/handoff", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ messages })
-      });
+          <div ref={chatRef} className="h-80 overflow-y-auto p-3 space-y-2">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`p-2 rounded-xl max-w-[85%] ${
+                  msg.role === "user"
+                    ? "ml-auto bg-cyan-400 text-black"
+                    : "bg-white/10 text-white"
+                }`}
+              >
+                {msg.text}
+              </div>
+            ))}
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          text: "A human support member has been notified."
-        }
-      ]);
-    }}
-    className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap"
-  >
-    Human
-  </button>
-</div>
-</div>
-    </div>
-  </div>
-)}
+            {loading && (
+              <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
+                Typing...
+              </div>
+            )}
+          </div>
+
+          {/* Input Row */}
+          <div className="p-3 border-t border-white/10 flex gap-2">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
+            />
+
+            <button
+              onClick={sendMessage}
+              className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
+            >
+              Send
+            </button>
+
+            <button
+              onClick={async () => {
+                await fetch("/api/handoff", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ messages })
+                });
+
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    role: "bot",
+                    text: "A human support member has been notified."
+                  }
+                ]);
+              }}
+              className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap"
+            >
+              Human
+            </button>
+          </div>
+
+        </div>
+      )}
 
       <style>{`
         @keyframes trace {
