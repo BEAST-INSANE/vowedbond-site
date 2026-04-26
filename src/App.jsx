@@ -153,7 +153,7 @@ export default function App() {
       {chatOpen && (
         <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
 
-          <div className="p-3 font-bold border-b border-white/10">
+          <div className="p-3 border-t border-white/10 flex flex-col sm:flex-row gap-2">
             Vowed Bond AI
           </div>
 
@@ -184,12 +184,12 @@ export default function App() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 px-3 py-2 rounded-xl bg-white/10 text-white outline-none"
+              className="w-full sm:flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
             />
 
             <button
               onClick={sendMessage}
-              className="bg-cyan-400 text-black px-3 py-2 rounded-xl font-bold"
+              className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold w-full sm:w-auto"
             >
               Send
             </button>
@@ -210,7 +210,7 @@ export default function App() {
                   }
                 ]);
               }}
-              className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap"
+              className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap w-full sm:w-auto"
             >
               Human
             </button>
