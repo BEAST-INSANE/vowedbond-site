@@ -157,7 +157,7 @@ export default function App() {
             Vowed Bond AI
           </div>
 
-          <div ref={chatRef} className="h-80 overflow-y-auto p-3 space-y-2">
+          <div ref={chatRef} className="h-[55vh] sm:h-80 overflow-y-auto p-3 space-y-2">
             {messages.map((msg, i) => (
               <div
                 key={i}
