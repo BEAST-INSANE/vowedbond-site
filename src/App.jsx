@@ -151,7 +151,7 @@ export default function App() {
 
       {/* Chat Popup */}
       {chatOpen && (
-        <div className=className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
+        <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
 
           <div className="p-3 font-bold border-b border-white/10">
             Vowed Bond AI
