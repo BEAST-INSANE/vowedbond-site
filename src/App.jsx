@@ -194,26 +194,37 @@ const [humanRequested, setHumanRequested] = useState(false);
               Send
             </button>
 
-            <button
-              onClick={async () => {
-                await fetch("/api/handoff", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ messages })
-                });
+          <button
+  onClick={async () => {
+    if (humanRequested) return;
 
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    role: "bot",
-                    text: "A human support member has been notified."
-                  }
-                ]);
-              }}
-              className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold whitespace-nowrap w-full sm:w-auto"
-            >
-              Human
-            </button>
+    setHumanRequested(true);
+
+    await fetch("/api/handoff", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ messages })
+    });
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "bot",
+        text: "A human support member has been notified."
+      }
+    ]);
+  }}
+  disabled={humanRequested}
+  className={`px-4 py-2 rounded-xl font-bold ${
+    humanRequested
+      ? "bg-gray-400 text-black cursor-not-allowed"
+      : "bg-yellow-400 text-black"
+  } w-full sm:w-auto`}
+>
+  {humanRequested ? "Requested ✔️" : "Human"}
+</button>
           </div>
 
         </div>
