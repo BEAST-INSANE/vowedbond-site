@@ -179,18 +179,26 @@ const [humanRequested, setHumanRequested] = useState(false);
 
         <button
           onClick={() => {
-            if (!tempName.trim()) return;
 
-            setUserName(tempName);
-            setShowNamePopup(false);
+  const cleaned = tempName.trim();
 
-            setMessages([
-              {
-                role: "bot",
-                text: `Nice to meet you, ${tempName}. How can I help you today?`
-              }
-            ]);
-          }}
+  if (cleaned.length < 2) return;
+
+  if (cleaned.length > 20) {
+    alert("Name is too long.");
+    return;
+  }
+
+  setUserName(cleaned);
+  setShowNamePopup(false);
+
+  setMessages([
+    {
+      role: "bot",
+      text: `Nice to meet you, ${cleaned}. How can I help you today?`
+    }
+  ]);
+}}
           className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
         >
           Continue
