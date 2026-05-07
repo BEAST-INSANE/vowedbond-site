@@ -216,6 +216,7 @@ const [humanRequested, setHumanRequested] = useState(false);
             {loading && (
               <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
                 Typing...
+                )}
               </div>
             )}
           </div>
