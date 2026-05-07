@@ -230,7 +230,7 @@ const [humanRequested, setHumanRequested] = useState(false);
         </div>
 
         {/* Input Row */}
-        <div className="p-3 border-t border-white/10 flex gap-2 items-center"
+        <div className="p-3 border-t border-white/10 flex gap-2 items-center">
 
           <input
             value={input}
