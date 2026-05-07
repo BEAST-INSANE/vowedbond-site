@@ -182,6 +182,11 @@ const [humanRequested, setHumanRequested] = useState(false);
           onClick={() => {
 
   const cleaned = tempName.trim();
+            
+  if (!/^[A-Za-z\s]+$/.test(cleaned)) {
+  alert("Name should contain only alphabets.");
+  return;
+}
 
   if (cleaned.length < 2) {
     alert("Name is too Short.");
