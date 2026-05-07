@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, userName } = req.body;
 
     // Ask AI
     const aiRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
