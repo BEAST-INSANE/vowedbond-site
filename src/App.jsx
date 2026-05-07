@@ -230,7 +230,7 @@ const [humanRequested, setHumanRequested] = useState(false);
         </div>
 
         {/* Input Row */}
-        <div className="p-3 border-t border-white/10 flex flex-col sm:flex-row gap-2">
+        <div className="p-3 border-t border-white/10 flex gap-2 items-center"
 
           <input
             value={input}
@@ -241,7 +241,7 @@ const [humanRequested, setHumanRequested] = useState(false);
 
           <button
             onClick={sendMessage}
-            className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold w-full sm:w-auto"
+            className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
           >
             Send
           </button>
