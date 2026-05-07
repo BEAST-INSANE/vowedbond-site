@@ -89,7 +89,9 @@ export default function Dashboard() {
           🚨 HUMAN SUPPORT REQUEST
         </p>
       ) : (
-        <p><strong>User:</strong> {chat.user_message}</p>
+        <p>
+  <strong>{chat.user_name || "User"}:</strong> {chat.user_message}
+</p>
       )}
 
       <p className="mt-2">
