@@ -155,7 +155,46 @@ const [humanRequested, setHumanRequested] = useState(false);
       {/* Chat Popup */}
       {chatOpen && (
         <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
+{showNamePopup ? (
+  <div className="p-6 flex flex-col gap-4">
+    
+    <div>
+      <h2 className="text-xl font-bold">
+        Before we begin
+      </h2>
 
+      <p className="text-sm text-slate-300 mt-1">
+        Please enter your name to continue.
+      </p>
+    </div>
+
+    <input
+      value={tempName}
+      onChange={(e) => setTempName(e.target.value)}
+      placeholder="Your name"
+      className="px-4 py-3 rounded-xl bg-white/10 text-white outline-none"
+    />
+
+    <button
+      onClick={() => {
+        if (!tempName.trim()) return;
+
+        setUserName(tempName);
+        setShowNamePopup(false);
+
+        setMessages([
+          {
+            role: "bot",
+            text: `Nice to meet you, ${tempName}. How can I help you today?`
+          }
+        ]);
+      }}
+      className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
+    >
+      Continue
+    </button>
+  </div>
+) : (
           <div className="p-3 border-t border-white/10 flex flex-col sm:flex-row gap-2">
             Vowed Bond AI
           </div>
