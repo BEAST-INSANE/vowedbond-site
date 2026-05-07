@@ -171,6 +171,7 @@ const [humanRequested, setHumanRequested] = useState(false);
         </div>
 
         <input
+          maxLength={20}
           value={tempName}
           onChange={(e) => setTempName(e.target.value)}
           placeholder="Your name"
