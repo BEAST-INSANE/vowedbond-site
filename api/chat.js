@@ -94,9 +94,10 @@ If users ask about unrelated people or unrelated topics, politely redirect the c
         Prefer: "return=minimal"
       },
       body: JSON.stringify({
-        user_message: message,
-        bot_reply: reply
-      })
+  user_name,
+  user_message: message,
+  bot_reply: reply
+})
     });
 
     return res.status(200).json({ reply });
