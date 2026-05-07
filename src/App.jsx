@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [showNamePopup, setShowNamePopup] = useState(true);
+  const [tempName, setTempName] = useState("");
   const [messages, setMessages] = useState([
     { role: "bot", text: "Hi! I'm Vowed Bond AI. How can I help?" }
   ]);
