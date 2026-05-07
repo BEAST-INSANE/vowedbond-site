@@ -153,127 +153,138 @@ const [humanRequested, setHumanRequested] = useState(false);
       </button>
 
       {/* Chat Popup */}
-      {chatOpen && (
-        <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
-{showNamePopup ? (
-  <div className="p-6 flex flex-col gap-4">
-    
-    <div>
-      <h2 className="text-xl font-bold">
-        Before we begin
-      </h2>
+{chatOpen && (
+  <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
 
-      <p className="text-sm text-slate-300 mt-1">
-        Please enter your name to continue.
-      </p>
-    </div>
+    {showNamePopup ? (
 
-    <input
-      value={tempName}
-      onChange={(e) => setTempName(e.target.value)}
-      placeholder="Your name"
-      className="px-4 py-3 rounded-xl bg-white/10 text-white outline-none"
-    />
+      <div className="p-6 flex flex-col gap-4">
 
-    <button
-      onClick={() => {
-        if (!tempName.trim()) return;
+        <div>
+          <h2 className="text-xl font-bold">
+            Before we begin
+          </h2>
 
-        setUserName(tempName);
-        setShowNamePopup(false);
+          <p className="text-sm text-slate-300 mt-1">
+            Please enter your name to continue.
+          </p>
+        </div>
 
-        setMessages([
-          {
-            role: "bot",
-            text: `Nice to meet you, ${tempName}. How can I help you today?`
-          }
-        ]);
-      }}
-      className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
-    >
-      Continue
-    </button>
-  </div>
-) : (
-          <div className="p-3 border-t border-white/10 flex flex-col sm:flex-row gap-2">
-            Vowed Bond AI
-          </div>
+        <input
+          value={tempName}
+          onChange={(e) => setTempName(e.target.value)}
+          placeholder="Your name"
+          className="px-4 py-3 rounded-xl bg-white/10 text-white outline-none"
+        />
 
-          <div ref={chatRef} className="h-[55vh] sm:h-80 overflow-y-auto p-3 space-y-2">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-2 rounded-xl max-w-[85%] ${
-                  msg.role === "user"
-                    ? "ml-auto bg-cyan-400 text-black"
-                    : "bg-white/10 text-white"
-                }`}
-              >
-                {msg.text}
-              </div>
-            ))}
+        <button
+          onClick={() => {
+            if (!tempName.trim()) return;
 
-            {loading && (
-              <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
-                Typing...
-                )}
-              </div>
-            )}
-          </div>
+            setUserName(tempName);
+            setShowNamePopup(false);
 
-          {/* Input Row */}
-          <div className="p-3 border-t border-white/10 flex gap-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message..."
-              className="w-full sm:flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
-            />
+            setMessages([
+              {
+                role: "bot",
+                text: `Nice to meet you, ${tempName}. How can I help you today?`
+              }
+            ]);
+          }}
+          className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
+        >
+          Continue
+        </button>
 
-            <button
-              onClick={sendMessage}
-              className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold w-full sm:w-auto"
+      </div>
+
+    ) : (
+
+      <>
+        <div className="p-3 font-bold border-b border-white/10">
+          Vowed Bond AI
+        </div>
+
+        <div
+          ref={chatRef}
+          className="h-[55vh] sm:h-80 overflow-y-auto p-3 space-y-2"
+        >
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`p-2 rounded-xl max-w-[85%] ${
+                msg.role === "user"
+                  ? "ml-auto bg-cyan-400 text-black"
+                  : "bg-white/10 text-white"
+              }`}
             >
-              Send
-            </button>
+              {msg.text}
+            </div>
+          ))}
+
+          {loading && (
+            <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
+              Typing...
+            </div>
+          )}
+        </div>
+
+        {/* Input Row */}
+        <div className="p-3 border-t border-white/10 flex flex-col sm:flex-row gap-2">
+
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message..."
+            className="w-full sm:flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
+          />
 
           <button
-  onClick={async () => {
-    if (humanRequested) return;
+            onClick={sendMessage}
+            className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold w-full sm:w-auto"
+          >
+            Send
+          </button>
 
-    setHumanRequested(true);
+          <button
+            onClick={async () => {
+              if (humanRequested) return;
 
-    await fetch("/api/handoff", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ messages })
-    });
+              setHumanRequested(true);
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "bot",
-        text: "A human support member has been notified."
-      }
-    ]);
-  }}
-  disabled={humanRequested}
-  className={`px-4 py-2 rounded-xl font-bold ${
-    humanRequested
-      ? "bg-gray-400 text-black cursor-not-allowed"
-      : "bg-yellow-400 text-black"
-  } w-full sm:w-auto`}
->
-  {humanRequested ? "Requested ✔️" : "Human"}
-</button>
-          </div>
+              await fetch("/api/handoff", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ messages })
+              });
+
+              setMessages((prev) => [
+                ...prev,
+                {
+                  role: "bot",
+                  text: "A human support member has been notified."
+                }
+              ]);
+            }}
+            disabled={humanRequested}
+            className={`px-4 py-2 rounded-xl font-bold ${
+              humanRequested
+                ? "bg-gray-400 text-black cursor-not-allowed"
+                : "bg-yellow-400 text-black"
+            } w-full sm:w-auto`}
+          >
+            {humanRequested ? "Requested ✔️" : "Human"}
+          </button>
 
         </div>
-      )}
+      </>
 
-      <style>{`
+    )}
+
+  </div>
+)}
         @keyframes trace {
           0% { clip-path: inset(0 100% 98% 0); }
           25% { clip-path: inset(0 0 98% 0); }
