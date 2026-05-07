@@ -285,6 +285,7 @@ const [humanRequested, setHumanRequested] = useState(false);
 
   </div>
 )}
+      <style>{`
         @keyframes trace {
           0% { clip-path: inset(0 100% 98% 0); }
           25% { clip-path: inset(0 0 98% 0); }
