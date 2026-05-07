@@ -34,7 +34,10 @@ const [humanRequested, setHumanRequested] = useState(false);
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message: current })
+        body: JSON.stringify({
+  message: current,
+  userName
+})
       });
 
       const data = await res.json();
