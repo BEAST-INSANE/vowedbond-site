@@ -182,7 +182,9 @@ const [humanRequested, setHumanRequested] = useState(false);
 
   const cleaned = tempName.trim();
 
-  if (cleaned.length < 2) return;
+  if (cleaned.length < 2) {
+    alert("Name is too long.");
+    return;
 
   if (cleaned.length > 20) {
     alert("Name is too long.");
