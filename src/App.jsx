@@ -201,9 +201,18 @@ const [humanRequested, setHumanRequested] = useState(false);
     ) : (
 
       <>
-        <div className="p-3 font-bold border-b border-white/10">
-          Vowed Bond AI
-        </div>
+        <div className="p-3 font-bold border-b border-white/10 flex justify-between items-center">
+
+  <span>Vowed Bond AI</span>
+
+  <button
+    onClick={() => setChatOpen(false)}
+    className="text-white text-xl"
+  >
+    ×
+  </button>
+
+</div>
 
         <div
           ref={chatRef}
