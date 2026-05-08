@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export default function Dashboard() {
 
@@ -7,6 +7,11 @@ export default function Dashboard() {
   const [password, setPassword] = useState("");
   const [selectedChat, setSelectedChat] =
     useState(null);
+
+  const [replyText, setReplyText] =
+    useState("");
+
+  const chatRef = useRef(null);
 
   // LOGIN
   const login = async () => {
@@ -44,27 +49,38 @@ export default function Dashboard() {
 
           setRows(data);
 
-          // auto select first conversation
+          // auto select first user
           if (
             data.length > 0 &&
             !selectedChat
           ) {
             setSelectedChat(data[0]);
           }
+
         });
     };
 
     loadChats();
 
     const interval =
-      setInterval(loadChats, 3000);
+      setInterval(loadChats, 2000);
 
     return () =>
       clearInterval(interval);
 
-  }, [authorized, selectedChat]);
+  }, [authorized]);
 
-  // UNIQUE USERS FOR SIDEBAR
+  // AUTO SCROLL
+  useEffect(() => {
+
+    if (chatRef.current) {
+      chatRef.current.scrollTop =
+        chatRef.current.scrollHeight;
+    }
+
+  }, [rows, selectedChat]);
+
+  // UNIQUE CONVERSATIONS
   const uniqueChats = [];
 
   rows.forEach((chat) => {
@@ -84,12 +100,12 @@ export default function Dashboard() {
 
   // FULL CONVERSATION
   const conversation = rows.filter(
-    (chat) =>
-      chat.user_name ===
+    (msg) =>
+      msg.user_name ===
       selectedChat?.user_name
   );
 
-  // LOGIN PAGE
+  // LOGIN SCREEN
   if (!authorized) {
 
     return (
@@ -111,7 +127,7 @@ export default function Dashboard() {
                 e.target.value
               )
             }
-            className="w-full p-3 rounded-xl bg-black/30 mb-3"
+            className="w-full p-3 rounded-xl bg-black/30 mb-3 outline-none"
           />
 
           <button
@@ -130,7 +146,7 @@ export default function Dashboard() {
   // MAIN DASHBOARD
   return (
 
-    <div className="min-h-screen bg-slate-950 text-white p-6">
+    <div className="min-h-screen bg-slate-950 text-white p-4 md:p-6">
 
       <h1 className="text-3xl font-bold mb-6">
         Dashboard
@@ -147,67 +163,80 @@ export default function Dashboard() {
 
           <div className="space-y-2">
 
-            {uniqueChats.map((chat) => (
+            {uniqueChats.map((chat) => {
 
-              <button
-                key={chat.user_name}
-                onClick={() =>
-                  setSelectedChat(chat)
-                }
-                className={`w-full text-left p-4 rounded-2xl transition ${
-                  selectedChat?.user_name ===
-                  chat.user_name
-                    ? "bg-cyan-400 text-black"
-                    : "bg-white/5 hover:bg-white/10"
-                }`}
-              >
+              const latestMessage =
+                rows
+                  .filter(
+                    (m) =>
+                      m.user_name ===
+                      chat.user_name
+                  )
+                  .slice(-1)[0];
 
-                <div className="flex items-center justify-between">
+              return (
 
-                  <h3 className="font-bold">
+                <button
+                  key={chat.user_name}
+                  onClick={() =>
+                    setSelectedChat(chat)
+                  }
+                  className={`w-full text-left p-4 rounded-2xl transition ${
+                    selectedChat?.user_name ===
+                    chat.user_name
+                      ? "bg-cyan-400 text-black"
+                      : "bg-white/5 hover:bg-white/10"
+                  }`}
+                >
 
-                    {chat.user_name ||
-                      "Unknown User"}
+                  <div className="flex items-center justify-between">
 
-                  </h3>
+                    <h3 className="font-bold">
 
-                  {conversation.some(
-                    (msg) =>
-                      msg.user_message ===
-                      "HUMAN SUPPORT REQUEST"
-                  ) && (
+                      {chat.user_name}
 
-                    <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
-                      HUMAN
-                    </span>
+                    </h3>
 
-                  )}
+                    {rows.some(
+                      (m) =>
+                        m.user_name ===
+                          chat.user_name &&
+                        m.message ===
+                          "HUMAN SUPPORT REQUEST"
+                    ) && (
 
-                </div>
+                      <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+                        HUMAN
+                      </span>
 
-                <p className="text-sm opacity-70 truncate mt-1">
+                    )}
 
-                  {chat.user_message}
+                  </div>
 
-                </p>
+                  <p className="text-sm opacity-70 truncate mt-1">
 
-              </button>
+                    {latestMessage?.message}
 
-            ))}
+                  </p>
+
+                </button>
+
+              );
+            })}
 
           </div>
 
         </div>
 
         {/* CHAT PANEL */}
-        <div className="w-full flex-1 bg-white/10 rounded-2xl p-4 flex flex-col min-h-[70vh]">
+        <div className="w-full flex-1 bg-white/10 rounded-2xl flex flex-col min-h-[70vh] overflow-hidden">
 
           {selectedChat ? (
 
             <>
 
               {/* HEADER */}
-              <div className="border-b border-white/10 pb-4 mb-4">
+              <div className="p-4 border-b border-white/10">
 
                 <h2 className="text-2xl font-bold">
 
@@ -217,56 +246,36 @@ export default function Dashboard() {
 
               </div>
 
-              {/* CHAT MESSAGES */}
-              <div className="flex-1 overflow-y-auto space-y-6">
+              {/* CHAT AREA */}
+              <div
+                ref={chatRef}
+                className="flex-1 overflow-y-auto p-4 space-y-4"
+              >
 
                 {conversation.map((msg) => (
 
                   <div
                     key={msg.id}
-                    className="space-y-3"
+                    className={`flex ${
+                      msg.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
                   >
 
-                    {/* USER */}
-                    <div className="flex justify-end">
+                    <div
+                      className={`px-4 py-3 rounded-2xl max-w-[80%] break-words ${
+                        msg.sender === "user"
+                          ? "bg-cyan-400 text-black"
+                          : msg.sender === "admin"
+                          ? "bg-yellow-400 text-black"
+                          : "bg-white/10 text-white"
+                      }`}
+                    >
 
-                      <div className="bg-cyan-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
-
-                        {msg.user_message}
-
-                      </div>
+                      {msg.message}
 
                     </div>
-
-                    {/* AI */}
-                    {msg.bot_reply && (
-
-                      <div className="flex justify-start">
-
-                        <div className="bg-white/10 px-4 py-3 rounded-2xl max-w-[75%]">
-
-                          {msg.bot_reply}
-
-                        </div>
-
-                      </div>
-
-                    )}
-
-                    {/* ADMIN */}
-                    {msg.admin_reply && (
-
-                      <div className="flex justify-start">
-
-                        <div className="bg-yellow-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
-
-                          {msg.admin_reply}
-
-                        </div>
-
-                      </div>
-
-                    )}
 
                   </div>
 
@@ -274,20 +283,25 @@ export default function Dashboard() {
 
               </div>
 
-              {/* REPLY BOX */}
-              <div className="mt-4 flex gap-2">
+              {/* INPUT */}
+              <div className="p-4 border-t border-white/10 flex gap-2">
 
                 <input
+                  value={replyText}
+                  onChange={(e) =>
+                    setReplyText(
+                      e.target.value
+                    )
+                  }
                   placeholder="Reply..."
-                  onChange={(e) => {
-                    selectedChat.tempReply =
-                      e.target.value;
-                  }}
                   className="flex-1 p-3 rounded-xl bg-black/20 outline-none"
                 />
 
                 <button
                   onClick={async () => {
+
+                    if (!replyText.trim())
+                      return;
 
                     await fetch(
                       "/api/reply",
@@ -300,35 +314,12 @@ export default function Dashboard() {
                         body: JSON.stringify({
                           user_name:
                             selectedChat.user_name,
-                          reply:
-                            selectedChat.tempReply
+                          reply: replyText
                         })
                       }
                     );
 
-                    setRows((prev) =>
-                      prev.map((chat) => {
-
-                        if (
-                          chat.user_name ===
-                          selectedChat.user_name
-                        ) {
-
-                          return {
-                            ...chat,
-                            admin_reply:
-                              selectedChat.tempReply
-                          };
-                        }
-
-                        return chat;
-
-                      })
-                    );
-
-                    alert(
-                      "Reply sent."
-                    );
+                    setReplyText("");
 
                   }}
                   className="bg-cyan-400 text-black px-6 rounded-xl font-bold"
