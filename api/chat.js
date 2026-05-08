@@ -1,26 +1,61 @@
 export default async function handler(req, res) {
+
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
   }
 
   try {
-    const { message, userName } = req.body;
-console.log(userName);
-    // Ask AI
-    const aiRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://vowedbond.vercel.app",
-        "X-Title": "Vowed Bond"
-      },
-      body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-content: `
+
+    const {
+      message,
+      userName
+    } = req.body;
+
+    // SAVE USER MESSAGE
+    await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/chats`,
+      {
+        method: "POST",
+        headers: {
+          apikey:
+            process.env.SUPABASE_ANON_KEY,
+          Authorization:
+            `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          "Content-Type":
+            "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({
+          user_name: userName,
+          sender: "user",
+          message
+        })
+      }
+    );
+
+    // ASK AI
+    const aiRes = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type":
+            "application/json",
+          "HTTP-Referer":
+            "https://vowedbond.vercel.app",
+          "X-Title":
+            "Vowed Bond"
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content: `
 You are Vowed Bond AI, the assistant for our AI chatbot business.
 
 Your job is to help users understand our services, chatbot solutions, support systems, automation tools, and business offerings.
@@ -44,10 +79,6 @@ IMPORTANT RULES:
 - Jaipreet Singh Badhan
 - Moksh Gagwani
 
-You may discuss Jaipreet Singh Badhan and Moksh Gagwani only in the context of Vowed Bond and basic founder-related questions.
-
-If users ask about unrelated people or unrelated topics, politely redirect the conversation toward Vowed Bond services without sounding robotic or repetitive.
-
 4. Keep replies:
 - short
 - professional
@@ -56,53 +87,65 @@ If users ask about unrelated people or unrelated topics, politely redirect the c
 
 5. Do NOT use emojis.
 
-6. If users ask unrelated questions, redirect them back toward our services politely.
+6. Redirect unrelated questions politely.
 
 7. Our services include:
-- AI chatbots for websites
+- AI chatbots
 - lead generation bots
 - customer support bots
-- business automation systems
+- automation systems
 - custom chatbot solutions
 
-8. If users seem interested in buying or working with us, encourage them to request human support.
-
-9. Do not repeatedly mention restrictions or rules unless necessary.
+8. Encourage human support if users show interest.
 `
-          },
-          {
-            role: "user",
-            content: message
-          }
-        ]
-      })
-    });
+            },
+            {
+              role: "user",
+              content: message
+            }
+          ]
+        })
+      }
+    );
 
-    const aiData = await aiRes.json();
+    const aiData =
+      await aiRes.json();
 
     const reply =
       aiData.choices?.[0]?.message?.content ||
       "No response.";
 
-    // Save to Supabase
-    await fetch(`${process.env.SUPABASE_URL}/rest/v1/chats`, {
-      method: "POST",
-      headers: {
-        apikey: process.env.SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal"
-      },
-      body: JSON.stringify({
-  user_name: userName,
-  user_message: message,
-  bot_reply: reply
-})
+    // SAVE AI MESSAGE
+    await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/chats`,
+      {
+        method: "POST",
+        headers: {
+          apikey:
+            process.env.SUPABASE_ANON_KEY,
+          Authorization:
+            `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          "Content-Type":
+            "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({
+          user_name: userName,
+          sender: "ai",
+          message: reply
+        })
+      }
+    );
+
+    return res.status(200).json({
+      reply
     });
 
-    return res.status(200).json({ reply });
-
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+
+    return res.status(500).json({
+      error: error.message
+    });
+
   }
 }
