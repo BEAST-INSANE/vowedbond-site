@@ -119,6 +119,22 @@ export default function Dashboard() {
 
           <div className="space-y-2">
 
+const uniqueChats = [];
+
+rows.forEach((chat) => {
+
+  const alreadyExists =
+    uniqueChats.find(
+      (c) =>
+        c.user_name ===
+        chat.user_name
+    );
+
+  if (!alreadyExists) {
+    uniqueChats.push(chat);
+  }
+
+});
             {rows.map((chat) => (
 
               <button
