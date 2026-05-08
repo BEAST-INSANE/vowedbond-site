@@ -77,113 +77,160 @@ const [selectedChat, setSelectedChat] = useState(null);
 
       <div className="flex gap-4 h-[85vh]">
 
-        {rows.map((chat) => {
+  {/* Sidebar */}
+  <div className="w-[320px] bg-white/10 rounded-2xl p-4 overflow-y-auto">
 
-          const isHuman =
-            chat.user_message ===
-            "HUMAN SUPPORT REQUEST";
+    <h2 className="text-2xl font-bold mb-4">
+      Conversations
+    </h2>
 
-          let preview = chat.bot_reply;
+    <div className="space-y-2">
 
-          if (isHuman) {
-            try {
-              const parsed =
-                JSON.parse(chat.bot_reply);
+      {rows.map((chat) => (
 
-              preview = parsed
-                .map((m) => m.text)
-                .join(" | ");
+        <button
+          key={chat.id}
+          onClick={() => setSelectedChat(chat)}
+          className={`w-full text-left p-4 rounded-2xl transition ${
+            selectedChat?.id === chat.id
+              ? "bg-cyan-400 text-black"
+              : "bg-white/5 hover:bg-white/10"
+          }`}
+        >
 
-            } catch {}
-          }
+          <div className="flex items-center justify-between">
 
-          return (
-            <div
-              key={chat.id}
-              className={`p-4 rounded-2xl border ${
-                isHuman
-                  ? "bg-red-500/10 border-red-400"
-                  : "bg-white/10 border-white/10"
-              }`}
-            >
+            <h3 className="font-bold">
+              {chat.user_name || "Unknown User"}
+            </h3>
 
-              {isHuman ? (
-                <p className="text-red-400 font-bold mb-2">
-                  🚨 HUMAN SUPPORT REQUEST
-                </p>
-              ) : (
-                <p>
-                  <strong>
-                    {chat.user_name || "User"}:
-                  </strong>{" "}
-                  {chat.user_message}
-                </p>
-              )}
+            {chat.user_message ===
+              "HUMAN SUPPORT REQUEST" && (
+              <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+                HUMAN
+              </span>
+            )}
 
-              <p className="mt-2">
-                <strong>
-                  {isHuman ? "Conversation:" : "AI:"}
-                </strong>{" "}
-                {preview}
-              </p>
+          </div>
 
-              {/* Reply System */}
-              <div className="mt-4 flex flex-col gap-2">
+          <p className="text-sm opacity-70 truncate mt-1">
+            {chat.user_message}
+          </p>
 
-                <textarea
-                  placeholder="Reply to customer..."
-                  onChange={(e) => {
-                    chat.tempReply =
-                      e.target.value;
-                  }}
-                  className="w-full p-3 rounded-xl bg-white/10 text-white outline-none"
-                />
+        </button>
 
-                <button
-                  onClick={async () => {
+      ))}
 
-                    await fetch("/api/reply", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type":
-                          "application/json"
-                      },
-                  body: JSON.stringify({
-  user_name: chat.user_name,
-  reply: chat.tempReply
-})
-                    });
+    </div>
 
-                    alert(
-                      "Reply sent successfully."
-                    );
+  </div>
 
-                  }}
-                  className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
-                >
-                  Send Reply
-                </button>
+  {/* Chat Panel */}
+  <div className="flex-1 bg-white/10 rounded-2xl p-4 flex flex-col">
 
-                {chat.admin_reply && (
-                  <div className="bg-cyan-400/20 border border-cyan-400 p-3 rounded-xl">
+    {selectedChat ? (
 
-                    <strong>
-                      Admin Reply:
-                    </strong>{" "}
+      <>
 
-                    {chat.admin_reply}
+        <div className="border-b border-white/10 pb-4 mb-4">
 
-                  </div>
-                )}
+          <h2 className="text-2xl font-bold">
+            {selectedChat.user_name}
+          </h2>
+
+        </div>
+
+        <div className="flex-1 overflow-y-auto space-y-4">
+
+          <div className="flex justify-end">
+
+            <div className="bg-cyan-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
+
+              {selectedChat.user_message}
+
+            </div>
+
+          </div>
+
+          <div className="flex justify-start">
+
+            <div className="bg-white/10 px-4 py-3 rounded-2xl max-w-[75%]">
+
+              {selectedChat.bot_reply}
+
+            </div>
+
+          </div>
+
+          {selectedChat.admin_reply && (
+
+            <div className="flex justify-start">
+
+              <div className="bg-yellow-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
+
+                {selectedChat.admin_reply}
 
               </div>
 
             </div>
-          );
-        })}
+
+          )}
+
+        </div>
+
+        {/* Reply Box */}
+        <div className="mt-4 flex gap-2">
+
+          <input
+            placeholder="Reply..."
+            onChange={(e) => {
+              selectedChat.tempReply =
+                e.target.value;
+            }}
+            className="flex-1 p-3 rounded-xl bg-black/20 outline-none"
+          />
+
+          <button
+            onClick={async () => {
+
+              await fetch("/api/reply", {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  user_name:
+                    selectedChat.user_name,
+                  reply:
+                    selectedChat.tempReply
+                })
+              });
+
+              alert("Reply sent.");
+
+            }}
+            className="bg-cyan-400 text-black px-6 rounded-xl font-bold"
+          >
+            Send
+          </button>
+
+        </div>
+
+      </>
+
+    ) : (
+
+      <div className="flex-1 flex items-center justify-center text-white/50 text-xl">
+
+        Select a conversation
 
       </div>
 
-    </div>
+    )}
+
+  </div>
+
+</div>
   );
 }
