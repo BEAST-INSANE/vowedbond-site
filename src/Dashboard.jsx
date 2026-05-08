@@ -5,7 +5,7 @@ export default function Dashboard() {
   const [rows, setRows] = useState([]);
   const [authorized, setAuthorized] = useState(false);
   const [password, setPassword] = useState("");
-
+const [selectedChat, setSelectedChat] = useState(null);
   const login = async () => {
     const res = await fetch("/api/login", {
       method: "POST",
