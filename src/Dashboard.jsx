@@ -108,7 +108,7 @@ export default function Dashboard() {
         Dashboard
       </h1>
 
-      <div className="flex gap-4 h-[85vh]">
+      <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[85vh]">
 
         {/* SIDEBAR */}
         <div className="w-[320px] bg-white/10 rounded-2xl p-4 overflow-y-auto">
