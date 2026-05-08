@@ -19,8 +19,6 @@ const [humanRequested, setHumanRequested] = useState(false);
   }, [messages, loading]);
 useEffect(() => {
   if (!userName) return;
-useEffect(() => {
-  if (!userName) return;
 
   const checkReplies = async () => {
     const res = await fetch(
