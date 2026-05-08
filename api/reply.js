@@ -13,36 +13,11 @@ export default async function handler(req, res) {
       reply
     } = req.body;
 
-    // get latest message row from this user
-    const latestRes = await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/chats?user_name=eq.${user_name}&select=id&order=created_at.desc&limit=1`,
-      {
-        headers: {
-          apikey:
-            process.env.SUPABASE_ANON_KEY,
-          Authorization:
-            `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-        },
-      }
-    );
-
-    const latestData =
-      await latestRes.json();
-
-    if (!latestData.length) {
-      return res.status(404).json({
-        error: "No chat found"
-      });
-    }
-
-    const latestId =
-      latestData[0].id;
-
-    // update latest row
+    // SAVE ADMIN MESSAGE
     await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/chats?id=eq.${latestId}`,
+      `${process.env.SUPABASE_URL}/rest/v1/chats`,
       {
-        method: "PATCH",
+        method: "POST",
         headers: {
           apikey:
             process.env.SUPABASE_ANON_KEY,
@@ -50,10 +25,13 @@ export default async function handler(req, res) {
             `Bearer ${process.env.SUPABASE_ANON_KEY}`,
           "Content-Type":
             "application/json",
+          Prefer: "return=minimal"
         },
         body: JSON.stringify({
-          admin_reply: reply,
-        }),
+          user_name,
+          sender: "admin",
+          message: reply
+        })
       }
     );
 
