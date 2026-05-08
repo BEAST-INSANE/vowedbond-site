@@ -22,8 +22,7 @@ export default async function handler(req, res) {
           user_name: userName,
           user_message:
             "HUMAN SUPPORT REQUEST",
-          bot_reply:
-            JSON.stringify(messages)
+          bot_reply: "Human support requested."
         }),
       }
     );
