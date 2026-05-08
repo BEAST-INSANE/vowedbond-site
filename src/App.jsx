@@ -20,29 +20,39 @@ const [humanRequested, setHumanRequested] = useState(false);
 useEffect(() => {
   if (!userName) return;
 
-  const checkReplies = async () => {
-    const res = await fetch(
-      `/api/getReply?userName=${userName}`
-    );
+useEffect(() => {
+  if (!userName) return;
 
-    const data = await res.json();
+  const interval = setInterval(async () => {
+    try {
+      const res = await fetch(
+        `/api/getReply?userName=${userName}`
+      );
 
-    if (
-      data.admin_reply &&
-      !messages.some(
-        (m) => m.text === data.admin_reply
-      )
-    ) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          text: data.admin_reply
-        }
-      ]);
+      const data = await res.json();
+
+      if (
+        data.admin_reply &&
+        !messages.some(
+          (m) => m.text === data.admin_reply
+        )
+      ) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "bot",
+            text: data.admin_reply
+          }
+        ]);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  };
+  }, 3000);
 
+  return () => clearInterval(interval);
+
+}, [userName]);
   const interval = setInterval(checkReplies, 3000);
 
   return () => clearInterval(interval);
