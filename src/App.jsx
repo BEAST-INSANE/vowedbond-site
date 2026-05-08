@@ -48,7 +48,6 @@ const [lastAdminReply, setLastAdminReply] = useState("");
   data.admin_reply !== lastAdminReply
 ) {
           setMessages((prev) => [
-setLastAdminReply(data.admin_reply);
             ...prev,
             {
               role: "bot",
@@ -56,7 +55,9 @@ setLastAdminReply(data.admin_reply);
             }
           ]);
         }
-      } catch (err) {
+      }
+setLastAdminReply(data.admin_reply)
+ catch (err) {
         console.log(err);
       }
     }, 3000);
