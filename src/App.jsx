@@ -44,11 +44,9 @@ const [lastAdminReply, setLastAdminReply] = useState("");
         const data = await res.json();
 
         if (
-          data.admin_reply &&
-          !messages.some(
-            (m) => m.text === data.admin_reply
-          )
-        ) {
+  data.admin_reply &&
+  data.admin_reply !== lastAdminReply
+) {
           setMessages((prev) => [
             ...prev,
             {
