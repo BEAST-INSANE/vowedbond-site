@@ -169,7 +169,7 @@ export default function Dashboard() {
         </div>
 
         {/* CHAT PANEL */}
-        <div className="flex-1 bg-white/10 rounded-2xl p-4 flex flex-col">
+        <div className="w-full flex-1 bg-white/10 rounded-2xl p-4 flex flex-col min-h-[70vh]">
 
           {selectedChat ? (
 
