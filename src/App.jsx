@@ -21,6 +21,7 @@ export default function App() {
     useState(false);
 
   const chatRef = useRef(null);
+const [lastAdminReply, setLastAdminReply] = useState("");
 
   // Auto scroll
   useEffect(() => {
