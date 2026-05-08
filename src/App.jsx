@@ -43,14 +43,31 @@ const [lastAdminReply, setLastAdminReply] = useState("");
 
         const data = await res.json();
 
- catch (err) {
+        if (
+          data.admin_reply &&
+          data.admin_reply !== lastAdminReply
+        ) {
+
+          setLastAdminReply(data.admin_reply);
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "bot",
+              text: data.admin_reply
+            }
+          ]);
+
+        }
+
+      } catch (err) {
         console.log(err);
       }
     }, 3000);
 
     return () => clearInterval(interval);
 
-  }, [userName, messages]);
+  }, [userName, lastAdminReply]);
 
   // Send user message
   const sendMessage = async () => {
