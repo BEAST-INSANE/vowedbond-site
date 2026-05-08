@@ -148,10 +148,10 @@ export default function Dashboard() {
                         "Content-Type":
                           "application/json"
                       },
-                      body: JSON.stringify({
-                    user_name: chat.user_name,
-                        reply: chat.tempReply
-                      })
+                  body: JSON.stringify({
+  user_name: chat.user_name,
+  reply: chat.tempReply
+})
                     });
 
                     alert(
