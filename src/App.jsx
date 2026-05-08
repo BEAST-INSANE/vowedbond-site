@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 export default function App() {
+
   const [chatOpen, setChatOpen] = useState(false);
 
   const [userName, setUserName] = useState("");
@@ -20,8 +21,10 @@ export default function App() {
   const [humanRequested, setHumanRequested] =
     useState(false);
 
+  const [lastAdminReply, setLastAdminReply] =
+    useState("");
+
   const chatRef = useRef(null);
-const [lastAdminReply, setLastAdminReply] = useState("");
 
   // Auto scroll
   useEffect(() => {
@@ -33,10 +36,13 @@ const [lastAdminReply, setLastAdminReply] = useState("");
 
   // Check admin replies
   useEffect(() => {
+
     if (!userName) return;
 
     const interval = setInterval(async () => {
+
       try {
+
         const res = await fetch(
           `/api/getReply?userName=${userName}`
         );
@@ -63,47 +69,53 @@ const [lastAdminReply, setLastAdminReply] = useState("");
       } catch (err) {
         console.log(err);
       }
+
     }, 3000);
 
     return () => clearInterval(interval);
 
   }, [userName, lastAdminReply]);
 
-  // Send user message
+  // Send message
   const sendMessage = async () => {
+
     if (!input.trim()) return;
-if (humanRequested) {
 
-  const userMsg = {
-    role: "user",
-    text: input
-  };
+    const userMsg = {
+      role: "user",
+      text: input
+    };
 
-  setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [
+      ...prev,
+      userMsg
+    ]);
 
-  const current = input;
-
-  setInput("");
-
-  await fetch(
-  "/api/handoff",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type":
-        "application/json"
-    },
-    body: JSON.stringify({
-      messages,
-      userName
-    })
-  }
-); 
+    const current = input;
 
     setInput("");
+
+    // HUMAN SUPPORT MODE
+    if (humanRequested) {
+
+      await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: current,
+          userName
+        })
+      });
+
+      return;
+    }
+
     setLoading(true);
 
     try {
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -130,6 +142,7 @@ if (humanRequested) {
       ]);
 
     } catch {
+
       setMessages((prev) => [
         ...prev,
         {
@@ -137,6 +150,7 @@ if (humanRequested) {
           text: "Error contacting AI."
         }
       ]);
+
     }
 
     setLoading(false);
@@ -150,6 +164,7 @@ if (humanRequested) {
     titleClass = "",
     textClass = ""
   }) => {
+
     const [pos, setPos] = useState({
       x: 50,
       y: 50
@@ -158,6 +173,7 @@ if (humanRequested) {
     return (
       <div
         onMouseMove={(e) => {
+
           const r =
             e.currentTarget.getBoundingClientRect();
 
@@ -165,17 +181,21 @@ if (humanRequested) {
             x: e.clientX - r.left,
             y: e.clientY - r.top
           });
+
         }}
         className="relative overflow-hidden min-h-[140px] p-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-2xl hover:scale-105 transition duration-300"
       >
+
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`
+            background:
+              `radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`
           }}
         />
 
         <div className="relative z-10">
+
           <h2
             className={`font-semibold ${titleClass}`}
           >
@@ -185,18 +205,24 @@ if (humanRequested) {
           <p className={textClass}>
             {text}
           </p>
+
         </div>
+
       </div>
     );
   };
 
   const TraceCard = (props) => (
     <div className="group rounded-3xl overflow-hidden relative">
+
       <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
+
         <div className="absolute inset-0 rounded-3xl border-[4px] border-transparent group-hover:border-orange-200 shadow-[0_0_42px_rgba(251,146,60,1),0_0_70px_rgba(251,146,60,0.95)] animate-[trace_1.8s_linear_infinite]"></div>
+
       </div>
 
       <GlowCard {...props} />
+
     </div>
   );
 
@@ -205,11 +231,13 @@ if (humanRequested) {
 
       {/* Logo */}
       <div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
+
         <img
           src="/logo.png"
           alt="Vowed Bond Logo"
           className="w-48 md:w-64 object-contain translate-y-14"
         />
+
       </div>
 
       <p className="text-slate-300 text-lg max-w-2xl mb-4">
@@ -271,6 +299,7 @@ if (humanRequested) {
 
       {/* Chat Popup */}
       {chatOpen && (
+
         <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
 
           {showNamePopup ? (
@@ -278,6 +307,7 @@ if (humanRequested) {
             <div className="p-6 flex flex-col gap-4">
 
               <div>
+
                 <h2 className="text-xl font-bold">
                   Before we begin
                 </h2>
@@ -285,6 +315,7 @@ if (humanRequested) {
                 <p className="text-sm text-slate-300 mt-1">
                   Please enter your name to continue.
                 </p>
+
               </div>
 
               <input
@@ -299,6 +330,7 @@ if (humanRequested) {
 
               <button
                 onClick={() => {
+
                   const cleaned =
                     tempName.trim();
 
@@ -310,23 +342,16 @@ if (humanRequested) {
                     alert(
                       "Name should contain only alphabets."
                     );
-
                     return;
                   }
 
                   if (cleaned.length < 2) {
-                    alert(
-                      "Name is too short."
-                    );
-
+                    alert("Name is too short.");
                     return;
                   }
 
                   if (cleaned.length > 20) {
-                    alert(
-                      "Name is too long."
-                    );
-
+                    alert("Name is too long.");
                     return;
                   }
 
@@ -337,9 +362,11 @@ if (humanRequested) {
                   setMessages([
                     {
                       role: "bot",
-                      text: `Nice to meet you, ${cleaned}. How can I help you today?`
+                      text:
+                        `Nice to meet you, ${cleaned}. How can I help you today?`
                     }
                   ]);
+
                 }}
                 className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
               >
@@ -376,6 +403,7 @@ if (humanRequested) {
               >
 
                 {messages.map((msg, i) => (
+
                   <div
                     key={i}
                     className={`p-2 rounded-xl max-w-[85%] ${
@@ -386,6 +414,7 @@ if (humanRequested) {
                   >
                     {msg.text}
                   </div>
+
                 ))}
 
                 {loading && (
@@ -417,6 +446,7 @@ if (humanRequested) {
 
                 <button
                   onClick={async () => {
+
                     if (humanRequested)
                       return;
 
@@ -431,7 +461,8 @@ if (humanRequested) {
                             "application/json"
                         },
                         body: JSON.stringify({
-                          messages
+                          messages,
+                          userName
                         })
                       }
                     );
@@ -440,9 +471,11 @@ if (humanRequested) {
                       ...prev,
                       {
                         role: "bot",
-                        text: "A human support member has been notified."
+                        text:
+                          "A human support member has been notified."
                       }
                     ]);
+
                   }}
                   disabled={humanRequested}
                   className={`px-4 py-2 rounded-xl font-bold ${
@@ -459,6 +492,7 @@ if (humanRequested) {
               </div>
             </>
           )}
+
         </div>
       )}
 
