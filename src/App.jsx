@@ -98,16 +98,7 @@ if (humanRequested) {
       userName
     })
   }
-);
-
-    const userMsg = {
-      role: "user",
-      text: input
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-
-    const current = input;
+); 
 
     setInput("");
     setLoading(true);
