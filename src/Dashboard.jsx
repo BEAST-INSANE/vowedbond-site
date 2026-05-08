@@ -75,7 +75,7 @@ const [selectedChat, setSelectedChat] = useState(null);
         Dashboard
       </h1>
 
-      <div className="space-y-4">
+      <div className="flex gap-4 h-[85vh]">
 
         {rows.map((chat) => {
 
