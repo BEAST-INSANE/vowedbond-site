@@ -111,7 +111,7 @@ export default function Dashboard() {
       <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[85vh]">
 
         {/* SIDEBAR */}
-        <div className="w-[320px] bg-white/10 rounded-2xl p-4 overflow-y-auto">
+        <div className="w-full md:w-[320px] bg-white/10 rounded-2xl p-4 overflow-y-auto">
 
           <h2 className="text-2xl font-bold mb-4">
             Conversations
