@@ -149,7 +149,7 @@ export default function Dashboard() {
                           "application/json"
                       },
                       body: JSON.stringify({
-                        id: chat.id,
+                    user_name: chat.user_name,
                         reply: chat.tempReply
                       })
                     });
