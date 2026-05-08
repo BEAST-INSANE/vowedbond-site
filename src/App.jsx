@@ -85,19 +85,20 @@ if (humanRequested) {
 
   setInput("");
 
-  await fetch("/api/chat", {
+  await fetch(
+  "/api/handoff",
+  {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type":
+        "application/json"
     },
     body: JSON.stringify({
-      message: current,
+      messages,
       userName
     })
-  });
-
-  return;
-}
+  }
+);
 
     const userMsg = {
       role: "user",
