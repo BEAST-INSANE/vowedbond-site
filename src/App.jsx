@@ -43,8 +43,6 @@ const [lastAdminReply, setLastAdminReply] = useState("");
 
         const data = await res.json();
 
-         if
-setLastAdminReply(data.admin_reply)
  catch (err) {
         console.log(err);
       }
