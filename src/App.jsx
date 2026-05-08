@@ -72,6 +72,19 @@ const [lastAdminReply, setLastAdminReply] = useState("");
   // Send user message
   const sendMessage = async () => {
     if (!input.trim()) return;
+if (humanRequested) {
+
+  const userMsg = {
+    role: "user",
+    text: input
+  };
+
+  setMessages((prev) => [...prev, userMsg]);
+
+  setInput("");
+
+  return;
+}
 
     const userMsg = {
       role: "user",
