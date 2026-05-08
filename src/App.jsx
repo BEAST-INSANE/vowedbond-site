@@ -43,19 +43,7 @@ const [lastAdminReply, setLastAdminReply] = useState("");
 
         const data = await res.json();
 
-        if (
-  data.admin_reply &&
-  data.admin_reply !== lastAdminReply
-) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: "bot",
-              text: data.admin_reply
-            }
-          ]);
-        }
-      }
+         if
 setLastAdminReply(data.admin_reply)
  catch (err) {
         console.log(err);
