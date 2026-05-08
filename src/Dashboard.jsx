@@ -108,6 +108,22 @@ export default function Dashboard() {
                   {chat.user_message}
                 </p>
               )}
+{chat.admin_reply && (
+                  <div className="bg-cyan-400/20 border border-cyan-400 p-3 rounded-xl">
+                    <strong>Admin Reply:</strong>{" "}
+                    {chat.admin_reply}
+                  </div>
+                )}
+
+              </div>
+            </div>
+          );
+        })}
+
+      </div>
+    </div>
+  );
+}
 
               <p className="mt-2">
                 <strong>
@@ -146,20 +162,3 @@ export default function Dashboard() {
                 >
                   Send Reply
                 </button>
-
-                {chat.admin_reply && (
-                  <div className="bg-cyan-400/20 border border-cyan-400 p-3 rounded-xl">
-                    <strong>Admin Reply:</strong>{" "}
-                    {chat.admin_reply}
-                  </div>
-                )}
-
-              </div>
-            </div>
-          );
-        })}
-
-      </div>
-    </div>
-  );
-}
