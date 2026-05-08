@@ -259,6 +259,10 @@ export default function Dashboard() {
                         })
                       }
                     );
+setSelectedChat({
+  ...selectedChat,
+  admin_reply: selectedChat.tempReply
+});
 
                     alert(
                       "Reply sent."
