@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function Dashboard() {
+
   const [rows, setRows] = useState([]);
   const [authorized, setAuthorized] = useState(false);
   const [password, setPassword] = useState("");
@@ -34,12 +35,15 @@ export default function Dashboard() {
     const interval = setInterval(loadChats, 3000);
 
     return () => clearInterval(interval);
+
   }, [authorized]);
 
   if (!authorized) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+
         <div className="bg-white/10 p-6 rounded-2xl w-full max-w-sm">
+
           <h1 className="text-2xl font-bold mb-4">
             Dashboard Login
           </h1>
@@ -58,6 +62,7 @@ export default function Dashboard() {
           >
             Login
           </button>
+
         </div>
       </div>
     );
@@ -65,6 +70,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-8">
+
       <h1 className="text-3xl font-bold mb-6">
         Dashboard
       </h1>
@@ -72,18 +78,22 @@ export default function Dashboard() {
       <div className="space-y-4">
 
         {rows.map((chat) => {
+
           const isHuman =
-            chat.user_message === "HUMAN SUPPORT REQUEST";
+            chat.user_message ===
+            "HUMAN SUPPORT REQUEST";
 
           let preview = chat.bot_reply;
 
           if (isHuman) {
             try {
-              const parsed = JSON.parse(chat.bot_reply);
+              const parsed =
+                JSON.parse(chat.bot_reply);
 
               preview = parsed
                 .map((m) => m.text)
                 .join(" | ");
+
             } catch {}
           }
 
@@ -96,6 +106,7 @@ export default function Dashboard() {
                   : "bg-white/10 border-white/10"
               }`}
             >
+
               {isHuman ? (
                 <p className="text-red-400 font-bold mb-2">
                   🚨 HUMAN SUPPORT REQUEST
@@ -108,22 +119,6 @@ export default function Dashboard() {
                   {chat.user_message}
                 </p>
               )}
-{chat.admin_reply && (
-                  <div className="bg-cyan-400/20 border border-cyan-400 p-3 rounded-xl">
-                    <strong>Admin Reply:</strong>{" "}
-                    {chat.admin_reply}
-                  </div>
-                )}
-
-              </div>
-            </div>
-          );
-        })}
-
-      </div>
-    </div>
-  );
-}
 
               <p className="mt-2">
                 <strong>
@@ -138,17 +133,20 @@ export default function Dashboard() {
                 <textarea
                   placeholder="Reply to customer..."
                   onChange={(e) => {
-                    chat.tempReply = e.target.value;
+                    chat.tempReply =
+                      e.target.value;
                   }}
                   className="w-full p-3 rounded-xl bg-white/10 text-white outline-none"
                 />
 
                 <button
                   onClick={async () => {
+
                     await fetch("/api/reply", {
                       method: "POST",
                       headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                          "application/json"
                       },
                       body: JSON.stringify({
                         id: chat.id,
@@ -156,9 +154,36 @@ export default function Dashboard() {
                       })
                     });
 
-                    alert("Reply sent successfully.");
+                    alert(
+                      "Reply sent successfully."
+                    );
+
                   }}
                   className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
                 >
                   Send Reply
                 </button>
+
+                {chat.admin_reply && (
+                  <div className="bg-cyan-400/20 border border-cyan-400 p-3 rounded-xl">
+
+                    <strong>
+                      Admin Reply:
+                    </strong>{" "}
+
+                    {chat.admin_reply}
+
+                  </div>
+                )}
+
+              </div>
+
+            </div>
+          );
+        })}
+
+      </div>
+
+    </div>
+  );
+}
