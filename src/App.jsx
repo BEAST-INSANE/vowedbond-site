@@ -19,6 +19,36 @@ const [humanRequested, setHumanRequested] = useState(false);
   }, [messages, loading]);
 useEffect(() => {
   if (!userName) return;
+useEffect(() => {
+  if (!userName) return;
+
+  const checkReplies = async () => {
+    const res = await fetch(
+      `/api/getReply?userName=${userName}`
+    );
+
+    const data = await res.json();
+
+    if (
+      data.admin_reply &&
+      !messages.some(
+        (m) => m.text === data.admin_reply
+      )
+    ) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "bot",
+          text: data.admin_reply
+        }
+      ]);
+    }
+  };
+
+  const interval = setInterval(checkReplies, 3000);
+
+  return () => clearInterval(interval);
+}, [userName, messages]);
 
   const checkReplies = async () => {
     const res = await fetch(
