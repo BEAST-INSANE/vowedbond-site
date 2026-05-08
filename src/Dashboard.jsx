@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [selectedChat, setSelectedChat] =
     useState(null);
 
+  // LOGIN
   const login = async () => {
 
     const res = await fetch("/api/login", {
@@ -30,6 +31,7 @@ export default function Dashboard() {
     }
   };
 
+  // LOAD CHATS
   useEffect(() => {
 
     if (!authorized) return;
@@ -42,7 +44,7 @@ export default function Dashboard() {
 
           setRows(data);
 
-          // auto select first chat
+          // auto select first conversation
           if (
             data.length > 0 &&
             !selectedChat
@@ -62,10 +64,36 @@ export default function Dashboard() {
 
   }, [authorized, selectedChat]);
 
+  // UNIQUE USERS FOR SIDEBAR
+  const uniqueChats = [];
+
+  rows.forEach((chat) => {
+
+    const alreadyExists =
+      uniqueChats.find(
+        (c) =>
+          c.user_name ===
+          chat.user_name
+      );
+
+    if (!alreadyExists) {
+      uniqueChats.push(chat);
+    }
+
+  });
+
+  // FULL CONVERSATION
+  const conversation = rows.filter(
+    (chat) =>
+      chat.user_name ===
+      selectedChat?.user_name
+  );
+
   // LOGIN PAGE
   if (!authorized) {
 
     return (
+
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
 
         <div className="bg-white/10 p-6 rounded-2xl w-full max-w-sm">
@@ -119,32 +147,16 @@ export default function Dashboard() {
 
           <div className="space-y-2">
 
-const uniqueChats = [];
-
-rows.forEach((chat) => {
-
-  const alreadyExists =
-    uniqueChats.find(
-      (c) =>
-        c.user_name ===
-        chat.user_name
-    );
-
-  if (!alreadyExists) {
-    uniqueChats.push(chat);
-  }
-
-});
             {uniqueChats.map((chat) => (
 
               <button
-                key={chat.id}
+                key={chat.user_name}
                 onClick={() =>
                   setSelectedChat(chat)
                 }
                 className={`w-full text-left p-4 rounded-2xl transition ${
-                  selectedChat?.id ===
-                  chat.id
+                  selectedChat?.user_name ===
+                  chat.user_name
                     ? "bg-cyan-400 text-black"
                     : "bg-white/5 hover:bg-white/10"
                 }`}
@@ -159,8 +171,11 @@ rows.forEach((chat) => {
 
                   </h3>
 
-                  {chat.user_message ===
-                    "HUMAN SUPPORT REQUEST" && (
+                  {conversation.some(
+                    (msg) =>
+                      msg.user_message ===
+                      "HUMAN SUPPORT REQUEST"
+                  ) && (
 
                     <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
                       HUMAN
@@ -191,7 +206,7 @@ rows.forEach((chat) => {
 
             <>
 
-              {/* CHAT HEADER */}
+              {/* HEADER */}
               <div className="border-b border-white/10 pb-4 mb-4">
 
                 <h2 className="text-2xl font-bold">
@@ -202,45 +217,60 @@ rows.forEach((chat) => {
 
               </div>
 
-              {/* CHAT CONTENT */}
-              <div className="flex-1 overflow-y-auto space-y-4">
+              {/* CHAT MESSAGES */}
+              <div className="flex-1 overflow-y-auto space-y-6">
 
-                {/* USER */}
-                <div className="flex justify-end">
+                {conversation.map((msg) => (
 
-                  <div className="bg-cyan-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
+                  <div
+                    key={msg.id}
+                    className="space-y-3"
+                  >
 
-                    {selectedChat.user_message}
+                    {/* USER */}
+                    <div className="flex justify-end">
 
-                  </div>
+                      <div className="bg-cyan-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
 
-                </div>
+                        {msg.user_message}
 
-                {/* AI */}
-                <div className="flex justify-start">
-
-                  <div className="bg-white/10 px-4 py-3 rounded-2xl max-w-[75%]">
-
-                    {selectedChat.bot_reply}
-
-                  </div>
-
-                </div>
-
-                {/* ADMIN */}
-                {selectedChat.admin_reply && (
-
-                  <div className="flex justify-start">
-
-                    <div className="bg-yellow-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
-
-                      {selectedChat.admin_reply}
+                      </div>
 
                     </div>
 
+                    {/* AI */}
+                    {msg.bot_reply && (
+
+                      <div className="flex justify-start">
+
+                        <div className="bg-white/10 px-4 py-3 rounded-2xl max-w-[75%]">
+
+                          {msg.bot_reply}
+
+                        </div>
+
+                      </div>
+
+                    )}
+
+                    {/* ADMIN */}
+                    {msg.admin_reply && (
+
+                      <div className="flex justify-start">
+
+                        <div className="bg-yellow-400 text-black px-4 py-3 rounded-2xl max-w-[75%]">
+
+                          {msg.admin_reply}
+
+                        </div>
+
+                      </div>
+
+                    )}
+
                   </div>
 
-                )}
+                ))}
 
               </div>
 
@@ -275,10 +305,26 @@ rows.forEach((chat) => {
                         })
                       }
                     );
-setSelectedChat({
-  ...selectedChat,
-  admin_reply: selectedChat.tempReply
-});
+
+                    setRows((prev) =>
+                      prev.map((chat) => {
+
+                        if (
+                          chat.user_name ===
+                          selectedChat.user_name
+                        ) {
+
+                          return {
+                            ...chat,
+                            admin_reply:
+                              selectedChat.tempReply
+                          };
+                        }
+
+                        return chat;
+
+                      })
+                    );
 
                     alert(
                       "Reply sent."
