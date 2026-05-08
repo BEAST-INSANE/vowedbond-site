@@ -135,7 +135,7 @@ rows.forEach((chat) => {
   }
 
 });
-            {rows.map((chat) => (
+            {uniqueChats.map((chat) => (
 
               <button
                 key={chat.id}
