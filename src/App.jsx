@@ -84,17 +84,60 @@ export default function App() {
   // CHECK ADMIN REPLIES
   useEffect(() => {
 
-    if (!userName) return;
+  if (!conversationId)
+    return;
 
-    const interval =
-      setInterval(async () => {
+  const interval =
+    setInterval(async () => {
 
-        try {
+      try {
 
-          const res =
-            await fetch(
-              `/api/getReply?conversationId=${conversationId}`
-            );
+        const res =
+          await fetch(
+            `/api/getReply?conversationId=${conversationId}`
+          );
+
+        const data =
+          await res.json();
+
+        if (
+          data.message &&
+          data.message !==
+            lastAdminReply
+        ) {
+
+          setLastAdminReply(
+            data.message
+          );
+
+          setMessages((prev) => [
+
+            ...prev,
+
+            {
+              role: "bot",
+              text: data.message
+            }
+
+          ]);
+
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    }, 2000);
+
+  return () =>
+    clearInterval(interval);
+
+}, [
+  conversationId,
+  lastAdminReply
+]);
 
           const data =
             await res.json();
