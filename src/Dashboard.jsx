@@ -1,12 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef
+} from "react";
 
 export default function Dashboard() {
 
-  const [rows, setRows] = useState([]);
-  const [authorized, setAuthorized] = useState(false);
-  const [password, setPassword] = useState("");
+  const [rows, setRows] =
+    useState([]);
+
+  const [authorized, setAuthorized] =
+    useState(false);
+
+  const [password, setPassword] =
+    useState("");
+
   const [selectedUser, setSelectedUser] =
-  useState(null);
+    useState(null);
 
   const [replyText, setReplyText] =
     useState("");
@@ -30,10 +40,15 @@ export default function Dashboard() {
     const data = await res.json();
 
     if (data.success) {
+
       setAuthorized(true);
+
     } else {
+
       alert("Wrong password");
+
     }
+
   };
 
   // LOAD CHATS
@@ -50,27 +65,19 @@ export default function Dashboard() {
           setRows(data);
 
           // auto select first user
-          if (!selectedChat && data.length > 0) {
+          if (
+            !selectedUser &&
+            data.length > 0
+          ) {
 
-  setSelectedChat(data[0]);
+            setSelectedUser(
+              data[0].user_name
+            );
 
-}
-
-if (selectedChat) {
-
-  const updatedChat = data.find(
-    (chat) =>
-      chat.user_name ===
-      selectedUser
-  );
-
-  if (updatedChat) {
-    setSelectedChat(updatedChat);
-  }
-
-}
+          }
 
         });
+
     };
 
     loadChats();
@@ -81,44 +88,49 @@ if (selectedChat) {
     return () =>
       clearInterval(interval);
 
-  }, [authorized]);
+  }, [authorized, selectedUser]);
 
   // AUTO SCROLL
   useEffect(() => {
 
     if (chatRef.current) {
+
       chatRef.current.scrollTop =
         chatRef.current.scrollHeight;
+
     }
 
-  }, [rows, selectedChat]);
+  }, [rows, selectedUser]);
 
-  // UNIQUE CONVERSATIONS
+  // UNIQUE USERS
   const uniqueChats = [];
 
   rows.forEach((chat) => {
 
-    const alreadyExists =
+    const exists =
       uniqueChats.find(
         (c) =>
           c.user_name ===
           chat.user_name
       );
 
-    if (!alreadyExists) {
+    if (!exists) {
+
       uniqueChats.push(chat);
+
     }
 
   });
 
-  // FULL CONVERSATION
-  const conversation = rows.filter(
-    (msg) =>
-      msg.user_name ===
-      selectedUser
-  );
+  // CONVERSATION
+  const conversation =
+    rows.filter(
+      (msg) =>
+        msg.user_name ===
+        selectedUser
+    );
 
-  // LOGIN SCREEN
+  // LOGIN PAGE
   if (!authorized) {
 
     return (
@@ -128,7 +140,9 @@ if (selectedChat) {
         <div className="bg-white/10 p-6 rounded-2xl w-full max-w-sm">
 
           <h1 className="text-2xl font-bold mb-4">
+
             Dashboard Login
+
           </h1>
 
           <input
@@ -147,12 +161,15 @@ if (selectedChat) {
             onClick={login}
             className="w-full bg-cyan-400 text-black font-bold py-3 rounded-xl"
           >
+
             Login
+
           </button>
 
         </div>
 
       </div>
+
     );
   }
 
@@ -162,7 +179,9 @@ if (selectedChat) {
     <div className="min-h-screen bg-slate-950 text-white p-4 md:p-6">
 
       <h1 className="text-3xl font-bold mb-6">
+
         Dashboard
+
       </h1>
 
       <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[85vh]">
@@ -171,71 +190,80 @@ if (selectedChat) {
         <div className="w-full md:w-[320px] h-[300px] md:h-auto bg-white/10 rounded-2xl p-4 overflow-y-auto flex-shrink-0">
 
           <h2 className="text-2xl font-bold mb-4">
+
             Conversations
+
           </h2>
 
           <div className="space-y-2">
 
-          {[...uniqueChats].reverse().map((chat) => {
+            {[...uniqueChats]
+              .reverse()
+              .map((chat) => {
 
-              const latestMessage =
-                rows
-                  .filter(
-                    (m) =>
-                      m.user_name ===
-                      chat.user_name
-                  )
-                  .slice(-1)[0];
-
-              return (
-
-                <button
-                  key={chat.user_name}
-                  onClick={() =>
-                    setSelectedUser(chat.user_name)
-                  }
-                  className={`w-full text-left p-4 rounded-2xl transition ${
-                    selectedChat?.user_name ===
-                    chat.user_name
-                      ? "bg-cyan-400 text-black"
-                      : "bg-white/5 hover:bg-white/10"
-                  }`}
-                >
-
-                  <div className="flex items-center justify-between">
-
-                    <h3 className="font-bold">
-
-                      {chat.user_name}
-
-                    </h3>
-
-                    {rows.some(
+                const latestMessage =
+                  rows
+                    .filter(
                       (m) =>
                         m.user_name ===
-                          chat.user_name &&
-                        m.message ===
-                          "HUMAN SUPPORT REQUEST"
-                    ) && (
+                        chat.user_name
+                    )
+                    .slice(-1)[0];
 
-                      <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
-                        HUMAN
-                      </span>
+                return (
 
-                    )}
+                  <button
+                    key={chat.user_name}
+                    onClick={() =>
+                      setSelectedUser(
+                        chat.user_name
+                      )
+                    }
+                    className={`w-full text-left p-4 rounded-2xl transition ${
+                      selectedUser ===
+                      chat.user_name
+                        ? "bg-cyan-400 text-black"
+                        : "bg-white/5 hover:bg-white/10"
+                    }`}
+                  >
 
-                  </div>
+                    <div className="flex items-center justify-between">
 
-                  <p className="text-sm opacity-70 truncate mt-1">
+                      <h3 className="font-bold">
 
-                    {latestMessage?.message}
+                        {chat.user_name}
 
-                  </p>
+                      </h3>
 
-                </button>
+                      {rows.some(
+                        (m) =>
+                          m.user_name ===
+                            chat.user_name &&
+                          m.message ===
+                            "HUMAN SUPPORT REQUEST"
+                      ) && (
 
-              );
-            })}
+                        <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+
+                          HUMAN
+
+                        </span>
+
+                      )}
+
+                    </div>
+
+                    <p className="text-sm opacity-70 truncate mt-1">
+
+                      {latestMessage?.message}
+
+                    </p>
+
+                  </button>
+
+                );
+
+              })}
 
           </div>
 
@@ -244,7 +272,7 @@ if (selectedChat) {
         {/* CHAT PANEL */}
         <div className="w-full flex-1 bg-white/10 rounded-2xl flex flex-col min-h-[70vh] overflow-hidden">
 
-          {selectedChat ? (
+          {selectedUser ? (
 
             <>
 
@@ -253,7 +281,7 @@ if (selectedChat) {
 
                 <h2 className="text-2xl font-bold">
 
-                  {selectedChat.user_name}
+                  {selectedUser}
 
                 </h2>
 
@@ -265,34 +293,34 @@ if (selectedChat) {
                 className="flex-1 overflow-y-auto p-4 space-y-4"
               >
 
-             {conversation.map((msg) => (
+                {conversation.map((msg) => (
 
-  <div
-    key={msg.id}
-    className={`flex ${
-      msg.sender === "user"
-        ? "justify-end"
-        : "justify-start"
-    }`}
-  >
+                  <div
+                    key={msg.id}
+                    className={`flex ${
+                      msg.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
 
-    <div
-      className={`px-4 py-3 rounded-2xl max-w-[75%] ${
-        msg.sender === "user"
-          ? "bg-cyan-400 text-black"
-          : msg.sender === "admin"
-          ? "bg-yellow-400 text-black"
-          : "bg-white/10"
-      }`}
-    >
+                    <div
+                      className={`px-4 py-3 rounded-2xl max-w-[75%] ${
+                        msg.sender === "user"
+                          ? "bg-cyan-400 text-black"
+                          : msg.sender === "admin"
+                          ? "bg-yellow-400 text-black"
+                          : "bg-white/10"
+                      }`}
+                    >
 
-      {msg.message}
+                      {msg.message}
 
-    </div>
+                    </div>
 
-  </div>
+                  </div>
 
-))}
+                ))}
 
               </div>
 
@@ -326,8 +354,9 @@ if (selectedChat) {
                         },
                         body: JSON.stringify({
                           user_name:
-                            selectedChat.user_name,
-                          reply: replyText
+                            selectedUser,
+                          reply:
+                            replyText
                         })
                       }
                     );
@@ -337,7 +366,9 @@ if (selectedChat) {
                   }}
                   className="bg-cyan-400 text-black px-6 rounded-xl font-bold"
                 >
+
                   Send
+
                 </button>
 
               </div>
@@ -359,5 +390,6 @@ if (selectedChat) {
       </div>
 
     </div>
+
   );
 }
