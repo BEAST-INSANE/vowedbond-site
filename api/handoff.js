@@ -3,8 +3,8 @@ export default async function handler(req, res) {
   try {
 
     const {
-      messages,
-      userName
+      userName,
+      conversationId
     } = req.body;
 
     await fetch(
@@ -12,17 +12,21 @@ export default async function handler(req, res) {
       {
         method: "POST",
         headers: {
-          apikey: process.env.SUPABASE_ANON_KEY,
+          apikey:
+            process.env.SUPABASE_ANON_KEY,
           Authorization:
             `Bearer ${process.env.SUPABASE_ANON_KEY}`,
           "Content-Type":
             "application/json",
         },
         body: JSON.stringify({
-          user_name: userName,
-          user_message:
-            "HUMAN SUPPORT REQUEST",
-          bot_reply: "Human support requested."
+          conversation_id:
+            conversationId,
+          user_name:
+            userName,
+          sender: "system",
+          message:
+            "HUMAN SUPPORT REQUEST"
         }),
       }
     );
@@ -38,4 +42,5 @@ export default async function handler(req, res) {
     });
 
   }
+
 }
