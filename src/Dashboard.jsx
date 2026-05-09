@@ -115,7 +115,7 @@ if (selectedChat) {
   const conversation = rows.filter(
     (msg) =>
       msg.user_name ===
-      selectedChat?.user_name
+      selectedUser
   );
 
   // LOGIN SCREEN
