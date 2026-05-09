@@ -61,7 +61,7 @@ if (selectedChat) {
   const updatedChat = data.find(
     (chat) =>
       chat.user_name ===
-      selectedChat.user_name
+      selectedUser
   );
 
   if (updatedChat) {
