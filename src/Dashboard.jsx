@@ -24,6 +24,9 @@ export default function Dashboard() {
   const [unreadCounts, setUnreadCounts] =
     useState({});
 
+  const [seenMessages, setSeenMessages] =
+  useState({});
+
   const chatRef = useRef(null);
 
   // LOGIN
