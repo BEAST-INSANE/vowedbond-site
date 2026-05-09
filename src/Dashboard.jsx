@@ -192,7 +192,7 @@ if (selectedChat) {
                 <button
                   key={chat.user_name}
                   onClick={() =>
-                    setSelectedChat(chat)
+                    setSelectedUser(chat.user_name)
                   }
                   className={`w-full text-left p-4 rounded-2xl transition ${
                     selectedChat?.user_name ===
