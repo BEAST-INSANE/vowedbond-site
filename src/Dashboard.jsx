@@ -90,28 +90,46 @@ export default function Dashboard() {
           }
 
           // UNREAD SYSTEM
-const unread = {};
+setUnreadCounts((prev) => {
 
-data.forEach((msg) => {
+  const updated = {
+    ...prev
+  };
 
-  if (
-    msg.sender === "user" &&
-    msg.conversation_id !==
-      selectedUser
-  ) {
+  const seen = {
+    ...seenMessages
+  };
 
-    unread[
-      msg.conversation_id
-    ] =
-      (unread[
-        msg.conversation_id
-      ] || 0) + 1;
+  data.forEach((msg) => {
 
-  }
+    if (
+      msg.sender === "user" &&
+      msg.conversation_id !==
+        selectedUser
+    ) {
+
+      if (!seen[msg.id]) {
+
+        updated[
+          msg.conversation_id
+        ] =
+          (updated[
+            msg.conversation_id
+          ] || 0) + 1;
+
+        seen[msg.id] = true;
+
+      }
+
+    }
+
+  });
+
+  setSeenMessages(seen);
+
+  return updated;
 
 });
-
-setUnreadCounts(unread);
 
         });
 
