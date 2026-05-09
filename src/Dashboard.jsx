@@ -87,71 +87,28 @@ export default function Dashboard() {
           }
 
           // UNREAD SYSTEM
-          setUnreadCounts((prev) => {
+const unread = {};
 
-            const updated = {
-              ...prev
-            };
+data.forEach((msg) => {
 
-            const grouped = {};
+  if (
+    msg.sender === "user" &&
+    msg.conversation_id !==
+      selectedUser
+  ) {
 
-            data.forEach((msg) => {
+    unread[
+      msg.conversation_id
+    ] =
+      (unread[
+        msg.conversation_id
+      ] || 0) + 1;
 
-              if (
-                !grouped[
-                  msg.conversation_id
-                ]
-              ) {
+  }
 
-                grouped[
-                  msg.conversation_id
-                ] = [];
+});
 
-              }
-
-              grouped[
-                msg.conversation_id
-              ].push(msg);
-
-            });
-
-            Object.keys(grouped).forEach(
-              (
-                conversationId
-              ) => {
-
-                const msgs =
-                  grouped[
-                    conversationId
-                  ];
-
-                const lastMsg =
-                  msgs[
-                    msgs.length - 1
-                  ];
-
-                if (
-                  lastMsg.sender ===
-                    "user" &&
-                  selectedUser !==
-                    conversationId
-                ) {
-
-                  updated[
-                    conversationId
-                  ] =
-                    (updated[
-                      conversationId
-                    ] || 0) + 1;
-
-                }
-
-              }
-            );
-
-            return updated;
-
-          });
+setUnreadCounts(unread);
 
         });
 
