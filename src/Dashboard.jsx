@@ -252,34 +252,34 @@ export default function Dashboard() {
                 className="flex-1 overflow-y-auto p-4 space-y-4"
               >
 
-                {conversation.map((msg) => (
+             {conversation.map((msg) => (
 
-                  <div
-                    key={msg.id}
-                    className={`flex ${
-                      msg.sender === "user"
-                        ? "justify-end"
-                        : "justify-start"
-                    }`}
-                  >
+  <div
+    key={msg.id}
+    className={`flex ${
+      msg.sender === "user"
+        ? "justify-end"
+        : "justify-start"
+    }`}
+  >
 
-                    <div
-                      className={`px-4 py-3 rounded-2xl max-w-[80%] break-words ${
-                        msg.sender === "user"
-                          ? "bg-cyan-400 text-black"
-                          : msg.sender === "admin"
-                          ? "bg-yellow-400 text-black"
-                          : "bg-white/10 text-white"
-                      }`}
-                    >
+    <div
+      className={`px-4 py-3 rounded-2xl max-w-[75%] ${
+        msg.sender === "user"
+          ? "bg-cyan-400 text-black"
+          : msg.sender === "admin"
+          ? "bg-yellow-400 text-black"
+          : "bg-white/10"
+      }`}
+    >
 
-                      {msg.message}
+      {msg.message}
 
-                    </div>
+    </div>
 
-                  </div>
+  </div>
 
-                ))}
+))}
 
               </div>
 
