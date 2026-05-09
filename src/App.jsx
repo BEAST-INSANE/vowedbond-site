@@ -1,22 +1,37 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect
+} from "react";
 
 export default function App() {
 
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] =
+    useState(false);
 
-  const [userName, setUserName] = useState("");
-  const [showNamePopup, setShowNamePopup] = useState(true);
-  const [tempName, setTempName] = useState("");
+  const [userName, setUserName] =
+    useState("");
 
-  const [messages, setMessages] = useState([
-    {
-      role: "bot",
-      text: "Hi! I'm Vowed Bond AI. How can I help?"
-    }
-  ]);
+  const [showNamePopup, setShowNamePopup] =
+    useState(true);
 
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [tempName, setTempName] =
+    useState("");
+
+  const [messages, setMessages] =
+    useState([
+      {
+        role: "bot",
+        text:
+          "Hi! I'm Vowed Bond AI. How can I help?"
+      }
+    ]);
+
+  const [input, setInput] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
 
   const [humanRequested, setHumanRequested] =
     useState(false);
@@ -26,161 +41,215 @@ export default function App() {
 
   const chatRef = useRef(null);
 
-  // Auto scroll
+  // UNIQUE CONVERSATION ID
+  const [conversationId] =
+    useState(() => {
+
+      let id =
+        localStorage.getItem(
+          "conversation_id"
+        );
+
+      if (!id) {
+
+        id =
+          "vb_" +
+          Math.random()
+            .toString(36)
+            .substring(2, 12);
+
+        localStorage.setItem(
+          "conversation_id",
+          id
+        );
+
+      }
+
+      return id;
+
+    });
+
+  // AUTO SCROLL
   useEffect(() => {
+
     if (chatRef.current) {
+
       chatRef.current.scrollTop =
         chatRef.current.scrollHeight;
+
     }
+
   }, [messages, loading]);
 
-  // Check admin replies
+  // CHECK ADMIN REPLIES
   useEffect(() => {
 
     if (!userName) return;
 
-    const interval = setInterval(async () => {
+    const interval =
+      setInterval(async () => {
+
+        try {
+
+          const res =
+            await fetch(
+              `/api/getReply?conversationId=${conversationId}`
+            );
+
+          const data =
+            await res.json();
+
+          if (
+            data.admin_reply &&
+            data.admin_reply !==
+              lastAdminReply
+          ) {
+
+            setLastAdminReply(
+              data.admin_reply
+            );
+
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "bot",
+                text:
+                  data.admin_reply
+              }
+            ]);
+
+          }
+
+        } catch (err) {
+
+          console.log(err);
+
+        }
+
+      }, 3000);
+
+    return () =>
+      clearInterval(interval);
+
+  }, [
+    userName,
+    lastAdminReply,
+    conversationId
+  ]);
+
+  // SEND MESSAGE
+  const sendMessage =
+    async () => {
+
+      if (!input.trim())
+        return;
+
+      const userMsg = {
+        role: "user",
+        text: input
+      };
+
+      setMessages((prev) => [
+        ...prev,
+        userMsg
+      ]);
+
+      const current = input;
+
+      setInput("");
+
+      // HUMAN SUPPORT MODE
+      if (humanRequested) {
+
+        await fetch(
+          "/api/chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              message: current,
+              userName,
+              conversationId
+            })
+          }
+        );
+
+        return;
+
+      }
+
+      setLoading(true);
 
       try {
 
-console.log("USERNAME:", userName);
-console.log("MESSAGE:", current);
-
-const res = await fetch("/api/chat", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    message: current,
-    userName: String(userName)
-  })
-});
-
-        const data = await res.json();
-
-        if (
-          data.admin_reply &&
-          data.admin_reply !== lastAdminReply
-        ) {
-
-          setLastAdminReply(data.admin_reply);
-
-          setMessages((prev) => [
-            ...prev,
+        const res =
+          await fetch(
+            "/api/chat",
             {
-              role: "bot",
-              text: data.admin_reply
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                message: current,
+                userName,
+                conversationId
+              })
             }
-          ]);
+          );
 
-        }
+        const data =
+          await res.json();
 
-      } catch (err) {
-        console.log(err);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "bot",
+            text:
+              data.reply ||
+              "No response."
+          }
+        ]);
+
+      } catch {
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "bot",
+            text:
+              "Error contacting AI."
+          }
+        ]);
+
       }
 
-    }, 3000);
+      setLoading(false);
 
-    return () => clearInterval(interval);
-
-  }, [userName, lastAdminReply]);
-
-  // Send message
-  const sendMessage = async () => {
-
-    if (!input.trim()) return;
-
-    const userMsg = {
-      role: "user",
-      text: input
     };
 
-    setMessages((prev) => [
-      ...prev,
-      userMsg
-    ]);
-
-    const current = input;
-
-    setInput("");
-
-    // HUMAN SUPPORT MODE
-    if (humanRequested) {
-
-      await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: current,
-          userName
-        })
-      });
-
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-  message: current,
-  userName: String(userName)
-})
-      });
-
-      const data = await res.json();
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          text:
-            data.reply ||
-            data.choices?.[0]?.message?.content ||
-            data.error?.message ||
-            "No response."
-        }
-      ]);
-
-    } catch {
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          text: "Error contacting AI."
-        }
-      ]);
-
-    }
-
-    setLoading(false);
-  };
-
-  // Glow card
+  // GLOW CARD
   const GlowCard = ({
     title,
     text,
-    color = "34,211,238",
+    color =
+      "34,211,238",
     titleClass = "",
     textClass = ""
   }) => {
 
-    const [pos, setPos] = useState({
-      x: 50,
-      y: 50
-    });
+    const [pos, setPos] =
+      useState({
+        x: 50,
+        y: 50
+      });
 
     return (
+
       <div
         onMouseMove={(e) => {
 
@@ -188,8 +257,12 @@ const res = await fetch("/api/chat", {
             e.currentTarget.getBoundingClientRect();
 
           setPos({
-            x: e.clientX - r.left,
-            y: e.clientY - r.top
+            x:
+              e.clientX -
+              r.left,
+            y:
+              e.clientY -
+              r.top
           });
 
         }}
@@ -209,20 +282,29 @@ const res = await fetch("/api/chat", {
           <h2
             className={`font-semibold ${titleClass}`}
           >
+
             {title}
+
           </h2>
 
           <p className={textClass}>
+
             {text}
+
           </p>
 
         </div>
 
       </div>
+
     );
+
   };
 
-  const TraceCard = (props) => (
+  const TraceCard = (
+    props
+  ) => (
+
     <div className="group rounded-3xl overflow-hidden relative">
 
       <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
@@ -234,12 +316,14 @@ const res = await fetch("/api/chat", {
       <GlowCard {...props} />
 
     </div>
+
   );
 
   return (
+
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
 
-      {/* Logo */}
+      {/* LOGO */}
       <div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
 
         <img
@@ -251,10 +335,12 @@ const res = await fetch("/api/chat", {
       </div>
 
       <p className="text-slate-300 text-lg max-w-2xl mb-4">
+
         Professional AI chatbots for business websites.
+
       </p>
 
-      {/* Cards */}
+      {/* CARDS */}
       <section className="grid gap-4 md:grid-cols-3">
 
         <TraceCard
@@ -274,7 +360,7 @@ const res = await fetch("/api/chat", {
 
       </section>
 
-      {/* Founders */}
+      {/* FOUNDERS */}
       <div className="mt-8 rounded-3xl border border-yellow-300 shadow-[0_0_10px_rgba(253,224,71,0.8)]">
 
         <GlowCard
@@ -287,7 +373,7 @@ const res = await fetch("/api/chat", {
 
       </div>
 
-      {/* Demo */}
+      {/* DEMO */}
       <div className="mt-10">
 
         <GlowCard
@@ -299,15 +385,21 @@ const res = await fetch("/api/chat", {
 
       </div>
 
-      {/* Chat Button */}
+      {/* CHAT BUTTON */}
       <button
-        onClick={() => setChatOpen(!chatOpen)}
+        onClick={() =>
+          setChatOpen(
+            !chatOpen
+          )
+        }
         className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
       >
+
         Chat
+
       </button>
 
-      {/* Chat Popup */}
+      {/* CHAT POPUP */}
       {chatOpen && (
 
         <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
@@ -319,11 +411,15 @@ const res = await fetch("/api/chat", {
               <div>
 
                 <h2 className="text-xl font-bold">
+
                   Before we begin
+
                 </h2>
 
                 <p className="text-sm text-slate-300 mt-1">
+
                   Please enter your name to continue.
+
                 </p>
 
               </div>
@@ -332,7 +428,9 @@ const res = await fetch("/api/chat", {
                 maxLength={20}
                 value={tempName}
                 onChange={(e) =>
-                  setTempName(e.target.value)
+                  setTempName(
+                    e.target.value
+                  )
                 }
                 placeholder="Your name"
                 className="px-4 py-3 rounded-xl bg-white/10 text-white outline-none"
@@ -349,29 +447,53 @@ const res = await fetch("/api/chat", {
                       cleaned
                     )
                   ) {
+
                     alert(
                       "Name should contain only alphabets."
                     );
+
                     return;
+
                   }
 
-                  if (cleaned.length < 2) {
-                    alert("Name is too short.");
+                  if (
+                    cleaned.length <
+                    2
+                  ) {
+
+                    alert(
+                      "Name is too short."
+                    );
+
                     return;
+
                   }
 
-                  if (cleaned.length > 20) {
-                    alert("Name is too long.");
+                  if (
+                    cleaned.length >
+                    20
+                  ) {
+
+                    alert(
+                      "Name is too long."
+                    );
+
                     return;
+
                   }
 
-                  setUserName(cleaned);
+                  setUserName(
+                    cleaned
+                  );
 
-                  setShowNamePopup(false);
+                  setShowNamePopup(
+                    false
+                  );
 
                   setMessages([
                     {
-                      role: "bot",
+                      role:
+                        "bot",
                       text:
                         `Nice to meet you, ${cleaned}. How can I help you today?`
                     }
@@ -380,7 +502,9 @@ const res = await fetch("/api/chat", {
                 }}
                 className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
               >
+
                 Continue
+
               </button>
 
             </div>
@@ -388,122 +512,169 @@ const res = await fetch("/api/chat", {
           ) : (
 
             <>
-              {/* Header */}
+
+              {/* HEADER */}
               <div className="p-3 font-bold border-b border-white/10 flex justify-between items-center">
 
                 <span>
+
                   Vowed Bond AI
+
                 </span>
 
                 <button
                   onClick={() =>
-                    setChatOpen(false)
+                    setChatOpen(
+                      false
+                    )
                   }
                   className="text-white text-xl"
                 >
+
                   ×
+
                 </button>
 
               </div>
 
-              {/* Messages */}
+              {/* MESSAGES */}
               <div
                 ref={chatRef}
                 className="h-[55vh] sm:h-80 overflow-y-auto p-3 space-y-2"
               >
 
-                {messages.map((msg, i) => (
+                {messages.map(
+                  (
+                    msg,
+                    i
+                  ) => (
 
-                  <div
-                    key={i}
-                    className={`p-2 rounded-xl max-w-[85%] ${
-                      msg.role === "user"
-                        ? "ml-auto bg-cyan-400 text-black"
-                        : "bg-white/10 text-white"
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
+                    <div
+                      key={i}
+                      className={`p-2 rounded-xl max-w-[85%] ${
+                        msg.role ===
+                        "user"
+                          ? "ml-auto bg-cyan-400 text-black"
+                          : "bg-white/10 text-white"
+                      }`}
+                    >
 
-                ))}
+                      {msg.text}
+
+                    </div>
+
+                  )
+                )}
 
                 {loading && (
+
                   <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
+
                     Typing...
+
                   </div>
+
                 )}
 
               </div>
 
-              {/* Input Row */}
+              {/* INPUT */}
               <div className="p-3 border-t border-white/10 flex gap-2 items-center">
 
                 <input
                   value={input}
                   onChange={(e) =>
-                    setInput(e.target.value)
+                    setInput(
+                      e.target.value
+                    )
                   }
                   placeholder="Type a message..."
                   className="w-full sm:flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
                 />
 
                 <button
-                  onClick={sendMessage}
+                  onClick={
+                    sendMessage
+                  }
                   className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
                 >
+
                   Send
+
                 </button>
 
                 <button
                   onClick={async () => {
 
-                    if (humanRequested)
+                    if (
+                      humanRequested
+                    )
                       return;
 
-                    setHumanRequested(true);
+                    setHumanRequested(
+                      true
+                    );
 
                     await fetch(
                       "/api/handoff",
                       {
-                        method: "POST",
-                        headers: {
-                          "Content-Type":
-                            "application/json"
-                        },
-                        body: JSON.stringify({
-                          messages,
-                          userName
-                        })
+                        method:
+                          "POST",
+                        headers:
+                          {
+                            "Content-Type":
+                              "application/json"
+                          },
+                        body:
+                          JSON.stringify(
+                            {
+                              messages,
+                              userName,
+                              conversationId
+                            }
+                          )
                       }
                     );
 
-                    setMessages((prev) => [
-                      ...prev,
-                      {
-                        role: "bot",
-                        text:
-                          "A human support member has been notified."
-                      }
-                    ]);
+                    setMessages(
+                      (
+                        prev
+                      ) => [
+                        ...prev,
+                        {
+                          role:
+                            "bot",
+                          text:
+                            "A human support member has been notified."
+                        }
+                      ]
+                    );
 
                   }}
-                  disabled={humanRequested}
+                  disabled={
+                    humanRequested
+                  }
                   className={`px-4 py-2 rounded-xl font-bold ${
                     humanRequested
                       ? "bg-gray-400 text-black cursor-not-allowed"
                       : "bg-yellow-400 text-black"
                   }`}
                 >
+
                   {humanRequested
                     ? "Requested ✔️"
                     : "Human"}
+
                 </button>
 
               </div>
+
             </>
+
           )}
 
         </div>
+
       )}
 
       <style>{`
@@ -517,30 +688,6 @@ const res = await fetch("/api/chat", {
       `}</style>
 
     </div>
+
   );
 }
-const [conversationId] = useState(() => {
-
-  let id =
-    localStorage.getItem(
-      "conversation_id"
-    );
-
-  if (!id) {
-
-    id =
-      "vb_" +
-      Math.random()
-        .toString(36)
-        .substring(2, 12);
-
-    localStorage.setItem(
-      "conversation_id",
-      id
-    );
-
-  }
-
-  return id;
-
-});
