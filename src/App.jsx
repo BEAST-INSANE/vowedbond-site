@@ -122,9 +122,9 @@ export default function App() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          message: current,
-          userName
-        })
+  message: current,
+  userName: String(userName)
+})
       });
 
       const data = await res.json();
