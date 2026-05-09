@@ -21,6 +21,9 @@ export default function Dashboard() {
   const [replyText, setReplyText] =
     useState("");
 
+  const [unreadCounts, setUnreadCounts] =
+    useState({});
+
   const chatRef = useRef(null);
 
   // LOGIN
@@ -70,6 +73,7 @@ export default function Dashboard() {
 
           setRows(data);
 
+          // AUTO SELECT FIRST CHAT
           if (
             !selectedUser &&
             data.length > 0
@@ -81,6 +85,73 @@ export default function Dashboard() {
             );
 
           }
+
+          // UNREAD SYSTEM
+          setUnreadCounts((prev) => {
+
+            const updated = {
+              ...prev
+            };
+
+            const grouped = {};
+
+            data.forEach((msg) => {
+
+              if (
+                !grouped[
+                  msg.conversation_id
+                ]
+              ) {
+
+                grouped[
+                  msg.conversation_id
+                ] = [];
+
+              }
+
+              grouped[
+                msg.conversation_id
+              ].push(msg);
+
+            });
+
+            Object.keys(grouped).forEach(
+              (
+                conversationId
+              ) => {
+
+                const msgs =
+                  grouped[
+                    conversationId
+                  ];
+
+                const lastMsg =
+                  msgs[
+                    msgs.length - 1
+                  ];
+
+                if (
+                  lastMsg.sender ===
+                    "user" &&
+                  selectedUser !==
+                    conversationId
+                ) {
+
+                  updated[
+                    conversationId
+                  ] =
+                    (updated[
+                      conversationId
+                    ] || 0) + 1;
+
+                }
+
+              }
+            );
+
+            return updated;
+
+          });
 
         });
 
@@ -235,11 +306,18 @@ export default function Dashboard() {
                     key={
                       chat.conversation_id
                     }
-                    onClick={() =>
+                    onClick={() => {
+
                       setSelectedUser(
                         chat.conversation_id
-                      )
-                    }
+                      );
+
+                      setUnreadCounts((prev) => ({
+                        ...prev,
+                        [chat.conversation_id]: 0
+                      }));
+
+                    }}
                     className={`w-full text-left p-4 rounded-2xl transition ${
                       selectedUser ===
                       chat.conversation_id
@@ -250,11 +328,31 @@ export default function Dashboard() {
 
                     <div className="flex items-center justify-between">
 
-                      <h3 className="font-bold">
+                      <div className="flex items-center gap-2">
 
-                        {chat.user_name}
+                        <h3 className="font-bold">
 
-                      </h3>
+                          {chat.user_name}
+
+                        </h3>
+
+                        {unreadCounts[
+                          chat.conversation_id
+                        ] > 0 && (
+
+                          <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full min-w-[24px] text-center">
+
+                            {
+                              unreadCounts[
+                                chat.conversation_id
+                              ]
+                            }
+
+                          </span>
+
+                        )}
+
+                      </div>
 
                       {rows.some(
                         (m) =>
