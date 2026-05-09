@@ -13,6 +13,7 @@ export default async function handler(req, res) {
       userName
     } = req.body;
 
+
     // SAVE USER MESSAGE
     await fetch(
       `${process.env.SUPABASE_URL}/rest/v1/chats`,
