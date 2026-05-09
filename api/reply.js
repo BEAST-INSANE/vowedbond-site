@@ -1,15 +1,17 @@
 export default async function handler(req, res) {
 
   if (req.method !== "POST") {
+
     return res.status(405).json({
       error: "Method not allowed"
     });
+
   }
 
   try {
 
     const {
-      user_name,
+      conversation_id,
       reply
     } = req.body;
 
@@ -25,10 +27,9 @@ export default async function handler(req, res) {
             `Bearer ${process.env.SUPABASE_ANON_KEY}`,
           "Content-Type":
             "application/json",
-          Prefer: "return=minimal"
         },
         body: JSON.stringify({
-          user_name,
+          conversation_id,
           sender: "admin",
           message: reply
         })
@@ -46,4 +47,5 @@ export default async function handler(req, res) {
     });
 
   }
+
 }
