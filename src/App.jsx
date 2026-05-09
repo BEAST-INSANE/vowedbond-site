@@ -82,125 +82,43 @@ export default function App() {
   }, [messages, loading]);
 
   // CHECK ADMIN REPLIES
-useEffect(() => {
+  useEffect(() => {
 
-  if (!conversationId)
-    return;
+    if (!conversationId)
+      return;
 
-  const interval =
-    setInterval(async () => {
+    const interval =
+      setInterval(async () => {
 
-      try {
+        try {
 
-        const res =
-          await fetch(
-            `/api/getReply?conversationId=${conversationId}`
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.message &&
-          data.message !==
-            lastAdminReply
-        ) {
-
-          setLastAdminReply(
-            data.message
-          );
-
-          setMessages((prev) => [
-
-            ...prev,
-
-            {
-              role: "bot",
-              text: data.message
-            }
-
-          ]);
-
-        }
-
-      } catch (err) {
-
-        console.log(err);
-
-      }
-
-    }, 2000);
-
-  return () =>
-    clearInterval(interval);
-
-}, [
-  conversationId,
-  lastAdminReply
-]);
-
-        const data =
-          await res.json();
-
-        if (
-          data.message &&
-          data.message !==
-            lastAdminReply
-        ) {
-
-          setLastAdminReply(
-            data.message
-          );
-
-          setMessages((prev) => [
-
-            ...prev,
-
-            {
-              role: "bot",
-              text: data.message
-            }
-
-          ]);
-
-        }
-
-      } catch (err) {
-
-        console.log(err);
-
-      }
-
-    }, 2000);
-
-  return () =>
-    clearInterval(interval);
-
-}, [
-  conversationId,
-  lastAdminReply
-]);
+          const res =
+            await fetch(
+              `/api/getReply?conversationId=${conversationId}`
+            );
 
           const data =
             await res.json();
 
           if (
-            data.admin_reply &&
-            data.admin_reply !==
+            data.message &&
+            data.message !==
               lastAdminReply
           ) {
 
             setLastAdminReply(
-              data.admin_reply
+              data.message
             );
 
             setMessages((prev) => [
+
               ...prev,
+
               {
                 role: "bot",
-                text:
-                  data.admin_reply
+                text: data.message
               }
+
             ]);
 
           }
@@ -211,17 +129,15 @@ useEffect(() => {
 
         }
 
-      }, 3000);
+      }, 2000);
 
     return () =>
       clearInterval(interval);
 
   }, [
-    userName,
-    lastAdminReply,
-    conversationId
+    conversationId,
+    lastAdminReply
   ]);
-
   // SEND MESSAGE
   const sendMessage =
     async () => {
