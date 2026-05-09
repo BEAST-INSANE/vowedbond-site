@@ -8,35 +8,65 @@ export default async function handler(req, res) {
     } = req.body;
 
     // SAVE USER MESSAGE
-    const saveRes = await fetch(
-  `${process.env.SUPABASE_URL}/rest/v1/chats`,
-  {
-    method: "POST",
-    headers: {
-      apikey:
-        process.env.SUPABASE_ANON_KEY,
-      Authorization:
-        `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-      "Content-Type":
-        "application/json",
-      Prefer: "return=representation"
-    },
-    body: JSON.stringify({
-      user_name: userName,
-      sender: "user",
-      message
-    })
-  }
-);
+    await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/chats`,
+      {
+        method: "POST",
+        headers: {
+          apikey:
+            process.env.SUPABASE_ANON_KEY,
+          Authorization:
+            `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          user_name: userName,
+          sender: "user",
+          message
+        })
+      }
+    );
 
-const saveData =
-  await saveRes.text();
+    // AI RESPONSE
+    const aiRes = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type":
+            "application/json",
+          "HTTP-Referer":
+            "https://vowedbond.vercel.app",
+          "X-Title":
+            "Vowed Bond"
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are Vowed Bond AI."
+            },
+            {
+              role: "user",
+              content: message
+            }
+          ]
+        })
+      }
+    );
 
-console.log(saveData);
+    const aiData =
+      await aiRes.json();
 
-    // FAKE AI REPLY
     const reply =
-      "Test AI reply working.";
+      aiData.choices?.[0]?.message
+        ?.content ||
+      "No response.";
 
     // SAVE AI MESSAGE
     await fetch(
