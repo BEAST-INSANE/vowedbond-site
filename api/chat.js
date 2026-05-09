@@ -34,6 +34,10 @@ export default async function handler(req, res) {
         })
       }
     );
+.then(async (r) => {
+  const text = await r.text();
+  console.log(text);
+});
 
     // ASK AI
     const aiRes = await fetch(
