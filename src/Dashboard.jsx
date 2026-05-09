@@ -5,8 +5,8 @@ export default function Dashboard() {
   const [rows, setRows] = useState([]);
   const [authorized, setAuthorized] = useState(false);
   const [password, setPassword] = useState("");
-  const [selectedChat, setSelectedChat] =
-    useState(null);
+  const [selectedUser, setSelectedUser] =
+  useState(null);
 
   const [replyText, setReplyText] =
     useState("");
