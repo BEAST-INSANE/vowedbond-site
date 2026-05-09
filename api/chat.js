@@ -33,8 +33,7 @@ export default async function handler(req, res) {
           message
         })
       }
-    );
-.then(async (r) => {
+    );.then(async (r) => {
   const text = await r.text();
   console.log(text);
 });
