@@ -43,31 +43,16 @@ export default function App() {
 
   // UNIQUE CONVERSATION ID
   const [conversationId] =
-    useState(() => {
+  useState(() => {
 
-      let id =
-        localStorage.getItem(
-          "conversation_id"
-        );
+    return (
+      "vb_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 12)
+    );
 
-      if (!id) {
-
-        id =
-          "vb_" +
-          Math.random()
-            .toString(36)
-            .substring(2, 12);
-
-        localStorage.setItem(
-          "conversation_id",
-          id
-        );
-
-      }
-
-      return id;
-
-    });
+  });
 
   // AUTO SCROLL
   useEffect(() => {
