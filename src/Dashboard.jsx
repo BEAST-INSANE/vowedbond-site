@@ -50,12 +50,25 @@ export default function Dashboard() {
           setRows(data);
 
           // auto select first user
-          if (
-            data.length > 0 &&
-            !selectedChat
-          ) {
-            setSelectedChat(data[0]);
-          }
+          if (!selectedChat && data.length > 0) {
+
+  setSelectedChat(data[0]);
+
+}
+
+if (selectedChat) {
+
+  const updatedChat = data.find(
+    (chat) =>
+      chat.user_name ===
+      selectedChat.user_name
+  );
+
+  if (updatedChat) {
+    setSelectedChat(updatedChat);
+  }
+
+}
 
         });
     };
