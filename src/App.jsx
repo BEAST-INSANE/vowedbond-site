@@ -82,7 +82,7 @@ export default function App() {
   }, [messages, loading]);
 
   // CHECK ADMIN REPLIES
-  useEffect(() => {
+useEffect(() => {
 
   if (!conversationId)
     return;
@@ -96,6 +96,48 @@ export default function App() {
           await fetch(
             `/api/getReply?conversationId=${conversationId}`
           );
+
+        const data =
+          await res.json();
+
+        if (
+          data.message &&
+          data.message !==
+            lastAdminReply
+        ) {
+
+          setLastAdminReply(
+            data.message
+          );
+
+          setMessages((prev) => [
+
+            ...prev,
+
+            {
+              role: "bot",
+              text: data.message
+            }
+
+          ]);
+
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    }, 2000);
+
+  return () =>
+    clearInterval(interval);
+
+}, [
+  conversationId,
+  lastAdminReply
+]);
 
         const data =
           await res.json();
