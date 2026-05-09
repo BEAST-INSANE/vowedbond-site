@@ -147,6 +147,7 @@ IMPORTANT RULES:
 
   } catch (error) {
 
+  console.log("CHAT API ERROR:");
   console.log(error);
 
   return res.status(500).json({
