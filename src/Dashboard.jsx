@@ -99,7 +99,8 @@ export default function Dashboard() {
   });
 
   // FULL CONVERSATION
-  const conversation = rows.filter(.reverse()
+  const conversation = rows.filter(
+.reverse()
     (msg) =>
       msg.user_name ===
       selectedChat?.user_name
