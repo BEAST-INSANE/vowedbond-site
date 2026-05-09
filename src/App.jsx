@@ -519,3 +519,28 @@ const res = await fetch("/api/chat", {
     </div>
   );
 }
+const [conversationId] = useState(() => {
+
+  let id =
+    localStorage.getItem(
+      "conversation_id"
+    );
+
+  if (!id) {
+
+    id =
+      "vb_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 12);
+
+    localStorage.setItem(
+      "conversation_id",
+      id
+    );
+
+  }
+
+  return id;
+
+});
