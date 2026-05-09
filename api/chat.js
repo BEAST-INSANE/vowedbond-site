@@ -8,25 +8,31 @@ export default async function handler(req, res) {
     } = req.body;
 
     // SAVE USER MESSAGE
-    await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/chats`,
-      {
-        method: "POST",
-        headers: {
-          apikey:
-            process.env.SUPABASE_ANON_KEY,
-          Authorization:
-            `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-          "Content-Type":
-            "application/json",
-        },
-        body: JSON.stringify({
-          user_name: userName,
-          sender: "user",
-          message
-        })
-      }
-    );
+    const saveRes = await fetch(
+  `${process.env.SUPABASE_URL}/rest/v1/chats`,
+  {
+    method: "POST",
+    headers: {
+      apikey:
+        process.env.SUPABASE_ANON_KEY,
+      Authorization:
+        `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+      "Content-Type":
+        "application/json",
+      Prefer: "return=representation"
+    },
+    body: JSON.stringify({
+      user_name: userName,
+      sender: "user",
+      message
+    })
+  }
+);
+
+const saveData =
+  await saveRes.text();
+
+console.log(saveData);
 
     // FAKE AI REPLY
     const reply =
