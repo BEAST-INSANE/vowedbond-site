@@ -291,9 +291,32 @@ setUnreadCounts((prev) => {
                       );
 
                       setUnreadCounts((prev) => ({
-                        ...prev,
-                        [chat.conversation_id]: 0
-                      }));
+  ...prev,
+  [chat.conversation_id]: 0
+}));
+
+setSeenMessages((prev) => {
+
+  const updated = {
+    ...prev
+  };
+
+  rows.forEach((msg) => {
+
+    if (
+      msg.conversation_id ===
+      chat.conversation_id
+    ) {
+
+      updated[msg.id] = true;
+
+    }
+
+  });
+
+  return updated;
+
+});
 
                     }}
                     className={`w-full text-left p-4 rounded-2xl transition ${
