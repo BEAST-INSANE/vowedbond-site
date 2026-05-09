@@ -42,7 +42,10 @@ export default function App() {
     const interval = setInterval(async () => {
 
       try {
+console.log("USERNAME:", userName);
+console.log("MESSAGE:", current);
 
+const res = await fetch("/api/chat", {
         const res = await fetch(
           `/api/getReply?userName=${userName}`
         );
