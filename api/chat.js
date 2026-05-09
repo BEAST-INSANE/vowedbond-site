@@ -4,7 +4,8 @@ export default async function handler(req, res) {
 
     const {
       message,
-      userName
+      userName,
+      conversationId
     } = req.body;
 
     // SAVE USER MESSAGE
@@ -21,7 +22,10 @@ export default async function handler(req, res) {
             "application/json",
         },
         body: JSON.stringify({
-          user_name: userName,
+          conversation_id:
+            conversationId,
+          user_name:
+            userName,
           sender: "user",
           message
         })
@@ -44,7 +48,8 @@ export default async function handler(req, res) {
             "Vowed Bond"
         },
         body: JSON.stringify({
-          model: "openai/gpt-4o-mini",
+          model:
+            "openai/gpt-4o-mini",
           messages: [
             {
               role: "system",
@@ -82,7 +87,10 @@ export default async function handler(req, res) {
             "application/json",
         },
         body: JSON.stringify({
-          user_name: userName,
+          conversation_id:
+            conversationId,
+          user_name:
+            userName,
           sender: "ai",
           message: reply
         })
@@ -102,4 +110,5 @@ export default async function handler(req, res) {
     });
 
   }
+
 }
