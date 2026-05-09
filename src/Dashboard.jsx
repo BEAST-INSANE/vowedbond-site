@@ -103,8 +103,7 @@ export default function Dashboard() {
     (msg) =>
       msg.user_name ===
       selectedChat?.user_name
-  )
-.reverse();
+  );
 
   // LOGIN SCREEN
   if (!authorized) {
@@ -164,7 +163,7 @@ export default function Dashboard() {
 
           <div className="space-y-2">
 
-            {uniqueChats.map((chat) => {
+          {[...uniqueChats].reverse().map((chat) => {
 
               const latestMessage =
                 rows
