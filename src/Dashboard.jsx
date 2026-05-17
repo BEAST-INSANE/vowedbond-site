@@ -190,11 +190,22 @@ setUnreadCounts((prev) => {
   });
 
   // FULL CONVERSATION
-  const conversation =
-    rows.filter(
+const conversation =
+  rows
+    .filter(
       (msg) =>
         msg.conversation_id ===
-        selectedUser
+          selectedUser &&
+        msg.sender
+    )
+    .sort(
+      (a, b) =>
+        new Date(
+          a.created_at
+        ) -
+        new Date(
+          b.created_at
+        )
     );
 
   // LOGIN PAGE
