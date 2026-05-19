@@ -87,7 +87,7 @@ export default function Dashboard() {
 
           setRows(data);
 
-          // AUTO SELECT FIRST CHAT
+      // AUTO SELECT FIRST CHAT
           if (
             !selectedUser &&
             data.length > 0
@@ -100,7 +100,7 @@ export default function Dashboard() {
 
           }
 
-          // UNREAD SYSTEM
+     // UNREAD SYSTEM
 setUnreadCounts((prev) => {
 
   const updated = {
@@ -112,7 +112,10 @@ setUnreadCounts((prev) => {
     "unreadCounts",
     JSON.stringify(updated)
   );
-
+localStorage.setItem(
+  "unreadCounts",
+  JSON.stringify(updated)
+);
   return updated;
 
 });
