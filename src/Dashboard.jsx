@@ -192,12 +192,16 @@ setUnreadCounts((prev) => {
   // FULL CONVERSATION
 const conversation =
   rows
-    .filter(
-      (msg) =>
+    .filter((msg) => {
+
+      return (
         msg.conversation_id ===
           selectedUser &&
-        msg.sender
-    )
+        msg.sender &&
+        msg.message
+      );
+
+    })
     .sort(
       (a, b) =>
         new Date(
