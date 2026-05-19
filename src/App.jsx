@@ -372,7 +372,7 @@ export default function App() {
       </div>
 
       {/* CHAT BUTTON */}
-      <button
+   <button
   onClick={() =>
     setChatOpen(
       !chatOpen
@@ -384,7 +384,7 @@ export default function App() {
   <img
     src="/chatbot-logo.png"
     alt="Chat"
-    className="w-16 h-16 object-contain"
+    className="w-24 h-24 scale-[2.2] object-contain"
   />
 
 </button>
