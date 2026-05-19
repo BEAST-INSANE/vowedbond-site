@@ -502,11 +502,19 @@ export default function App() {
               {/* HEADER */}
               <div className="p-3 font-bold border-b border-white/10 flex justify-between items-center">
 
-                <span>
+                <div className="flex items-center gap-2">
 
-                  Vowed Bond AI
+  <img
+    src="/chatbot-logo.png"
+    alt="Chatbot Logo"
+    className="w-8 h-8 rounded-full"
+  />
 
-                </span>
+  <span>
+    Vowed Bond AI
+  </span>
+
+</div>
 
                 <button
                   onClick={() =>
