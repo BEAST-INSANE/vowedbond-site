@@ -22,7 +22,18 @@ export default function Dashboard() {
     useState("");
 
   const [unreadCounts, setUnreadCounts] =
-    useState({});
+  useState(() => {
+
+    const saved =
+      localStorage.getItem(
+        "unreadCounts"
+      );
+
+    return saved
+      ? JSON.parse(saved)
+      : {};
+
+  });
 
   const [seenMessages, setSeenMessages] =
   useState({});
