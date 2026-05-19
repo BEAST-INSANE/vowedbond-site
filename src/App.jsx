@@ -381,7 +381,11 @@ export default function App() {
         className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
       >
 
-        Chat
+        <img
+  src="/chatbot-logo.png"
+  alt="Chat"
+  className="w-8 h-8"
+/>
 
       </button>
 
