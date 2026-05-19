@@ -22,21 +22,32 @@ export default function Dashboard() {
     useState("");
 
   const [unreadCounts, setUnreadCounts] =
-  useState(() => {
+    useState(() => {
 
-    const saved =
-      localStorage.getItem(
-        "unreadCounts"
-      );
+      const saved =
+        localStorage.getItem(
+          "unreadCounts"
+        );
 
-    return saved
-      ? JSON.parse(saved)
-      : {};
+      return saved
+        ? JSON.parse(saved)
+        : {};
 
-  });
+    });
 
   const [seenMessages, setSeenMessages] =
-  useState({});
+    useState(() => {
+
+      const saved =
+        localStorage.getItem(
+          "seenMessages"
+        );
+
+      return saved
+        ? JSON.parse(saved)
+        : {};
+
+    });
 
   const chatRef = useRef(null);
 
@@ -87,7 +98,7 @@ export default function Dashboard() {
 
           setRows(data);
 
-      // AUTO SELECT FIRST CHAT
+          // AUTO SELECT FIRST CHAT
           if (
             !selectedUser &&
             data.length > 0
@@ -100,60 +111,67 @@ export default function Dashboard() {
 
           }
 
-     // UNREAD SYSTEM
-setUnreadCounts((prev) => {
+          // UNREAD SYSTEM
+          setUnreadCounts((prev) => {
 
-  const updated = {
-    ...prev,
-    [chat.conversation_id]: 0
-  };
+            const updated = {
+              ...prev
+            };
 
-  localStorage.setItem(
-    "unreadCounts",
-    JSON.stringify(updated)
-  );
-localStorage.setItem(
-  "unreadCounts",
-  JSON.stringify(updated)
-);
-  return updated;
+            const seen = {
+              ...seenMessages
+            };
 
-});
+            data.forEach((msg) => {
 
-  const seen = {
-    ...seenMessages
-  };
+              if (
+                msg.sender ===
+                  "user" &&
+                msg.conversation_id !==
+                  selectedUser
+              ) {
 
-  data.forEach((msg) => {
+                if (
+                  !seen[msg.id]
+                ) {
 
-    if (
-      msg.sender === "user" &&
-      msg.conversation_id !==
-        selectedUser
-    ) {
+                  updated[
+                    msg.conversation_id
+                  ] =
+                    (updated[
+                      msg.conversation_id
+                    ] || 0) + 1;
 
-      if (!seen[msg.id]) {
+                  seen[msg.id] =
+                    true;
 
-        updated[
-          msg.conversation_id
-        ] =
-          (updated[
-            msg.conversation_id
-          ] || 0) + 1;
+                }
 
-        seen[msg.id] = true;
+              }
 
-      }
+            });
 
-    }
+            localStorage.setItem(
+              "unreadCounts",
+              JSON.stringify(
+                updated
+              )
+            );
 
-  });
+            localStorage.setItem(
+              "seenMessages",
+              JSON.stringify(
+                seen
+              )
+            );
 
-  setSeenMessages(seen);
+            setSeenMessages(
+              seen
+            );
 
-  return updated;
+            return updated;
 
-});
+          });
 
         });
 
@@ -174,7 +192,8 @@ localStorage.setItem(
 
   }, [
     authorized,
-    selectedUser
+    selectedUser,
+    seenMessages
   ]);
 
   // AUTO SCROLL
@@ -214,27 +233,27 @@ localStorage.setItem(
   });
 
   // FULL CONVERSATION
-const conversation =
-  rows
-    .filter((msg) => {
+  const conversation =
+    rows
+      .filter((msg) => {
 
-      return (
-        msg.conversation_id ===
-          selectedUser &&
-        msg.sender &&
-        msg.message
+        return (
+          msg.conversation_id ===
+            selectedUser &&
+          msg.sender &&
+          msg.message
+        );
+
+      })
+      .sort(
+        (a, b) =>
+          new Date(
+            a.created_at
+          ) -
+          new Date(
+            b.created_at
+          )
       );
-
-    })
-    .sort(
-      (a, b) =>
-        new Date(
-          a.created_at
-        ) -
-        new Date(
-          b.created_at
-        )
-    );
 
   // LOGIN PAGE
   if (!authorized) {
@@ -329,33 +348,56 @@ const conversation =
                         chat.conversation_id
                       );
 
-                      setUnreadCounts((prev) => ({
-  ...prev,
-  [chat.conversation_id]: 0
-}));
+                      setUnreadCounts((prev) => {
 
-setSeenMessages((prev) => {
+                        const updated = {
+                          ...prev,
+                          [chat.conversation_id]:
+                            0
+                        };
 
-  const updated = {
-    ...prev
-  };
+                        localStorage.setItem(
+                          "unreadCounts",
+                          JSON.stringify(
+                            updated
+                          )
+                        );
 
-  rows.forEach((msg) => {
+                        return updated;
 
-    if (
-      msg.conversation_id ===
-      chat.conversation_id
-    ) {
+                      });
 
-      updated[msg.id] = true;
+                      setSeenMessages((prev) => {
 
-    }
+                        const updated = {
+                          ...prev
+                        };
 
-  });
+                        rows.forEach((msg) => {
 
-  return updated;
+                          if (
+                            msg.conversation_id ===
+                            chat.conversation_id
+                          ) {
 
-});
+                            updated[
+                              msg.id
+                            ] = true;
+
+                          }
+
+                        });
+
+                        localStorage.setItem(
+                          "seenMessages",
+                          JSON.stringify(
+                            updated
+                          )
+                        );
+
+                        return updated;
+
+                      });
 
                     }}
                     className={`w-full text-left p-4 rounded-2xl transition ${
