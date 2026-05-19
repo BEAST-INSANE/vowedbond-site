@@ -373,21 +373,21 @@ export default function App() {
 
       {/* CHAT BUTTON */}
       <button
-        onClick={() =>
-          setChatOpen(
-            !chatOpen
-          )
-        }
-        className="fixed bottom-6 right-6 bg-cyan-400 text-black px-5 py-3 rounded-full font-bold shadow-lg z-50"
-      >
+  onClick={() =>
+    setChatOpen(
+      !chatOpen
+    )
+  }
+  className="fixed bottom-6 right-6 z-50"
+>
 
-        <img
-  src="/chatbot-logo.png"
-  alt="Chat"
-  className="w-8 h-8"
-/>
+  <img
+    src="/chatbot-logo.png"
+    alt="Chat"
+    className="w-16 h-16 object-contain"
+  />
 
-      </button>
+</button>
 
       {/* CHAT POPUP */}
       {chatOpen && (
