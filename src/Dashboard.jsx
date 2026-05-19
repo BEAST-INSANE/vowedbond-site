@@ -104,8 +104,18 @@ export default function Dashboard() {
 setUnreadCounts((prev) => {
 
   const updated = {
-    ...prev
+    ...prev,
+    [chat.conversation_id]: 0
   };
+
+  localStorage.setItem(
+    "unreadCounts",
+    JSON.stringify(updated)
+  );
+
+  return updated;
+
+});
 
   const seen = {
     ...seenMessages
