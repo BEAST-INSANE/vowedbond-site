@@ -384,7 +384,7 @@ export default function App() {
   <img
     src="/chatbot-logo.png"
     alt="Chat"
-    className="w-7 h-7 object-cover"
+    className="w-9 h-9 object-cover"
   />
 
 </button>
