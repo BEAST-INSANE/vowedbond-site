@@ -391,373 +391,384 @@ export default function App() {
       </button>
 
       {/* CHAT POPUP */}
-      {chatOpen && (
+{chatOpen && (
 
-        <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[720px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
+  <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[650px] sm:h-[720px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
 
-          {showNamePopup ? (
+    {showNamePopup ? (
 
-            <div className="flex-1 flex flex-col justify-center p-6 gap-4">
+      <div className="flex-1 flex flex-col justify-center p-6 pt-2 gap-4 relative">
 
-              <div className="flex flex-col items-center text-center">
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={() =>
+            setChatOpen(false)
+          }
+          className="absolute top-4 right-4 text-2xl text-slate-400 hover:text-white transition"
+        >
 
-                <img
-                  src="/chatbot-logo.png"
-                  alt="Bot"
-                  className="w-20 h-20 object-contain mb-4"
-                />
+          ×
 
-                <h2 className="text-2xl font-bold">
-                  Welcome
-                </h2>
+        </button>
 
-                <p className="text-slate-400 mt-2">
-                  Enter your name to start chatting.
-                </p>
+        <div className="flex flex-col items-center text-center">
 
-              </div>
+          <img
+            src="/chatbot-logo.png"
+            alt="Bot"
+            className="w-20 h-20 object-contain mb-4"
+          />
 
-              <input
-                maxLength={20}
-                value={tempName}
-                onChange={(e) =>
-                  setTempName(
-                    e.target.value
-                  )
-                }
-                placeholder="Your name"
-                className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-              />
+          <h2 className="text-2xl font-bold">
+            Welcome
+          </h2>
 
-              <button
-                onClick={() => {
+          <p className="text-slate-400 mt-2">
+            Enter your name to start chatting.
+          </p>
 
-                  const cleaned =
-                    tempName.trim();
+        </div>
 
-                  if (
-                    !/^[A-Za-z\s]+$/.test(
-                      cleaned
-                    )
-                  ) {
+        <input
+          maxLength={20}
+          value={tempName}
+          onChange={(e) =>
+            setTempName(
+              e.target.value
+            )
+          }
+          placeholder="Your name"
+          className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+        />
 
-                    alert(
-                      "Name should contain only alphabets."
-                    );
+        <button
+          onClick={() => {
 
-                    return;
+            const cleaned =
+              tempName.trim();
 
-                  }
+            if (
+              !/^[A-Za-z\s]+$/.test(
+                cleaned
+              )
+            ) {
 
-                  if (
-                    cleaned.length < 2
-                  ) {
+              alert(
+                "Name should contain only alphabets."
+              );
 
-                    alert(
-                      "Name is too short."
-                    );
+              return;
 
-                    return;
+            }
 
-                  }
+            if (
+              cleaned.length < 2
+            ) {
 
-                  setUserName(
-                    cleaned
-                  );
+              alert(
+                "Name is too short."
+              );
 
-                  setShowNamePopup(
-                    false
-                  );
+              return;
 
-                  setMessages([
-                    {
-                      role:
-                        "bot",
-                      text:
-                        `Hello ${cleaned}! 👋 How can I assist you today?`
-                    }
-                  ]);
+            }
 
-                }}
-                className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
-              >
+            setUserName(
+              cleaned
+            );
 
-                Continue
+            setShowNamePopup(
+              false
+            );
 
-              </button>
+            setMessages([
+              {
+                role: "bot",
+                text:
+                  `Hello ${cleaned}! 👋 How can I assist you today?`
+              }
+            ]);
+
+          }}
+          className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
+        >
+
+          Continue
+
+        </button>
+
+      </div>
+
+    ) : (
+
+      <>
+
+        {/* HEADER */}
+        <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+
+          <div className="flex items-center gap-3">
+
+            <img
+              src="/chatbot-logo.png"
+              alt="Bot"
+              className="w-12 h-12 object-contain"
+            />
+
+            <div>
+
+              <h2 className="font-bold text-xl">
+                Vowed Bond AI
+              </h2>
+
+              <p className="text-sm text-slate-400">
+                We reply instantly
+              </p>
 
             </div>
 
-          ) : (
+          </div>
 
-            <>
+          <button
+            onClick={() =>
+              setChatOpen(false)
+            }
+            className="text-2xl text-slate-400 hover:text-white transition"
+          >
 
-              {/* HEADER */}
-              <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+            ×
 
-                <div className="flex items-center gap-3">
+          </button>
 
-                  <img
-                    src="/chatbot-logo.png"
-                    alt="Bot"
-                    className="w-12 h-12 object-contain"
-                  />
+        </div>
 
+        {/* CHAT AREA */}
+        <div
+          ref={chatRef}
+          className="flex-1 overflow-y-auto px-4 py-5 space-y-6"
+        >
+
+          <div className="flex items-center gap-3 text-slate-500 text-sm">
+
+            <div className="flex-1 h-[1px] bg-white/10"></div>
+
+            Today
+
+            <div className="flex-1 h-[1px] bg-white/10"></div>
+
+          </div>
+
+          {messages.map(
+            (
+              msg,
+              i
+            ) => (
+
+              <div
+                key={i}
+                className={`flex ${
+                  msg.role ===
+                  "user"
+                    ? "justify-end"
+                    : "justify-start"
+                }`}
+              >
+
+                <div
+                  className={`flex gap-3 max-w-[90%] ${
+                    msg.role ===
+                    "user"
+                      ? "flex-row-reverse"
+                      : ""
+                  }`}
+                >
+
+                  {/* AVATAR */}
+                  {msg.role ===
+                    "bot" && (
+
+                    <img
+                      src="/chatbot-logo.png"
+                      alt="Bot"
+                      className="w-10 h-10 object-contain mt-1"
+                    />
+
+                  )}
+
+                  {/* MESSAGE */}
                   <div>
 
-                    <h2 className="font-bold text-xl">
-                      Vowed Bond AI
-                    </h2>
+                    <div
+                      className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+                        msg.role ===
+                        "user"
+                          ? "bg-cyan-400 text-black rounded-br-md"
+                          : "bg-white/10 text-white rounded-bl-md"
+                      }`}
+                    >
 
-                    <p className="text-sm text-slate-400">
-                      We reply instantly
+                      {msg.text}
+
+                    </div>
+
+                    <p
+                      className={`text-xs text-slate-500 mt-2 ${
+                        msg.role ===
+                        "user"
+                          ? "text-right"
+                          : "text-left"
+                      }`}
+                    >
+
+                      {new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                      })}
+
                     </p>
 
                   </div>
 
                 </div>
 
-                <button
-                  onClick={() =>
-                    setChatOpen(false)
-                  }
-                  className="text-2xl text-slate-400 hover:text-white transition"
-                >
+              </div>
 
-                  ×
+            )
+          )}
 
-                </button>
+          {loading && (
+
+            <div className="flex gap-3">
+
+              <img
+                src="/chatbot-logo.png"
+                alt="Bot"
+                className="w-10 h-10 object-contain"
+              />
+
+              <div className="bg-white/10 px-5 py-4 rounded-[26px] rounded-bl-md text-white">
+
+                Typing...
 
               </div>
 
-              {/* CHAT AREA */}
-              <div
-                ref={chatRef}
-                className="flex-1 overflow-y-auto px-4 py-5 space-y-6"
-              >
-
-                <div className="flex items-center gap-3 text-slate-500 text-sm">
-
-                  <div className="flex-1 h-[1px] bg-white/10"></div>
-
-                  Today
-
-                  <div className="flex-1 h-[1px] bg-white/10"></div>
-
-                </div>
-
-                {messages.map(
-                  (
-                    msg,
-                    i
-                  ) => (
-
-                    <div
-                      key={i}
-                      className={`flex ${
-                        msg.role ===
-                        "user"
-                          ? "justify-end"
-                          : "justify-start"
-                      }`}
-                    >
-
-                      <div
-                        className={`flex gap-3 max-w-[90%] ${
-                          msg.role ===
-                          "user"
-                            ? "flex-row-reverse"
-                            : ""
-                        }`}
-                      >
-
-                        {/* AVATAR */}
-                        {msg.role ===
-                          "bot" && (
-
-                          <img
-                            src="/chatbot-logo.png"
-                            alt="Bot"
-                            className="w-10 h-10 object-contain mt-1"
-                          />
-
-                        )}
-
-                        {/* MESSAGE */}
-                        <div>
-
-                          <div
-                            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
-                              msg.role ===
-                              "user"
-                                ? "bg-cyan-400 text-black rounded-br-md"
-                                : "bg-white/10 text-white rounded-bl-md"
-                            }`}
-                          >
-
-                            {msg.text}
-
-                          </div>
-
-                          <p
-                            className={`text-xs text-slate-500 mt-2 ${
-                              msg.role ===
-                              "user"
-                                ? "text-right"
-                                : "text-left"
-                            }`}
-                          >
-
-                            {new Date().toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit"
-                            })}
-
-                          </p>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  )
-                )}
-
-                {loading && (
-
-                  <div className="flex gap-3">
-
-                    <img
-                      src="/chatbot-logo.png"
-                      alt="Bot"
-                      className="w-10 h-10 object-contain"
-                    />
-
-                    <div className="bg-white/10 px-5 py-4 rounded-[26px] rounded-bl-md text-white">
-
-                      Typing...
-
-                    </div>
-
-                  </div>
-
-                )}
-
-              </div>
-
-              {/* INPUT AREA */}
-              <div className="p-4 border-t border-white/10 bg-white/[0.02]">
-
-                <div className="flex items-center gap-3">
-
-                  <input
-                    value={input}
-                    onChange={(e) =>
-                      setInput(
-                        e.target.value
-                      )
-                    }
-                    placeholder="Type your message..."
-                    className="flex-1 px-5 py-4 rounded-full bg-white/5 border border-white/10 text-white outline-none"
-                  />
-
-                  <button
-                    onClick={
-                      sendMessage
-                    }
-                    className="w-14 h-14 rounded-full bg-cyan-400 text-black font-bold text-xl flex items-center justify-center hover:scale-105 transition"
-                  >
-
-                    ➤
-
-                  </button>
-
-                </div>
-
-                <div className="flex items-center justify-between mt-3">
-
-                  <button
-                    onClick={async () => {
-
-                      if (
-                        humanRequested
-                      )
-                        return;
-
-                      setHumanRequested(
-                        true
-                      );
-
-                      await fetch(
-                        "/api/handoff",
-                        {
-                          method:
-                            "POST",
-                          headers:
-                            {
-                              "Content-Type":
-                                "application/json"
-                            },
-                          body:
-                            JSON.stringify(
-                              {
-                                messages,
-                                userName,
-                                conversationId
-                              }
-                            )
-                        }
-                      );
-
-                      setMessages(
-                        (
-                          prev
-                        ) => [
-                          ...prev,
-                          {
-                            role:
-                              "bot",
-                            text:
-                              "A human support member has been notified."
-                          }
-                        ]
-                      );
-
-                    }}
-                    disabled={
-                      humanRequested
-                    }
-                    className={`text-sm transition ${
-                      humanRequested
-                        ? "text-gray-500"
-                        : "text-cyan-400 hover:text-cyan-300"
-                    }`}
-                  >
-
-                    {humanRequested
-                      ? "Human support requested"
-                      : "Talk to a human"}
-
-                  </button>
-
-                  <p className="text-xs text-slate-500">
-
-                    Powered by Vowed Bond AI
-
-                  </p>
-
-                </div>
-
-              </div>
-
-            </>
+            </div>
 
           )}
 
         </div>
 
-      )}
+        {/* INPUT AREA */}
+        <div className="p-4 border-t border-white/10 bg-white/[0.02]">
+
+          <div className="flex items-center gap-3">
+
+            <input
+              value={input}
+              onChange={(e) =>
+                setInput(
+                  e.target.value
+                )
+              }
+              placeholder="Type your message..."
+              className="flex-1 px-5 py-4 rounded-full bg-white/5 border border-white/10 text-white outline-none"
+            />
+
+            <button
+              onClick={
+                sendMessage
+              }
+              className="w-14 h-14 rounded-full bg-cyan-400 text-black font-bold text-xl flex items-center justify-center hover:scale-105 transition"
+            >
+
+              ➤
+
+            </button>
+
+          </div>
+
+          <div className="flex items-center justify-between mt-3">
+
+            <button
+              onClick={async () => {
+
+                if (
+                  humanRequested
+                )
+                  return;
+
+                setHumanRequested(
+                  true
+                );
+
+                await fetch(
+                  "/api/handoff",
+                  {
+                    method:
+                      "POST",
+                    headers:
+                      {
+                        "Content-Type":
+                          "application/json"
+                      },
+                    body:
+                      JSON.stringify(
+                        {
+                          messages,
+                          userName,
+                          conversationId
+                        }
+                      )
+                  }
+                );
+
+                setMessages(
+                  (
+                    prev
+                  ) => [
+                    ...prev,
+                    {
+                      role:
+                        "bot",
+                      text:
+                        "A human support member has been notified."
+                    }
+                  ]
+                );
+
+              }}
+              disabled={
+                humanRequested
+              }
+              className={`text-sm transition ${
+                humanRequested
+                  ? "text-gray-500"
+                  : "text-cyan-400 hover:text-cyan-300"
+              }`}
+            >
+
+              {humanRequested
+                ? "Human support requested"
+                : "Talk to a human"}
+
+            </button>
+
+            <p className="text-xs text-slate-500">
+
+              Powered by Vowed Bond AI
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </>
+
+    )}
+
+  </div>
+
+)}
 
       <style>{`
         @keyframes trace {
