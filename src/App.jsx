@@ -43,16 +43,16 @@ export default function App() {
 
   // UNIQUE CONVERSATION ID
   const [conversationId] =
-  useState(() => {
+    useState(() => {
 
-    return (
-      "vb_" +
-      Math.random()
-        .toString(36)
-        .substring(2, 12)
-    );
+      return (
+        "vb_" +
+        Math.random()
+          .toString(36)
+          .substring(2, 12)
+      );
 
-  });
+    });
 
   // AUTO SCROLL
   useEffect(() => {
@@ -123,6 +123,7 @@ export default function App() {
     conversationId,
     lastAdminReply
   ]);
+
   // SEND MESSAGE
   const sendMessage =
     async () => {
@@ -372,44 +373,46 @@ export default function App() {
       </div>
 
       {/* CHAT BUTTON */}
-  <button
-  onClick={() =>
-    setChatOpen(
-      !chatOpen
-    )
-  }
-  className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.5)] flex items-center justify-center hover:scale-110 transition overflow-hidden"
->
+      <button
+        onClick={() =>
+          setChatOpen(
+            !chatOpen
+          )
+        }
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.5)] flex items-center justify-center hover:scale-110 transition overflow-hidden"
+      >
 
-  <img
-    src="/chatbot-logo.png"
-    alt="Chat"
-    className="w-14 h-14 object-contain"
-  />
+        <img
+          src="/chatbot-logo.png"
+          alt="Chat"
+          className="w-14 h-14 object-contain"
+        />
 
-</button>
+      </button>
 
       {/* CHAT POPUP */}
       {chatOpen && (
 
-        <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[420px] max-w-[95vw] bg-slate-900 border border-cyan-400 rounded-2xl shadow-2xl z-50 overflow-hidden">
+        <div className="fixed bottom-4 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[720px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
 
           {showNamePopup ? (
 
-            <div className="p-6 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col justify-center p-6 gap-4">
 
-              <div>
+              <div className="flex flex-col items-center text-center">
 
-                <h2 className="text-xl font-bold">
+                <img
+                  src="/chatbot-logo.png"
+                  alt="Bot"
+                  className="w-20 h-20 object-contain mb-4"
+                />
 
-                  Before we begin
-
+                <h2 className="text-2xl font-bold">
+                  Welcome
                 </h2>
 
-                <p className="text-sm text-slate-300 mt-1">
-
-                  Please enter your name to continue.
-
+                <p className="text-slate-400 mt-2">
+                  Enter your name to start chatting.
                 </p>
 
               </div>
@@ -423,7 +426,7 @@ export default function App() {
                   )
                 }
                 placeholder="Your name"
-                className="px-4 py-3 rounded-xl bg-white/10 text-white outline-none"
+                className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
               />
 
               <button
@@ -447,25 +450,11 @@ export default function App() {
                   }
 
                   if (
-                    cleaned.length <
-                    2
+                    cleaned.length < 2
                   ) {
 
                     alert(
                       "Name is too short."
-                    );
-
-                    return;
-
-                  }
-
-                  if (
-                    cleaned.length >
-                    20
-                  ) {
-
-                    alert(
-                      "Name is too long."
                     );
 
                     return;
@@ -485,12 +474,12 @@ export default function App() {
                       role:
                         "bot",
                       text:
-                        `Nice to meet you, ${cleaned}. How can I help you today?`
+                        `Hello ${cleaned}! 👋 How can I assist you today?`
                     }
                   ]);
 
                 }}
-                className="bg-cyan-400 text-black py-3 rounded-xl font-bold"
+                className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
               >
 
                 Continue
@@ -504,29 +493,35 @@ export default function App() {
             <>
 
               {/* HEADER */}
-              <div className="p-3 font-bold border-b border-white/10 flex justify-between items-center">
+              <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
 
-  <img
-    src="/chatbot-logo.png"
-    alt="Chatbot Logo"
-    className="w-8 h-8 rounded-full"
-  />
+                  <img
+                    src="/chatbot-logo.png"
+                    alt="Bot"
+                    className="w-12 h-12 object-contain"
+                  />
 
-  <span>
-    Vowed Bond AI
-  </span>
+                  <div>
 
-</div>
+                    <h2 className="font-bold text-xl">
+                      Vowed Bond AI
+                    </h2>
+
+                    <p className="text-sm text-slate-400">
+                      We reply instantly
+                    </p>
+
+                  </div>
+
+                </div>
 
                 <button
                   onClick={() =>
-                    setChatOpen(
-                      false
-                    )
+                    setChatOpen(false)
                   }
-                  className="text-white text-xl"
+                  className="text-2xl text-slate-400 hover:text-white transition"
                 >
 
                   ×
@@ -535,11 +530,21 @@ export default function App() {
 
               </div>
 
-              {/* MESSAGES */}
+              {/* CHAT AREA */}
               <div
                 ref={chatRef}
-                className="h-[55vh] sm:h-80 overflow-y-auto p-3 space-y-2"
+                className="flex-1 overflow-y-auto px-4 py-5 space-y-6"
               >
+
+                <div className="flex items-center gap-3 text-slate-500 text-sm">
+
+                  <div className="flex-1 h-[1px] bg-white/10"></div>
+
+                  Today
+
+                  <div className="flex-1 h-[1px] bg-white/10"></div>
+
+                </div>
 
                 {messages.map(
                   (
@@ -549,15 +554,70 @@ export default function App() {
 
                     <div
                       key={i}
-                      className={`p-2 rounded-xl max-w-[85%] ${
+                      className={`flex ${
                         msg.role ===
                         "user"
-                          ? "ml-auto bg-cyan-400 text-black"
-                          : "bg-white/10 text-white"
+                          ? "justify-end"
+                          : "justify-start"
                       }`}
                     >
 
-                      {msg.text}
+                      <div
+                        className={`flex gap-3 max-w-[90%] ${
+                          msg.role ===
+                          "user"
+                            ? "flex-row-reverse"
+                            : ""
+                        }`}
+                      >
+
+                        {/* AVATAR */}
+                        {msg.role ===
+                          "bot" && (
+
+                          <img
+                            src="/chatbot-logo.png"
+                            alt="Bot"
+                            className="w-10 h-10 object-contain mt-1"
+                          />
+
+                        )}
+
+                        {/* MESSAGE */}
+                        <div>
+
+                          <div
+                            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+                              msg.role ===
+                              "user"
+                                ? "bg-cyan-400 text-black rounded-br-md"
+                                : "bg-white/10 text-white rounded-bl-md"
+                            }`}
+                          >
+
+                            {msg.text}
+
+                          </div>
+
+                          <p
+                            className={`text-xs text-slate-500 mt-2 ${
+                              msg.role ===
+                              "user"
+                                ? "text-right"
+                                : "text-left"
+                            }`}
+                          >
+
+                            {new Date().toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit"
+                            })}
+
+                          </p>
+
+                        </div>
+
+                      </div>
 
                     </div>
 
@@ -566,9 +626,19 @@ export default function App() {
 
                 {loading && (
 
-                  <div className="bg-white/10 text-white p-2 rounded-xl w-fit">
+                  <div className="flex gap-3">
 
-                    Typing...
+                    <img
+                      src="/chatbot-logo.png"
+                      alt="Bot"
+                      className="w-10 h-10 object-contain"
+                    />
+
+                    <div className="bg-white/10 px-5 py-4 rounded-[26px] rounded-bl-md text-white">
+
+                      Typing...
+
+                    </div>
 
                   </div>
 
@@ -576,95 +646,108 @@ export default function App() {
 
               </div>
 
-              {/* INPUT */}
-              <div className="p-3 border-t border-white/10 flex gap-2 items-center">
+              {/* INPUT AREA */}
+              <div className="p-4 border-t border-white/10 bg-white/[0.02]">
 
-                <input
-                  value={input}
-                  onChange={(e) =>
-                    setInput(
-                      e.target.value
-                    )
-                  }
-                  placeholder="Type a message..."
-                  className="w-full sm:flex-1 px-4 py-2 rounded-xl bg-white/10 text-white outline-none"
-                />
+                <div className="flex items-center gap-3">
 
-                <button
-                  onClick={
-                    sendMessage
-                  }
-                  className="bg-cyan-400 text-black px-4 py-2 rounded-xl font-bold"
-                >
+                  <input
+                    value={input}
+                    onChange={(e) =>
+                      setInput(
+                        e.target.value
+                      )
+                    }
+                    placeholder="Type your message..."
+                    className="flex-1 px-5 py-4 rounded-full bg-white/5 border border-white/10 text-white outline-none"
+                  />
 
-                  Send
+                  <button
+                    onClick={
+                      sendMessage
+                    }
+                    className="w-14 h-14 rounded-full bg-cyan-400 text-black font-bold text-xl flex items-center justify-center hover:scale-105 transition"
+                  >
 
-                </button>
+                    ➤
 
-                <button
-                  onClick={async () => {
+                  </button>
 
-                    if (
-                      humanRequested
-                    )
-                      return;
+                </div>
 
-                    setHumanRequested(
-                      true
-                    );
+                <div className="flex items-center justify-between mt-3">
 
-                    await fetch(
-                      "/api/handoff",
-                      {
-                        method:
-                          "POST",
-                        headers:
-                          {
-                            "Content-Type":
-                              "application/json"
-                          },
-                        body:
-                          JSON.stringify(
-                            {
-                              messages,
-                              userName,
-                              conversationId
-                            }
-                          )
-                      }
-                    );
+                  <button
+                    onClick={async () => {
 
-                    setMessages(
-                      (
-                        prev
-                      ) => [
-                        ...prev,
+                      if (
+                        humanRequested
+                      )
+                        return;
+
+                      setHumanRequested(
+                        true
+                      );
+
+                      await fetch(
+                        "/api/handoff",
                         {
-                          role:
-                            "bot",
-                          text:
-                            "A human support member has been notified."
+                          method:
+                            "POST",
+                          headers:
+                            {
+                              "Content-Type":
+                                "application/json"
+                            },
+                          body:
+                            JSON.stringify(
+                              {
+                                messages,
+                                userName,
+                                conversationId
+                              }
+                            )
                         }
-                      ]
-                    );
+                      );
 
-                  }}
-                  disabled={
-                    humanRequested
-                  }
-                  className={`px-4 py-2 rounded-xl font-bold ${
-                    humanRequested
-                      ? "bg-gray-400 text-black cursor-not-allowed"
-                      : "bg-yellow-400 text-black"
-                  }`}
-                >
+                      setMessages(
+                        (
+                          prev
+                        ) => [
+                          ...prev,
+                          {
+                            role:
+                              "bot",
+                            text:
+                              "A human support member has been notified."
+                          }
+                        ]
+                      );
 
-                
-                 {humanRequested
-                    ? "Requested ✔️"
-                    : "Human"}
+                    }}
+                    disabled={
+                      humanRequested
+                    }
+                    className={`text-sm transition ${
+                      humanRequested
+                        ? "text-gray-500"
+                        : "text-cyan-400 hover:text-cyan-300"
+                    }`}
+                  >
 
-                </button>
+                    {humanRequested
+                      ? "Human support requested"
+                      : "Talk to a human"}
+
+                  </button>
+
+                  <p className="text-xs text-slate-500">
+
+                    Powered by Vowed Bond AI
+
+                  </p>
+
+                </div>
 
               </div>
 
