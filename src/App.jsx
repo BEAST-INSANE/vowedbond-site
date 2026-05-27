@@ -278,7 +278,9 @@ export default function App() {
 
         const data =
           await res.json();
-
+   await new Promise((resolve) =>
+    setTimeout(resolve, 1200)
+   );
         setMessages((prev) => [
           ...prev,
           {
