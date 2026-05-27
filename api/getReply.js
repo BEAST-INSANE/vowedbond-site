@@ -6,9 +6,18 @@ export default async function handler(req, res) {
       conversationId
     } = req.query;
 
+    if (!conversationId) {
+
+      return res.status(400).json({
+        error:
+          "conversationId required"
+      });
+
+    }
+
     const response =
       await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/chats?conversation_id=eq.${conversationId}&sender=eq.admin&select=message&order=created_at.desc&limit=1`,
+        `${process.env.SUPABASE_URL}/rest/v1/chats?conversation_id=eq.${conversationId}&sender=eq.admin&select=id,message,created_at&order=created_at.desc&limit=1`,
         {
           headers: {
             apikey:
@@ -29,7 +38,8 @@ export default async function handler(req, res) {
   } catch (error) {
 
     return res.status(500).json({
-      error: error.message
+      error:
+        error.message
     });
 
   }
