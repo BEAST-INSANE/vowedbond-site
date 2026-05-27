@@ -121,10 +121,11 @@ export default function App() {
   useEffect(() => {
 
     if (
-      chatOpen &&
-      inputRef.current &&
-      !showNamePopup
-    ) {
+  chatOpen &&
+  inputRef.current &&
+  !showNamePopup &&
+  window.innerWidth > 768
+) {
 
       setTimeout(() => {
 
