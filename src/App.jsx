@@ -393,7 +393,7 @@ export default function App() {
       {/* CHAT POPUP */}
 {chatOpen && (
 
-  <div className="fixed bottom-16 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[620px] sm:h-[700px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
+  <div className="fixed bottom-12 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[620px] sm:h-[700px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
 
     {showNamePopup ? (
 
