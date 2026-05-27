@@ -32,6 +32,33 @@ export default async function handler(req, res) {
       }
     );
 
+    // FETCH LAST MESSAGES FOR MEMORY
+    const historyRes =
+      await fetch(
+        `${process.env.SUPABASE_URL}/rest/v1/chats?conversation_id=eq.${conversationId}&select=sender,message&order=created_at.asc&limit=12`,
+        {
+          headers: {
+            apikey:
+              process.env.SUPABASE_ANON_KEY,
+            Authorization:
+              `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          },
+        }
+      );
+
+    const historyData =
+      await historyRes.json();
+
+    // CONVERT TO OPENROUTER FORMAT
+    const conversationHistory =
+      historyData.map((msg) => ({
+        role:
+          msg.sender === "user"
+            ? "user"
+            : "assistant",
+        content: msg.message
+      }));
+
     // AI RESPONSE
     const aiRes = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -51,6 +78,7 @@ export default async function handler(req, res) {
           model:
             "openai/gpt-4o-mini",
           messages: [
+
             {
               role: "system",
               content: `
@@ -77,9 +105,7 @@ IMPORTANT RULES:
 - Jaipreet Singh Badhan
 - Moksh Gagwani
 
-You may discuss Jaipreet Singh Badhan and Moksh Gagwani only in the context of Vowed Bond and basic founder-related questions.
-
-If users ask about unrelated people or unrelated topics, politely redirect the conversation toward Vowed Bond services without sounding robotic or repetitive.
+You may discuss Jaipreet Singh Badhan and Moksh Gagwani only in the context of Vowed Bond and founder-related questions.
 
 4. Keep replies:
 - short
@@ -89,7 +115,7 @@ If users ask about unrelated people or unrelated topics, politely redirect the c
 
 5. Do NOT use emojis.
 
-6. If users ask unrelated questions, redirect them back toward our services politely.
+6. If users ask unrelated questions, redirect them politely back toward business services.
 
 7. Our services include:
 - AI chatbots for websites
@@ -121,19 +147,18 @@ If users ask about unrelated people or unrelated topics, politely redirect the c
 
 16. If users greet you casually, greet them back naturally and professionally before helping them.
 
-17. If users ask unrelated entertainment or meme questions, politely redirect back toward business services.
+17. Avoid overly long paragraphs. Keep responses concise and readable.
 
-18. Avoid overly long paragraphs. Keep responses concise and readable.
+18. Your goal is to help convert visitors into potential clients while remaining helpful and trustworthy.
 
-19. If users ask what technologies or AI models are used, explain professionally without exposing secrets, APIs, or sensitive system details.
-
-20. Your goal is to help convert visitors into potential clients while remaining helpful and trustworthy.
+19. IMPORTANT:
+You remember previous messages in the conversation and should respond with context naturally.
 `
             },
-            {
-              role: "user",
-              content: message
-            }
+
+            // MEMORY MESSAGES
+            ...conversationHistory
+
           ]
         })
       }
