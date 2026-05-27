@@ -10,22 +10,46 @@ export default function App() {
     useState(false);
 
   const [userName, setUserName] =
-    useState("");
+    useState(
+      localStorage.getItem(
+        "vb_user_name"
+      ) || ""
+    );
 
   const [showNamePopup, setShowNamePopup] =
-    useState(true);
+    useState(
+      !localStorage.getItem(
+        "vb_user_name"
+      )
+    );
 
   const [tempName, setTempName] =
     useState("");
 
   const [messages, setMessages] =
-    useState([
-      {
-        role: "bot",
-        text:
-          "Hi! I'm Vowed Bond AI. How can I help?"
-      }
-    ]);
+    useState(() => {
+
+      const saved =
+        localStorage.getItem(
+          "vb_messages"
+        );
+
+      return saved
+        ? JSON.parse(saved)
+        : [
+            {
+              role: "bot",
+              text:
+                "Hi! I'm Vowed Bond AI. How can I help?",
+              time:
+                new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })
+            }
+          ];
+
+    });
 
   const [input, setInput] =
     useState("");
@@ -41,18 +65,45 @@ export default function App() {
 
   const chatRef = useRef(null);
 
+  const inputRef = useRef(null);
+
   // UNIQUE CONVERSATION ID
   const [conversationId] =
     useState(() => {
 
-      return (
-        "vb_" +
-        Math.random()
-          .toString(36)
-          .substring(2, 12)
-      );
+      let savedId =
+        localStorage.getItem(
+          "vb_conversation_id"
+        );
+
+      if (!savedId) {
+
+        savedId =
+          "vb_" +
+          Math.random()
+            .toString(36)
+            .substring(2, 12);
+
+        localStorage.setItem(
+          "vb_conversation_id",
+          savedId
+        );
+
+      }
+
+      return savedId;
 
     });
+
+  // SAVE MESSAGES
+  useEffect(() => {
+
+    localStorage.setItem(
+      "vb_messages",
+      JSON.stringify(messages)
+    );
+
+  }, [messages]);
 
   // AUTO SCROLL
   useEffect(() => {
@@ -65,6 +116,28 @@ export default function App() {
     }
 
   }, [messages, loading]);
+
+  // AUTO FOCUS
+  useEffect(() => {
+
+    if (
+      chatOpen &&
+      inputRef.current &&
+      !showNamePopup
+    ) {
+
+      setTimeout(() => {
+
+        inputRef.current.focus();
+
+      }, 200);
+
+    }
+
+  }, [
+    chatOpen,
+    showNamePopup
+  ]);
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
@@ -101,7 +174,12 @@ export default function App() {
 
               {
                 role: "bot",
-                text: data.message
+                text: data.message,
+                time:
+                  new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })
               }
 
             ]);
@@ -128,12 +206,20 @@ export default function App() {
   const sendMessage =
     async () => {
 
-      if (!input.trim())
+      if (
+        !input.trim() ||
+        loading
+      )
         return;
 
       const userMsg = {
         role: "user",
-        text: input
+        text: input,
+        time:
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
       };
 
       setMessages((prev) => [
@@ -198,7 +284,12 @@ export default function App() {
             role: "bot",
             text:
               data.reply ||
-              "No response."
+              "No response.",
+            time:
+              new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
           }
         ]);
 
@@ -209,13 +300,32 @@ export default function App() {
           {
             role: "bot",
             text:
-              "Error contacting AI."
+              "Error contacting AI.",
+            time:
+              new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
           }
         ]);
 
       }
 
       setLoading(false);
+
+    };
+
+  // ENTER KEY SEND
+  const handleKeyDown =
+    (e) => {
+
+      if (
+        e.key === "Enter"
+      ) {
+
+        sendMessage();
+
+      }
 
     };
 
@@ -379,7 +489,7 @@ export default function App() {
             !chatOpen
           )
         }
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.5)] flex items-center justify-center hover:scale-110 transition overflow-hidden"
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.5)] flex items-center justify-center hover:scale-110 transition duration-300 overflow-hidden"
       >
 
         <img
@@ -391,384 +501,428 @@ export default function App() {
       </button>
 
       {/* CHAT POPUP */}
-{chatOpen && (
+      {chatOpen && (
 
-  <div className="fixed bottom-12 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[620px] sm:h-[700px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
+        <div className="fixed bottom-12 right-2 left-2 sm:bottom-24 sm:right-6 sm:left-auto w-auto sm:w-[430px] max-w-[95vw] h-[620px] sm:h-[700px] bg-[#060816]/95 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col animate-[popup_0.25s_ease]">
 
-    {showNamePopup ? (
+          {showNamePopup ? (
 
-      <div className="flex-1 flex flex-col justify-center p-6 pt-2 gap-4 relative">
+            <div className="flex-1 flex flex-col justify-center p-6 pt-2 gap-4 relative">
 
-        {/* CLOSE BUTTON */}
-        <button
-          onClick={() =>
-            setChatOpen(false)
-          }
-          className="absolute top-4 right-4 text-2xl text-slate-400 hover:text-white transition"
-        >
+              {/* CLOSE BUTTON */}
+              <button
+                onClick={() =>
+                  setChatOpen(false)
+                }
+                className="absolute top-4 right-4 text-2xl text-slate-400 hover:text-white transition"
+              >
 
-          ×
+                ×
 
-        </button>
+              </button>
 
-        <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center">
 
-          <img
-            src="/chatbot-logo.png"
-            alt="Bot"
-            className="w-20 h-20 object-contain mb-4"
-          />
+                <img
+                  src="/chatbot-logo.png"
+                  alt="Bot"
+                  className="w-20 h-20 object-contain mb-4"
+                />
 
-          <h2 className="text-2xl font-bold">
-            Welcome
-          </h2>
+                <h2 className="text-2xl font-bold">
+                  Welcome
+                </h2>
 
-          <p className="text-slate-400 mt-2">
-            Enter your name to start chatting.
-          </p>
+                <p className="text-slate-400 mt-2">
+                  Enter your name to start chatting.
+                </p>
 
-        </div>
+              </div>
 
-        <input
-          maxLength={20}
-          value={tempName}
-          onChange={(e) =>
-            setTempName(
-              e.target.value
-            )
-          }
-          placeholder="Your name"
-          className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-        />
+              <input
+                maxLength={20}
+                value={tempName}
+                onChange={(e) =>
+                  setTempName(
+                    e.target.value
+                  )
+                }
+                onKeyDown={(e) => {
 
-        <button
-          onClick={() => {
+                  if (
+                    e.key ===
+                    "Enter"
+                  ) {
 
-            const cleaned =
-              tempName.trim();
+                    document
+                      .getElementById(
+                        "continueBtn"
+                      )
+                      ?.click();
 
-            if (
-              !/^[A-Za-z\s]+$/.test(
-                cleaned
-              )
-            ) {
+                  }
 
-              alert(
-                "Name should contain only alphabets."
-              );
+                }}
+                placeholder="Your name"
+                className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+              />
 
-              return;
+              <button
+                id="continueBtn"
+                onClick={() => {
 
-            }
+                  const cleaned =
+                    tempName.trim();
 
-            if (
-              cleaned.length < 2
-            ) {
+                  if (
+                    !/^[A-Za-z\s]+$/.test(
+                      cleaned
+                    )
+                  ) {
 
-              alert(
-                "Name is too short."
-              );
+                    alert(
+                      "Name should contain only alphabets."
+                    );
 
-              return;
+                    return;
 
-            }
+                  }
 
-            setUserName(
-              cleaned
-            );
+                  if (
+                    cleaned.length < 2
+                  ) {
 
-            setShowNamePopup(
-              false
-            );
+                    alert(
+                      "Name is too short."
+                    );
 
-            setMessages([
-              {
-                role: "bot",
-                text:
-                  `Hello ${cleaned}! 👋 How can I assist you today?`
-              }
-            ]);
+                    return;
 
-          }}
-          className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
-        >
+                  }
 
-          Continue
+                  localStorage.setItem(
+                    "vb_user_name",
+                    cleaned
+                  );
 
-        </button>
+                  setUserName(
+                    cleaned
+                  );
 
-      </div>
+                  setShowNamePopup(
+                    false
+                  );
 
-    ) : (
+                  setMessages([
+                    {
+                      role: "bot",
+                      text:
+                        `Hello ${cleaned}! 👋 How can I assist you today?`,
+                      time:
+                        new Date().toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })
+                    }
+                  ]);
 
-      <>
+                }}
+                className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
+              >
 
-        {/* HEADER */}
-        <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+                Continue
 
-          <div className="flex items-center gap-3">
-
-            <img
-              src="/chatbot-logo.png"
-              alt="Bot"
-              className="w-12 h-12 object-contain"
-            />
-
-            <div>
-
-              <h2 className="font-bold text-xl">
-                Vowed Bond AI
-              </h2>
-
-              <p className="text-sm text-slate-400">
-                We reply instantly
-              </p>
+              </button>
 
             </div>
 
-          </div>
+          ) : (
 
-          <button
-            onClick={() =>
-              setChatOpen(false)
-            }
-            className="text-2xl text-slate-400 hover:text-white transition"
-          >
+            <>
 
-            ×
+              {/* HEADER */}
+              <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
 
-          </button>
+                <div className="flex items-center gap-3">
 
-        </div>
+                  <img
+                    src="/chatbot-logo.png"
+                    alt="Bot"
+                    className="w-12 h-12 object-contain"
+                  />
 
-        {/* CHAT AREA */}
-        <div
-          ref={chatRef}
-          className="flex-1 overflow-y-auto px-4 py-5 space-y-6"
-        >
-
-          <div className="flex items-center gap-3 text-slate-500 text-sm">
-
-            <div className="flex-1 h-[1px] bg-white/10"></div>
-
-            Today
-
-            <div className="flex-1 h-[1px] bg-white/10"></div>
-
-          </div>
-
-          {messages.map(
-            (
-              msg,
-              i
-            ) => (
-
-              <div
-                key={i}
-                className={`flex ${
-                  msg.role ===
-                  "user"
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-
-                <div
-                  className={`flex gap-3 max-w-[90%] ${
-                    msg.role ===
-                    "user"
-                      ? "flex-row-reverse"
-                      : ""
-                  }`}
-                >
-
-                  {/* AVATAR */}
-                  {msg.role ===
-                    "bot" && (
-
-                    <img
-                      src="/chatbot-logo.png"
-                      alt="Bot"
-                      className="w-10 h-10 object-contain mt-1"
-                    />
-
-                  )}
-
-                  {/* MESSAGE */}
                   <div>
 
-                    <div
-                      className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
-                        msg.role ===
-                        "user"
-                          ? "bg-cyan-400 text-black rounded-br-md"
-                          : "bg-white/10 text-white rounded-bl-md"
-                      }`}
-                    >
+                    <h2 className="font-bold text-xl">
+                      Vowed Bond AI
+                    </h2>
 
-                      {msg.text}
-
-                    </div>
-
-                    <p
-                      className={`text-xs text-slate-500 mt-2 ${
-                        msg.role ===
-                        "user"
-                          ? "text-right"
-                          : "text-left"
-                      }`}
-                    >
-
-                      {new Date().toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}
-
+                    <p className="text-sm text-slate-400">
+                      We reply instantly
                     </p>
 
                   </div>
 
                 </div>
 
-              </div>
-
-            )
-          )}
-
-          {loading && (
-
-            <div className="flex gap-3">
-
-              <img
-                src="/chatbot-logo.png"
-                alt="Bot"
-                className="w-10 h-10 object-contain"
-              />
-
-              <div className="bg-white/10 px-5 py-4 rounded-[26px] rounded-bl-md text-white">
-
-                Typing...
-
-              </div>
-
-            </div>
-
-          )}
-
-        </div>
-
-        {/* INPUT AREA */}
-        <div className="p-4 border-t border-white/10 bg-white/[0.02]">
-
-          <div className="flex items-center gap-3">
-
-            <input
-              value={input}
-              onChange={(e) =>
-                setInput(
-                  e.target.value
-                )
-              }
-              placeholder="Type your message..."
-              className="flex-1 px-5 py-4 rounded-full bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <button
-              onClick={
-                sendMessage
-              }
-              className="w-14 h-14 rounded-full bg-cyan-400 text-black font-bold text-xl flex items-center justify-center hover:scale-105 transition"
-            >
-
-              ➤
-
-            </button>
-
-          </div>
-
-          <div className="flex items-center justify-between mt-3">
-
-            <button
-              onClick={async () => {
-
-                if (
-                  humanRequested
-                )
-                  return;
-
-                setHumanRequested(
-                  true
-                );
-
-                await fetch(
-                  "/api/handoff",
-                  {
-                    method:
-                      "POST",
-                    headers:
-                      {
-                        "Content-Type":
-                          "application/json"
-                      },
-                    body:
-                      JSON.stringify(
-                        {
-                          messages,
-                          userName,
-                          conversationId
-                        }
-                      )
+                <button
+                  onClick={() =>
+                    setChatOpen(false)
                   }
-                );
+                  className="text-2xl text-slate-400 hover:text-white transition"
+                >
 
-                setMessages(
+                  ×
+
+                </button>
+
+              </div>
+
+              {/* CHAT AREA */}
+              <div
+                ref={chatRef}
+                className="flex-1 overflow-y-auto px-4 py-5 space-y-6 custom-scrollbar"
+              >
+
+                <div className="flex items-center gap-3 text-slate-500 text-sm">
+
+                  <div className="flex-1 h-[1px] bg-white/10"></div>
+
+                  Today
+
+                  <div className="flex-1 h-[1px] bg-white/10"></div>
+
+                </div>
+
+                {messages.map(
                   (
-                    prev
-                  ) => [
-                    ...prev,
-                    {
-                      role:
-                        "bot",
-                      text:
-                        "A human support member has been notified."
+                    msg,
+                    i
+                  ) => (
+
+                    <div
+                      key={i}
+                      className={`flex animate-[fadeIn_0.25s_ease] ${
+                        msg.role ===
+                        "user"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+
+                      <div
+                        className={`flex gap-3 max-w-[90%] ${
+                          msg.role ===
+                          "user"
+                            ? "flex-row-reverse"
+                            : ""
+                        }`}
+                      >
+
+                        {/* AVATAR */}
+                        {msg.role ===
+                          "bot" && (
+
+                          <img
+                            src="/chatbot-logo.png"
+                            alt="Bot"
+                            className="w-10 h-10 object-contain mt-1"
+                          />
+
+                        )}
+
+                        {/* MESSAGE */}
+                        <div>
+
+                          <div
+                            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+                              msg.role ===
+                              "user"
+                                ? "bg-cyan-400 text-black rounded-br-md"
+                                : "bg-white/10 text-white rounded-bl-md"
+                            }`}
+                          >
+
+                            {msg.text}
+
+                          </div>
+
+                          <p
+                            className={`text-xs text-slate-500 mt-2 ${
+                              msg.role ===
+                              "user"
+                                ? "text-right"
+                                : "text-left"
+                            }`}
+                          >
+
+                            {msg.time}
+
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  )
+                )}
+
+                {loading && (
+
+                  <div className="flex gap-3 animate-[fadeIn_0.25s_ease]">
+
+                    <img
+                      src="/chatbot-logo.png"
+                      alt="Bot"
+                      className="w-10 h-10 object-contain"
+                    />
+
+                    <div className="bg-white/10 px-5 py-4 rounded-[26px] rounded-bl-md text-white flex gap-1 items-center">
+
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce"></span>
+
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:0.15s]"></span>
+
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:0.3s]"></span>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+              </div>
+
+              {/* INPUT AREA */}
+              <div className="p-4 border-t border-white/10 bg-white/[0.02]">
+
+                <div className="flex items-center gap-3">
+
+                  <input
+                    ref={inputRef}
+                    value={input}
+                    onKeyDown={
+                      handleKeyDown
                     }
-                  ]
-                );
+                    onChange={(e) =>
+                      setInput(
+                        e.target.value
+                      )
+                    }
+                    placeholder="Type your message..."
+                    className="flex-1 px-5 py-4 rounded-full bg-white/5 border border-white/10 text-white outline-none"
+                  />
 
-              }}
-              disabled={
-                humanRequested
-              }
-              className={`text-sm transition ${
-                humanRequested
-                  ? "text-gray-500"
-                  : "text-cyan-400 hover:text-cyan-300"
-              }`}
-            >
+                  <button
+                    disabled={
+                      loading
+                    }
+                    onClick={
+                      sendMessage
+                    }
+                    className={`w-14 h-14 rounded-full text-black font-bold text-xl flex items-center justify-center transition ${
+                      loading
+                        ? "bg-cyan-700 cursor-not-allowed"
+                        : "bg-cyan-400 hover:scale-105"
+                    }`}
+                  >
 
-              {humanRequested
-                ? "Human support requested"
-                : "Talk to a human"}
+                    ➤
 
-            </button>
+                  </button>
 
-            <p className="text-xs text-slate-500">
+                </div>
 
-              Powered by Vowed Bond AI
+                <div className="flex items-center justify-between mt-3">
 
-            </p>
+                  <button
+                    onClick={async () => {
 
-          </div>
+                      if (
+                        humanRequested
+                      )
+                        return;
+
+                      setHumanRequested(
+                        true
+                      );
+
+                      await fetch(
+                        "/api/handoff",
+                        {
+                          method:
+                            "POST",
+                          headers:
+                            {
+                              "Content-Type":
+                                "application/json"
+                            },
+                          body:
+                            JSON.stringify(
+                              {
+                                messages,
+                                userName,
+                                conversationId
+                              }
+                            )
+                        }
+                      );
+
+                      setMessages(
+                        (
+                          prev
+                        ) => [
+                          ...prev,
+                          {
+                            role:
+                              "bot",
+                            text:
+                              "A human support member has been notified.",
+                            time:
+                              new Date().toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                              })
+                          }
+                        ]
+                      );
+
+                    }}
+                    disabled={
+                      humanRequested
+                    }
+                    className={`text-sm transition ${
+                      humanRequested
+                        ? "text-gray-500"
+                        : "text-cyan-400 hover:text-cyan-300"
+                    }`}
+                  >
+
+                    {humanRequested
+                      ? "Human support requested"
+                      : "Talk to a human"}
+
+                  </button>
+
+                  <p className="text-xs text-slate-500">
+
+                    Powered by Vowed Bond AI
+
+                  </p>
+
+                </div>
+
+              </div>
+
+            </>
+
+          )}
 
         </div>
 
-      </>
-
-    )}
-
-  </div>
-
-)}
+      )}
 
       <style>{`
         @keyframes trace {
@@ -777,6 +931,41 @@ export default function App() {
           50% { clip-path: inset(0 0 0 98%); }
           75% { clip-path: inset(98% 0 0 0); }
           100% { clip-path: inset(0 98% 0 0); }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes popup {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.15);
+          border-radius: 999px;
         }
       `}</style>
 
