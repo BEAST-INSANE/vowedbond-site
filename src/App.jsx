@@ -280,7 +280,7 @@ export default function App() {
           await res.json();
    await new Promise(
     (resolve) =>
-    setTimeout(resolve, 350)
+    setTimeout(resolve, 0)
    );
         setMessages((prev) => [
           ...prev,
