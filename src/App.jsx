@@ -454,7 +454,7 @@ localStorage.setItem(
         className="relative overflow-hidden min-h-[140px] p-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-2xl hover:scale-105 transition duration-300"
       >
 
-        <div
+      <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
