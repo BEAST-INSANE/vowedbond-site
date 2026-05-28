@@ -164,57 +164,48 @@ useEffect(() => {
 
         // CHAT DELETED
         if (
-  Array.isArray(data) &&
-  data.length === 0 &&
-  messages.length > 1
-) {
+  localStorage.removeItem(
+  "conversation_id"
+);
 
-          localStorage.removeItem(
-            "conversation_id"
-          );
+localStorage.removeItem(
+  "vb_messages"
+);
 
-          const newId =
-            "vb_" +
-            Math.random()
-              .toString(36)
-              .substring(2, 12);
+localStorage.removeItem(
+  "vb_user_name"
+);
 
-          localStorage.setItem(
-            "conversation_id",
-            newId
-          );
+localStorage.removeItem(
+  "vb_popup_completed"
+);
 
-          setConversationId(
-            newId
-          );
+localStorage.removeItem(
+  "lastAdminReply"
+);
 
-          setMessages([
-            {
-              role: "bot",
-              text:
-                "Hi! I'm Vowed Bond AI. How can I help?"
-            }
-          ]);
+const newId =
+  "vb_" +
+  Math.random()
+    .toString(36)
+    .substring(2, 12);
 
-          setShowNamePopup(
-            true
-          );
+localStorage.setItem(
+  "conversation_id",
+  newId
+);
 
-          setUserName("");
+setConversationId(newId);
 
-        }
+setMessages([]);
 
-      } catch (err) {
+setUserName("");
 
-        console.log(err);
+setTempName("");
 
-      }
+setHumanRequested(false);
 
-    };
-
-  checkConversation();
-
-}, [conversationId]);
+setShowNamePopup(true);
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
