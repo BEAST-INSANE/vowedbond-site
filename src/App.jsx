@@ -74,30 +74,13 @@ export default function App() {
   const inputRef = useRef(null);
 
   // UNIQUE CONVERSATION ID
-  const [conversationId, setConversationId] =
-useState(() => {
+const [conversationId, setConversationId] = useState(() => {
 
-  let saved =
+  return (
     localStorage.getItem(
       "conversation_id"
-    );
-
-  if (!saved) {
-
-    saved =
-      "vb_" +
-      Math.random()
-        .toString(36)
-        .substring(2, 12);
-
-    localStorage.setItem(
-      "conversation_id",
-      saved
-    );
-
-  }
-
-  return saved;
+    ) || ""
+  );
 
 });
 
