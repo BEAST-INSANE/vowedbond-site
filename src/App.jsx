@@ -874,7 +874,6 @@ localStorage.setItem(
   </React.Fragment>
 
 ))}
-               )}
 
               </div>
 
