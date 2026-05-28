@@ -612,7 +612,7 @@ export default function Dashboard() {
     Delete Chat
 
   </button>
-
+</div>
 </div>
 
               {/* CHAT AREA */}
