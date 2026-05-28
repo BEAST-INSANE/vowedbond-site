@@ -204,50 +204,7 @@ setTempName("");
 
 setHumanRequested(false);
 
-setShowNamePopup(true);
-
-          const newId =
-            "vb_" +
-            Math.random()
-              .toString(36)
-              .substring(2, 12);
-
-          localStorage.setItem(
-            "conversation_id",
-            newId
-          );
-
-          setConversationId(
-            newId
-          );
-
-          setMessages([
-            {
-              role: "bot",
-              text:
-                "Hi! I'm Vowed Bond AI. How can I help?"
-            }
-          ]);
-
-          setShowNamePopup(
-            true
-          );
-
-          setUserName("");
-
-        }
-
-      } catch (err) {
-
-        console.log(err);
-
-      }
-
-    };
-
-  checkConversation();
-
-}, [conversationId]);
+setShowNamePopup(true);        
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
