@@ -163,58 +163,70 @@ useEffect(() => {
           await res.json();
 
         // CHAT DELETED
-if (
-  Array.isArray(data) &&
-  data.length === 0 &&
-  messages.length > 1
-) {
+        if (
+          Array.isArray(data) &&
+          data.length === 0 &&
+          messages.length > 1
+        ) {
 
-  localStorage.removeItem(
-    "conversation_id"
-  );
+          localStorage.removeItem(
+            "conversation_id"
+          );
 
-  localStorage.removeItem(
-    "vb_messages"
-  );
+          localStorage.removeItem(
+            "vb_messages"
+          );
 
-  localStorage.removeItem(
-    "vb_user_name"
-  );
+          localStorage.removeItem(
+            "vb_user_name"
+          );
 
-  localStorage.removeItem(
-    "vb_popup_completed"
-  );
+          localStorage.removeItem(
+            "vb_popup_completed"
+          );
 
-  localStorage.removeItem(
-    "lastAdminReply"
-  );
+          localStorage.removeItem(
+            "lastAdminReply"
+          );
 
-  const newId =
-    "vb_" +
-    Math.random()
-      .toString(36)
-      .substring(2, 12);
+          const newId =
+            "vb_" +
+            Math.random()
+              .toString(36)
+              .substring(2, 12);
 
-  localStorage.setItem(
-    "conversation_id",
-    newId
-  );
+          localStorage.setItem(
+            "conversation_id",
+            newId
+          );
 
-  setConversationId(
-    newId
-  );
+          setConversationId(
+            newId
+          );
 
-  setMessages([]);
+          setMessages([]);
 
-  setUserName("");
+          setUserName("");
 
-  setTempName("");
+          setTempName("");
 
-  setHumanRequested(false);
+          setHumanRequested(false);
 
-  setShowNamePopup(true);
+          setShowNamePopup(true);
 
-}        
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    };
+
+  checkConversation();
+
+}, [conversationId, messages]);        
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
