@@ -163,15 +163,48 @@ useEffect(() => {
           await res.json();
 
         // CHAT DELETED
-        if (
-  Array.isArray(data) &&
-  data.length === 0 &&
-  messages.length > 1
-) {
+        localStorage.removeItem(
+  "conversation_id"
+);
 
-          localStorage.removeItem(
-            "conversation_id"
-          );
+localStorage.removeItem(
+  "vb_messages"
+);
+
+localStorage.removeItem(
+  "vb_user_name"
+);
+
+localStorage.removeItem(
+  "vb_popup_completed"
+);
+
+localStorage.removeItem(
+  "lastAdminReply"
+);
+
+const newId =
+  "vb_" +
+  Math.random()
+    .toString(36)
+    .substring(2, 12);
+
+localStorage.setItem(
+  "conversation_id",
+  newId
+);
+
+setConversationId(newId);
+
+setMessages([]);
+
+setUserName("");
+
+setTempName("");
+
+setHumanRequested(false);
+
+setShowNamePopup(true);
 
           const newId =
             "vb_" +
