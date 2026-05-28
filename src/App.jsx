@@ -140,6 +140,78 @@ useState(() => {
     showNamePopup
   ]);
 
+// CHECK IF CHAT EXISTS
+useEffect(() => {
+
+  if (!conversationId)
+    return;
+
+  const checkConversation =
+    async () => {
+
+      try {
+
+        const res =
+          await fetch(
+            `/api/chats?conversationId=${conversationId}`
+          );
+
+        const data =
+          await res.json();
+
+        // CHAT DELETED
+        if (
+          Array.isArray(data) &&
+          data.length === 0
+        ) {
+
+          localStorage.removeItem(
+            "conversation_id"
+          );
+
+          const newId =
+            "vb_" +
+            Math.random()
+              .toString(36)
+              .substring(2, 12);
+
+          localStorage.setItem(
+            "conversation_id",
+            newId
+          );
+
+          setConversationId(
+            newId
+          );
+
+          setMessages([
+            {
+              role: "bot",
+              text:
+                "Hi! I'm Vowed Bond AI. How can I help?"
+            }
+          ]);
+
+          setShowNamePopup(
+            true
+          );
+
+          setUserName("");
+
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    };
+
+  checkConversation();
+
+}, [conversationId]);
+
   // CHECK ADMIN REPLIES
   useEffect(() => {
 
