@@ -782,32 +782,98 @@ localStorage.setItem(
 
                 </div>
 
-                {messages.map(
-                  (
-                    msg,
-                    i
-                  ) => (
-                    <React.Fragment key={i}>
+                {messages.map((msg, i) => (
 
-{msg.role === "human" &&
- i > 0 &&
- messages[i - 1].role !== "human" && (
+  <React.Fragment key={i}>
 
-  <div className="flex items-center gap-3 my-4">
+    {msg.role === "human" &&
+      i > 0 &&
+      messages[i - 1].role !== "human" && (
 
-    <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+      <div className="flex items-center gap-3 my-4">
 
-    <p className="text-xs text-yellow-300 uppercase tracking-[3px]">
+        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
 
-      Human Support Joined
+        <p className="text-xs text-yellow-300 uppercase tracking-[3px]">
 
-    </p>
+          Human Support Joined
 
-    <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+        </p>
 
-  </div>
+        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
 
-)}
+      </div>
+
+    )}
+
+    <div
+      className={`flex animate-[fadeIn_0.25s_ease] ${
+        msg.role === "user"
+          ? "justify-end"
+          : "justify-start"
+      }`}
+    >
+
+      <div
+        className={`flex gap-3 max-w-[90%] ${
+          msg.role === "user"
+            ? "flex-row-reverse"
+            : ""
+        }`}
+      >
+
+        {(msg.role === "bot" ||
+          msg.role === "human") && (
+
+          <img
+            src={
+              msg.role === "human"
+                ? "/human-logo.png"
+                : "/chatbot-logo.png"
+            }
+            alt="Avatar"
+            className="w-10 h-10 object-contain mt-1"
+          />
+
+        )}
+
+        <div>
+
+          <div
+            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+              msg.role === "user"
+                ? "bg-cyan-400 text-black rounded-br-md"
+                : msg.role === "human"
+                ? "bg-yellow-400 text-black rounded-bl-md"
+                : "bg-white/10 text-white rounded-bl-md"
+            }`}
+          >
+
+            {msg.text}
+
+          </div>
+
+          <p
+            className={`text-xs text-slate-500 mt-2 ${
+              msg.role === "user"
+                ? "text-right"
+                : "text-left"
+            }`}
+          >
+
+            {msg.time}
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </React.Fragment>
+
+))}
                     <div
                       key={i}
                       className={`flex animate-[fadeIn_0.25s_ease] ${
