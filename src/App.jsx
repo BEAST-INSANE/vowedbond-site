@@ -844,8 +844,7 @@ localStorage.setItem(
                           : "justify-start"
                       }`}
                     >
-
-                      <div
+                      
                         <div
   className={`flex gap-3 max-w-[90%] ${
     msg.role === "user"
