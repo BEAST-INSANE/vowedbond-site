@@ -802,7 +802,7 @@ localStorage.setItem(
 
         <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
 
-      </div>
+       </div>
 
     )}
 
