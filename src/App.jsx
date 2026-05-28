@@ -58,7 +58,15 @@ export default function App() {
     useState(false);
 
   const [humanRequested, setHumanRequested] =
-    useState(false);
+  useState(() => {
+
+    return (
+      localStorage.getItem(
+        "humanRequested"
+      ) === "true"
+    );
+
+  });
 
   const [lastAdminReply, setLastAdminReply] =
   useState(() => {
@@ -937,6 +945,11 @@ localStorage.setItem(
                         true
                       );
 
+                   localStorage.setItem(
+                       "humanRequested", 
+                       "true"
+                                         );
+ 
                       await fetch(
                         "/api/handoff",
                         {
