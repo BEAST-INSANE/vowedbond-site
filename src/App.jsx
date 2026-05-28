@@ -267,7 +267,7 @@ localStorage.setItem(
 
               {
                 role: "human",
-                text: data.message
+                text: data.message,
                 time:
                   new Date().toLocaleTimeString([], {
                     hour: "2-digit",
