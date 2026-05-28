@@ -842,9 +842,10 @@ localStorage.setItem(
     msg.role === "user"
       ? "flex-row-reverse"
       : ""
-  }`}
+  }`}                  
 >
 
+{/* AVATAR */}
   {(msg.role === "bot" ||
     msg.role === "human") && (
 
@@ -859,18 +860,6 @@ localStorage.setItem(
     />
 
   )}
-
-                        {/* AVATAR */}
-                        {msg.role ===
-                          "bot" && (
-
-                          <img
-                            src="/chatbot-logo.png"
-                            alt="Bot"
-                            className="w-10 h-10 object-contain mt-1"
-                          />
-
-                        )}
 
                         {/* MESSAGE */}
                         <div>
