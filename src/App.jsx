@@ -884,16 +884,18 @@ localStorage.setItem(
                         <div>
 
                           <div
-                            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
-                              msg.role === "user"
-  ? "bg-cyan-400 text-black rounded-br-md"
-  : msg.role === "human"
-  ? "bg-yellow-400 text-black rounded-bl-md"
-  : "bg-white/10 text-white rounded-bl-md"
+  className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+    msg.role === "user"
+      ? "bg-cyan-400 text-black rounded-br-md"
+      : msg.role === "human"
+      ? "bg-yellow-400 text-black rounded-bl-md"
+      : "bg-white/10 text-white rounded-bl-md"
+  }`}
+>
 
-                            {msg.text}
+  {msg.text}
 
-                          </div>
+</div>
 
                           <p
                             className={`text-xs text-slate-500 mt-2 ${
