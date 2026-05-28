@@ -901,6 +901,43 @@ setConversationId(newId);
   </React.Fragment>
 
 ))}
+                {loading && (
+
+  <div className="flex justify-start animate-[fadeIn_0.25s_ease]">
+
+    <div className="flex gap-3 max-w-[90%]">
+
+      <img
+        src="/chatbot-logo.png"
+        alt="Bot"
+        className="w-10 h-10 object-contain mt-1"
+      />
+
+      <div className="bg-white/10 text-white rounded-[26px] rounded-bl-md px-5 py-4 flex items-center gap-1">
+
+        <span className="w-2 h-2 bg-white rounded-full animate-bounce"></span>
+
+        <span
+          className="w-2 h-2 bg-white rounded-full animate-bounce"
+          style={{
+            animationDelay: "0.2s"
+          }}
+        ></span>
+
+        <span
+          className="w-2 h-2 bg-white rounded-full animate-bounce"
+          style={{
+            animationDelay: "0.4s"
+          }}
+        ></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
 
               </div>
 
