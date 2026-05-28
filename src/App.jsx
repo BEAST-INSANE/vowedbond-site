@@ -373,7 +373,7 @@ localStorage.setItem(
           await res.json();
    await new Promise(
     (resolve) =>
-    setTimeout(resolve, 300)
+    setTimeout(resolve, 1200)
    );
         setMessages((prev) => [
           ...prev,
