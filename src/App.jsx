@@ -61,7 +61,13 @@ export default function App() {
     useState(false);
 
   const [lastAdminReply, setLastAdminReply] =
-    useState("");
+  useState(() => {
+
+    return localStorage.getItem(
+      "lastAdminReply"
+    ) || "";
+
+  });
 
   const chatRef = useRef(null);
 
@@ -239,8 +245,13 @@ useEffect(() => {
           ) {
 
             setLastAdminReply(
-              data.message
-            );
+  data.message
+);
+
+localStorage.setItem(
+  "lastAdminReply",
+  data.message
+);
 
             setMessages((prev) => [
 
