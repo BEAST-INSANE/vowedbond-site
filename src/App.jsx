@@ -68,32 +68,32 @@ export default function App() {
   const inputRef = useRef(null);
 
   // UNIQUE CONVERSATION ID
-  const [conversationId] =
-    useState(() => {
+  const [conversationId, setConversationId] =
+useState(() => {
 
-      let savedId =
-        localStorage.getItem(
-          "vb_conversation_id"
-        );
+  let saved =
+    localStorage.getItem(
+      "conversation_id"
+    );
 
-      if (!savedId) {
+  if (!saved) {
 
-        savedId =
-          "vb_" +
-          Math.random()
-            .toString(36)
-            .substring(2, 12);
+    saved =
+      "vb_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 12);
 
-        localStorage.setItem(
-          "vb_conversation_id",
-          savedId
-        );
+    localStorage.setItem(
+      "conversation_id",
+      saved
+    );
 
-      }
+  }
 
-      return savedId;
+  return saved;
 
-    });
+});
 
   // SAVE MESSAGES
   useEffect(() => {
