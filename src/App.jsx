@@ -31,29 +31,40 @@ export default function App() {
     useState("");
 
   const [messages, setMessages] =
-    useState(() => {
+  useState(() => {
 
-      const saved =
-        localStorage.getItem(
-          "vb_messages"
-        );
+    const savedName =
+      localStorage.getItem(
+        "vb_user_name"
+      );
 
-      return saved
-        ? JSON.parse(saved)
-        : [
-            {
-              role: "bot",
-              text:
-                "Hi! I'm Vowed Bond AI. How can I help?",
-              time:
-                new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit"
-                })
-            }
-          ];
+    if (!savedName) {
 
-    });
+      return [];
+
+    }
+
+    const saved =
+      localStorage.getItem(
+        "vb_messages"
+      );
+
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            role: "bot",
+            text:
+              "Hi! I'm Vowed Bond AI. How can I help?",
+            time:
+              new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
+          }
+        ];
+
+  });
 
   const [input, setInput] =
     useState("");
