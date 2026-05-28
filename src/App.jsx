@@ -795,6 +795,27 @@ localStorage.setItem(
                     msg,
                     i
                   ) => (
+                    <React.Fragment key={i}>
+
+  {msg.role === "human" &&
+    i > 0 &&
+    messages[i - 1].role !== "human" && (
+
+    <div className="flex items-center gap-3 my-4">
+
+      <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+
+      <p className="text-xs text-yellow-300 uppercase tracking-[3px]">
+
+        Human Support Joined
+
+      </p>
+
+      <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+
+    </div>
+
+  )}
 {msg.role === "human" &&
  i > 0 &&
  messages[i - 1].role !== "human" && (
@@ -886,7 +907,7 @@ localStorage.setItem(
                       </div>
 
                     </div>
-
+</React.Fragment>
                   )
                 )}
 
