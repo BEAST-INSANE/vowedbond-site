@@ -19,12 +19,11 @@ export default function App() {
   const [showNamePopup, setShowNamePopup] =
   useState(() => {
 
-    const savedName =
+    return (
       localStorage.getItem(
-        "vb_user_name"
-      );
-
-    return !savedName;
+        "vb_popup_completed"
+      ) !== "true"
+    );
 
   });
   const [tempName, setTempName] =
@@ -711,6 +710,11 @@ setConversationId(newId);
                   setShowNamePopup(
                     false
                   );
+                  
+                  localStorage.setItem(
+  "vb_popup_completed",
+  "true"
+);
 
                   setMessages([
                     {
