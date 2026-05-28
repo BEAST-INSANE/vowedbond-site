@@ -17,12 +17,16 @@ export default function App() {
     );
 
   const [showNamePopup, setShowNamePopup] =
-    useState(
-      !localStorage.getItem(
-        "vb_user_name"
-      )
-    );
+  useState(() => {
 
+    const savedName =
+      localStorage.getItem(
+        "vb_user_name"
+      );
+
+    return !savedName;
+
+  });
   const [tempName, setTempName] =
     useState("");
 
