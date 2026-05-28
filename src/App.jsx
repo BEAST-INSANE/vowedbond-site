@@ -161,9 +161,10 @@ useEffect(() => {
 
         // CHAT DELETED
         if (
-          Array.isArray(data) &&
-          data.length === 0
-        ) {
+  Array.isArray(data) &&
+  data.length === 0 &&
+  messages.length > 1
+) {
 
           localStorage.removeItem(
             "conversation_id"
