@@ -944,8 +944,8 @@ localStorage.setItem(
 
                     </div>
 </React.Fragment>
-                  )
-                )}
+
+))}
 
                 {loading && (
 
