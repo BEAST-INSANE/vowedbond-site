@@ -163,48 +163,58 @@ useEffect(() => {
           await res.json();
 
         // CHAT DELETED
-        localStorage.removeItem(
-  "conversation_id"
-);
+if (
+  Array.isArray(data) &&
+  data.length === 0 &&
+  messages.length > 1
+) {
 
-localStorage.removeItem(
-  "vb_messages"
-);
+  localStorage.removeItem(
+    "conversation_id"
+  );
 
-localStorage.removeItem(
-  "vb_user_name"
-);
+  localStorage.removeItem(
+    "vb_messages"
+  );
 
-localStorage.removeItem(
-  "vb_popup_completed"
-);
+  localStorage.removeItem(
+    "vb_user_name"
+  );
 
-localStorage.removeItem(
-  "lastAdminReply"
-);
+  localStorage.removeItem(
+    "vb_popup_completed"
+  );
 
-const newId =
-  "vb_" +
-  Math.random()
-    .toString(36)
-    .substring(2, 12);
+  localStorage.removeItem(
+    "lastAdminReply"
+  );
 
-localStorage.setItem(
-  "conversation_id",
-  newId
-);
+  const newId =
+    "vb_" +
+    Math.random()
+      .toString(36)
+      .substring(2, 12);
 
-setConversationId(newId);
+  localStorage.setItem(
+    "conversation_id",
+    newId
+  );
 
-setMessages([]);
+  setConversationId(
+    newId
+  );
 
-setUserName("");
+  setMessages([]);
 
-setTempName("");
+  setUserName("");
 
-setHumanRequested(false);
+  setTempName("");
 
-setShowNamePopup(true);        
+  setHumanRequested(false);
+
+  setShowNamePopup(true);
+
+}        
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
