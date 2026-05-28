@@ -808,12 +808,20 @@ localStorage.setItem(
 
                       <div
                         className={`flex gap-3 max-w-[90%] ${
-                          msg.role ===
-                          "user"
-                            ? "flex-row-reverse"
-                            : ""
-                        }`}
-                      >
+                          {(msg.role === "bot" ||
+  msg.role === "human") && (
+
+  <img
+    src={
+      msg.role === "human"
+        ? "/human-logo.png"
+        : "/chatbot-logo.png"
+    }
+    alt="Avatar"
+    className="w-10 h-10 object-contain mt-1"
+  />
+
+)}
 
                         {/* AVATAR */}
                         {msg.role ===
