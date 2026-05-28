@@ -676,6 +676,19 @@ localStorage.setItem(
                     cleaned
                   );
 
+                  const newId =
+  "vb_" +
+  Math.random()
+    .toString(36)
+    .substring(2, 12);
+
+localStorage.setItem(
+  "conversation_id",
+  newId
+);
+
+setConversationId(newId);
+
                   setUserName(
                     cleaned
                   );
