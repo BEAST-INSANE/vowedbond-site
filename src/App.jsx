@@ -226,7 +226,7 @@ useEffect(() => {
 
   checkConversation();
 
-}, [conversationId, messages]);        
+}, [conversationId]);
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
