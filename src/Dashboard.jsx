@@ -113,6 +113,36 @@ export default function Dashboard() {
 
           }
 
+// FIRST LOAD FIX
+if (
+  Object.keys(
+    seenMessages
+  ).length === 0
+) {
+
+  const initialSeen = {};
+
+  data.forEach((msg) => {
+
+    initialSeen[msg.id] =
+      true;
+
+  });
+
+  setSeenMessages(
+    initialSeen
+  );
+
+  localStorage.setItem(
+    "seenMessages",
+    JSON.stringify(
+      initialSeen
+    )
+  );
+
+}
+
+
           setUnreadCounts((prev) => {
 
             const updated = {
