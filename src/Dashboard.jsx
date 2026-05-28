@@ -567,13 +567,50 @@ export default function Dashboard() {
                 </div>
 
                 {/* DELETE BUTTON */}
-                <button className="px-5 py-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition">
+                <button
+  onClick={async () => {
 
-                  Delete Chat
+    const confirmed =
+      confirm(
+        "Delete this conversation permanently?"
+      );
 
-                </button>
+    if (!confirmed)
+      return;
 
-              </div>
+    await fetch(
+      "/api/deleteChat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          conversation_id:
+            selectedUser
+        })
+      }
+    );
+
+    // REMOVE FROM UI
+    setRows((prev) =>
+      prev.filter(
+        (msg) =>
+          msg.conversation_id !==
+          selectedUser
+      )
+    );
+
+    setSelectedUser(null);
+
+  }}
+  className="px-5 py-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition"
+>
+
+  Delete Chat
+
+</button>
 
               {/* CHAT AREA */}
               <div
