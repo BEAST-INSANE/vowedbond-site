@@ -111,14 +111,14 @@ const [conversationId, setConversationId] = useState(() => {
   // AUTO SCROLL
   useEffect(() => {
 
-    if (chatRef.current) {
+  if (chatRef.current) {
 
-      chatRef.current.scrollTop =
-        chatRef.current.scrollHeight;
+    chatRef.current.scrollTop =
+      chatRef.current.scrollHeight;
 
-    }
+  }
 
-  }, [messages, loading]);
+}, [messages, loading, chatOpen]);
 
   // AUTO FOCUS
   useEffect(() => {
