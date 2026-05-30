@@ -230,18 +230,18 @@ if (
   // AUTO SCROLL
   useEffect(() => {
 
-    if (chatRef.current) {
+  if (chatRef.current) {
+
+    setTimeout(() => {
 
       chatRef.current.scrollTop =
-        chatRef.current
-          .scrollHeight;
+        chatRef.current.scrollHeight;
 
-    }
+    }, 100);
 
-  }, [
-    rows,
-    selectedUser
-  ]);
+  }
+
+}, [selectedUser]);
 
   // UNIQUE CHATS
   const uniqueChats = [];
