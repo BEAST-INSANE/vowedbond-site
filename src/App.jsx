@@ -375,7 +375,7 @@ export default function App() {
             AI Support Automation
           </p>
 
-          <h1 className="display-font mt-6 text-3xl md:text-7xl lg:text-8xl font-bold leading-[0.92] tracking-tight">
+          <h1 className="display-font mt-6 text-3xl md:text-7xl lg:text-8xl font-bold leading-[1.02] tracking-tight">
   Support <span className="text-emerald-400">Customers</span> 24/7
   <br />
   Without Hiring
