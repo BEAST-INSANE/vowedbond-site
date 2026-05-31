@@ -837,7 +837,7 @@ export default function App() {
       {/* CHAT BUTTON */}
       <button
         onClick={() => setChatOpen(!chatOpen)}
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-emerald-400/60 shadow-[0_0_25px_rgba(16,185,129,0.35)] flex items-center justify-center hover:scale-110 transition duration-300 overflow-hidden"
+        className="fixed bottom-24 right-4 z-50 w-16 h-16 rounded-full bg-slate-900 border border-emerald-400/60 shadow-[0_0_25px_rgba(16,185,129,0.35)] flex items-center justify-center hover:scale-110 transition duration-300 overflow-hidden"
       >
         <img
           src="/chatbot-logo.png"
