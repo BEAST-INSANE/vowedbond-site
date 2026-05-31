@@ -370,7 +370,7 @@ export default function App() {
         </nav>
 
         {/* HERO */}
-        <section id="top" className="pt-2 md:pt-16 pb-8 md:pb-12 text-center">
+        <section id="top" className="pt-0 md:pt-16 pb-8 md:pb-12 text-center">
           <p className="text-emerald-400/90 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
             AI Support Automation
           </p>
