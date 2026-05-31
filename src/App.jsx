@@ -349,7 +349,7 @@ export default function App() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* NAVBAR */}
-      <nav className="flex items-center justify-between py-16 overflow-visible">
+      <nav className="flex items-center justify-between py-2 overflow-visible">
           <button
             onClick={() => scrollToSection("top")}
             className="flex items-center gap-3 text-left"
