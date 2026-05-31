@@ -602,11 +602,11 @@ export default function App() {
         {/* BUILD YOUR OWN AI ASSISTANT */}
         <section id="builder" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.25em] text-[15px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.20em] text-[17px] md:text-xs font-semibold">
               Build Your Own AI Assistant
             </p>
 
-            <h2 className="display-font ...">
+            <h2 className="display-font mt-10 text-4xl md:text-6xl font-bold leading-tight">
   Create And Preview
   <br />
   Your <span className="text-emerald-400">Assistant</span> In Seconds
