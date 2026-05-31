@@ -349,7 +349,7 @@ export default function App() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* NAVBAR */}
-      <nav className="flex items-center justify-between py-4">
+      <nav className="flex items-center justify-between py-6 overflow-visible">
           <button
             onClick={() => scrollToSection("top")}
             className="flex items-center gap-3 text-left"
@@ -357,7 +357,7 @@ export default function App() {
             <img
   src="/logo.png"
   alt="Vowed Bond"
-  className="h-66 md:h-60 w-auto object-contain"
+  className="h-28 md:h-32 w-auto object-contain -my-8"
 />
           </button>
 
