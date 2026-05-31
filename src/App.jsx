@@ -472,7 +472,7 @@ export default function App() {
               Dashboard Preview
             </p>
 
-            <h2 className="display-font mt-8 text-4xl md:text-6xl font-bold leading-tight">
+            <h2 className="display-font mt-10 text-4xl md:text-6xl font-bold leading-tight">
   Answer And Manage
   <br />
   Every Conversation From One Simple <span className="text-emerald-400">Dashboard</span>
