@@ -726,7 +726,7 @@ export default function App() {
         {/* FAQ */}
         <section id="faq" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.15em] text-[17px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.11em] text-[19px] md:text-xs font-semibold">
               FAQ
             </p>
 
