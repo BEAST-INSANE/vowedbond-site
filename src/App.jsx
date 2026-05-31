@@ -4,6 +4,39 @@ import React, {
   useEffect
 } from "react";
 
+const FAQ_ITEMS = [
+  {
+    question: "What is a dashboard?",
+    answer:
+      "A dashboard is the control room for your AI assistant. You can view conversations, manage support requests, and keep track of customer activity in one place."
+  },
+  {
+    question: "How does the chatbot learn my business?",
+    answer:
+      "You give us your business details, website information, and instructions. We use that to shape the assistant's replies and behavior."
+  },
+  {
+    question: "Can I respond to customers myself?",
+    answer:
+      "Yes. You can take over conversations anytime using human support. The dashboard keeps everything organized."
+  },
+  {
+    question: "Do I need coding knowledge?",
+    answer:
+      "No. The chatbot is designed to be simple to install and manage, even if you are not technical."
+  },
+  {
+    question: "How long does installation take?",
+    answer:
+      "That depends on the business and the setup, but the goal is always to keep installation as smooth and quick as possible."
+  },
+  {
+    question: "How much does it cost?",
+    answer:
+      "Pricing depends on your business needs, features, and customization level. We estimate cost based on what you actually need."
+  }
+];
+
 export default function App() {
 
   const [chatOpen, setChatOpen] =
@@ -17,53 +50,54 @@ export default function App() {
     );
 
   const [showNamePopup, setShowNamePopup] =
-  useState(() => {
+    useState(() => {
 
-    return (
-      localStorage.getItem(
-        "vb_popup_completed"
-      ) !== "true"
-    );
+      return (
+        localStorage.getItem(
+          "vb_popup_completed"
+        ) !== "true"
+      );
 
-  });
+    });
+
   const [tempName, setTempName] =
     useState("");
 
   const [messages, setMessages] =
-  useState(() => {
+    useState(() => {
 
-    const savedName =
-      localStorage.getItem(
-        "vb_user_name"
-      );
+      const savedName =
+        localStorage.getItem(
+          "vb_user_name"
+        );
 
-    if (!savedName) {
+      if (!savedName) {
 
-      return [];
+        return [];
 
-    }
+      }
 
-    const saved =
-      localStorage.getItem(
-        "vb_messages"
-      );
+      const saved =
+        localStorage.getItem(
+          "vb_messages"
+        );
 
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            role: "bot",
-            text:
-              "Hi! I'm Vowed Bond AI. How can I help?",
-            time:
-              new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-              })
-          }
-        ];
+      return saved
+        ? JSON.parse(saved)
+        : [
+            {
+              role: "bot",
+              text:
+                "Hi! I'm Vowed Bond AI. How can I help?",
+              time:
+                new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })
+            }
+          ];
 
-  });
+    });
 
   const [input, setInput] =
     useState("");
@@ -72,31 +106,57 @@ export default function App() {
     useState(false);
 
   const [humanRequested, setHumanRequested] =
-  useState(false);
+    useState(false);
 
   const [lastAdminReply, setLastAdminReply] =
-  useState(() => {
+    useState(() => {
 
-    return localStorage.getItem(
-      "lastAdminReply"
-    ) || "";
+      return localStorage.getItem(
+        "lastAdminReply"
+      ) || "";
 
-  });
+    });
+
+  const [buildBusinessName, setBuildBusinessName] =
+    useState("Acme Bakery");
+
+  const [buildBotName, setBuildBotName] =
+    useState("Acme Assistant");
+
+  const [buildPrompt, setBuildPrompt] =
+    useState(
+      "Answer customer questions, help with bookings, and guide visitors to the right information."
+    );
+
+  const [previewReady, setPreviewReady] =
+    useState(false);
+
+  const [openFaq, setOpenFaq] =
+    useState(0);
 
   const chatRef = useRef(null);
 
   const inputRef = useRef(null);
 
-  // UNIQUE CONVERSATION ID
-const [conversationId, setConversationId] = useState(() => {
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  };
 
-  return (
-    localStorage.getItem(
-      "conversation_id"
-    ) || ""
-  );
-
-});
+  const businessInitials =
+    buildBusinessName
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((word) => word[0]?.toUpperCase())
+      .join("")
+      .slice(0, 2) || "VB";
 
   // SAVE MESSAGES
   useEffect(() => {
@@ -111,24 +171,24 @@ const [conversationId, setConversationId] = useState(() => {
   // AUTO SCROLL
   useEffect(() => {
 
-  if (chatRef.current) {
+    if (chatRef.current) {
 
-    chatRef.current.scrollTop =
-      chatRef.current.scrollHeight;
+      chatRef.current.scrollTop =
+        chatRef.current.scrollHeight;
 
-  }
+    }
 
-}, [messages, loading, chatOpen]);
+  }, [messages, loading, chatOpen]);
 
   // AUTO FOCUS
   useEffect(() => {
 
     if (
-  chatOpen &&
-  inputRef.current &&
-  !showNamePopup &&
-  window.innerWidth > 768
-) {
+      chatOpen &&
+      inputRef.current &&
+      !showNamePopup &&
+      window.innerWidth > 768
+    ) {
 
       setTimeout(() => {
 
@@ -143,90 +203,90 @@ const [conversationId, setConversationId] = useState(() => {
     showNamePopup
   ]);
 
-// CHECK IF CHAT EXISTS
-useEffect(() => {
+  // CHECK IF CHAT EXISTS
+  useEffect(() => {
 
-  if (!conversationId)
-    return;
+    if (!conversationId)
+      return;
 
-  const checkConversation =
-    async () => {
+    const checkConversation =
+      async () => {
 
-      try {
+        try {
 
-        const res =
-          await fetch(
-            `/api/chats?conversationId=${conversationId}`
-          );
+          const res =
+            await fetch(
+              `/api/chats?conversationId=${conversationId}`
+            );
 
-        const data =
-          await res.json();
+          const data =
+            await res.json();
 
-        // CHAT DELETED
-        if (
-          Array.isArray(data) &&
-          data.length === 0 &&
-          messages.length > 1
-        ) {
+          // CHAT DELETED
+          if (
+            Array.isArray(data) &&
+            data.length === 0 &&
+            messages.length > 1
+          ) {
 
-          localStorage.removeItem(
-            "conversation_id"
-          );
+            localStorage.removeItem(
+              "conversation_id"
+            );
 
-          localStorage.removeItem(
-            "vb_messages"
-          );
+            localStorage.removeItem(
+              "vb_messages"
+            );
 
-          localStorage.removeItem(
-            "vb_user_name"
-          );
+            localStorage.removeItem(
+              "vb_user_name"
+            );
 
-          localStorage.removeItem(
-            "vb_popup_completed"
-          );
+            localStorage.removeItem(
+              "vb_popup_completed"
+            );
 
-          localStorage.removeItem(
-            "lastAdminReply"
-          );
+            localStorage.removeItem(
+              "lastAdminReply"
+            );
 
-          const newId =
-            "vb_" +
-            Math.random()
-              .toString(36)
-              .substring(2, 12);
+            const newId =
+              "vb_" +
+              Math.random()
+                .toString(36)
+                .substring(2, 12);
 
-          localStorage.setItem(
-            "conversation_id",
-            newId
-          );
+            localStorage.setItem(
+              "conversation_id",
+              newId
+            );
 
-          setConversationId(
-            newId
-          );
+            setConversationId(
+              newId
+            );
 
-          setMessages([]);
+            setMessages([]);
 
-          setUserName("");
+            setUserName("");
 
-          setTempName("");
+            setTempName("");
 
-          setHumanRequested(false);
+            setHumanRequested(false);
 
-          setShowNamePopup(true);
+            setShowNamePopup(true);
+
+          }
+
+        } catch (err) {
+
+          console.log(err);
 
         }
 
-      } catch (err) {
+      };
 
-        console.log(err);
+    checkConversation();
 
-      }
-
-    };
-
-  checkConversation();
-
-}, [conversationId]);
+  }, [conversationId]);
 
   // CHECK ADMIN REPLIES
   useEffect(() => {
@@ -254,13 +314,13 @@ useEffect(() => {
           ) {
 
             setLastAdminReply(
-  data.message
-);
+              data.message
+            );
 
-localStorage.setItem(
-  "lastAdminReply",
-  data.message
-);
+            localStorage.setItem(
+              "lastAdminReply",
+              data.message
+            );
 
             setMessages((prev) => [
 
@@ -371,10 +431,12 @@ localStorage.setItem(
 
         const data =
           await res.json();
-   await new Promise(
-    (resolve) =>
-    setTimeout(resolve, 0)
-   );
+
+        await new Promise(
+          (resolve) =>
+            setTimeout(resolve, 250)
+        );
+
         setMessages((prev) => [
           ...prev,
           {
@@ -426,152 +488,405 @@ localStorage.setItem(
 
     };
 
-  // GLOW CARD
-  const GlowCard = ({
-    title,
-    text,
-    color =
-      "34,211,238",
-    titleClass = "",
-    textClass = ""
-  }) => {
-
-    const [pos, setPos] =
-      useState({
-        x: 50,
-        y: 50
-      });
-
-    return (
-
-      <div
-        onMouseMove={(e) => {
-
-          const r =
-            e.currentTarget.getBoundingClientRect();
-
-          setPos({
-            x:
-              e.clientX -
-              r.left,
-            y:
-              e.clientY -
-              r.top
-          });
-
-        }}
-        className="relative overflow-hidden min-h-[140px] p-6 rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-2xl hover:scale-105 transition duration-300"
-      >
-
-      <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              `radial-gradient(220px circle at ${pos.x}px ${pos.y}px, rgba(${color},0.75), rgba(${color},0.25) 35%, transparent 70%)`
-          }}
-        />
-
-        <div className="relative z-10">
-
-          <h2
-            className={`font-semibold ${titleClass}`}
-          >
-
-            {title}
-
-          </h2>
-
-          <p className={textClass}>
-
-            {text}
-
-          </p>
-
-        </div>
-
-      </div>
-
-    );
-
-  };
-
-  const TraceCard = (
-    props
-  ) => (
-
-    <div className="group rounded-3xl overflow-hidden relative">
-
-      <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
-
-        <div className="absolute inset-0 rounded-3xl border-[4px] border-transparent group-hover:border-orange-200 shadow-[0_0_42px_rgba(251,146,60,1),0_0_70px_rgba(251,146,60,0.95)] animate-[trace_1.8s_linear_infinite]"></div>
-
-      </div>
-
-      <GlowCard {...props} />
-
-    </div>
-
-  );
-
   return (
 
-    <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
-
-      {/* NAVBAR */}
-<nav className="flex items-center justify-between py-6">
-  <img
-    src="/logo.png"
-    alt="Vowed Bond"
-    className="h-12 object-contain"
-  />
-
-  <button className="px-5 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 transition font-medium">
-    Contact Us
-  </button>
-</nav>
-
-{/* HERO */}
-<section className="text-center py-20 max-w-5xl mx-auto">
-
-  <h1
-    className="text-5xl md:text-7xl font-bold leading-tight"
-    style={{ fontFamily: "var(--font-display)" }}
-  >
-    Support <span className="text-emerald-400">Customers</span> 24/7
-    <br />
-    Without Hiring More Staff
-  </h1>
-
-  <p className="mt-8 text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
-    Custom <span className="text-emerald-400">AI assistants</span> trained on
-    your business to answer questions and manage conversations from one simple
-    <span className="text-emerald-400"> dashboard</span>.
-  </p>
-
-  <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-    <button className="px-7 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 transition font-medium">
-      Get Started
-    </button>
-
-    <button className="px-7 py-3 rounded-full border border-white/20 hover:border-white/40 transition">
-      Learn More
-    </button>
-  </div>
-
-  {/* HERO VIDEO */}
-  <div className="mt-16">
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="w-full rounded-3xl border border-white/10"
+    <div
+      className="min-h-screen bg-[#0A0A0A] text-white overflow-x-hidden"
+      style={{ fontFamily: '"Manrope", sans-serif' }}
     >
-      <source src="/hero-demo.mp4" type="video/mp4" />
-    </video>
-  </div>
 
-</section>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap');
+
+        .display-font {
+          font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.15);
+          border-radius: 999px;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes popup {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* NAVBAR */}
+        <nav className="flex items-center justify-between py-6 md:py-8">
+          <button
+            onClick={() => scrollToSection("top")}
+            className="flex items-center gap-3 text-left"
+          >
+            <img
+              src="/logo.png"
+              alt="Vowed Bond"
+              className="h-20 md:h-24 object-contain"
+            />
+          </button>
+
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition"
+          >
+            Contact Us
+          </button>
+        </nav>
+
+        {/* HERO */}
+        <section id="top" className="pt-10 md:pt-16 pb-8 md:pb-12 text-center">
+          <p className="text-emerald-400/90 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+            AI Support Automation
+          </p>
+
+          <h1
+            className="display-font mt-6 text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.92] tracking-tight"
+          >
+            Support <span className="text-emerald-400">Customers</span> 24/7
+            <br />
+            Without Hiring More Staff
+          </h1>
+
+          <p className="mt-8 max-w-3xl mx-auto text-base md:text-xl text-slate-400 leading-relaxed">
+            Custom <span className="text-emerald-400">AI assistants</span> trained on your business to answer questions and manage conversations from one simple <span className="text-emerald-400">dashboard</span>.
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => scrollToSection("dashboard")}
+              className="px-7 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition"
+            >
+              See Dashboard
+            </button>
+
+            <button
+              onClick={() => scrollToSection("builder")}
+              className="px-7 py-3.5 rounded-full border border-white/15 hover:border-white/35 text-white font-semibold transition bg-white/[0.02]"
+            >
+              Build Your Own AI Assistant
+            </button>
+          </div>
+
+          {/* HERO VIDEO */}
+          <div className="mt-16 mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-white/[0.03] p-3 md:p-4 shadow-2xl">
+            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-black">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-auto object-cover"
+              >
+                <source src="/hero-demo.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </section>
+
+        {/* DASHBOARD PREVIEW */}
+        <section id="dashboard" className="py-20 md:py-28">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+              Dashboard Preview
+            </p>
+
+            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              Manage Everything From One <span className="text-emerald-400">Dashboard</span>
+            </h2>
+
+            <p className="mt-6 text-slate-400 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Monitor conversations, manage support requests, and stay in control of your AI assistant.
+            </p>
+          </div>
+
+          <div className="mt-14 max-w-6xl mx-auto">
+            <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-4 md:p-6 shadow-2xl">
+              <div className="rounded-[1.5rem] border border-white/10 bg-[#060816] overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/[0.03]">
+                  <span className="w-3 h-3 rounded-full bg-red-400/80"></span>
+                  <span className="w-3 h-3 rounded-full bg-yellow-400/80"></span>
+                  <span className="w-3 h-3 rounded-full bg-green-400/80"></span>
+                  <div className="ml-4 h-3 w-40 rounded-full bg-white/10"></div>
+                </div>
+
+                <div className="p-3 md:p-4">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full rounded-[1.25rem] border border-white/10 bg-black"
+                  >
+                    <source src="/dashboard-demo.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* BUILD YOUR OWN AI ASSISTANT */}
+        <section id="builder" className="py-20 md:py-28">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+              Build Your Own AI Assistant
+            </p>
+
+            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              See How A Custom <span className="text-emerald-400">Assistant</span> Could Look
+            </h2>
+
+            <p className="mt-6 text-slate-400 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Enter a business name, bot name, and prompt to preview a custom AI assistant. The full customization system can be expanded later.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-2 items-start">
+            <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 md:p-8 shadow-2xl">
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    value={buildBusinessName}
+                    onChange={(e) => setBuildBusinessName(e.target.value)}
+                    className="w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none text-white placeholder:text-slate-500 focus:border-emerald-400/60 transition"
+                    placeholder="Your business name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Bot Name
+                  </label>
+                  <input
+                    value={buildBotName}
+                    onChange={(e) => setBuildBotName(e.target.value)}
+                    className="w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none text-white placeholder:text-slate-500 focus:border-emerald-400/60 transition"
+                    placeholder="Your bot name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Prompt
+                  </label>
+                  <textarea
+                    value={buildPrompt}
+                    onChange={(e) => setBuildPrompt(e.target.value)}
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none text-white placeholder:text-slate-500 resize-none focus:border-emerald-400/60 transition"
+                    placeholder="Tell the assistant what it should do"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-dashed border-white/15 bg-black/10 px-5 py-5 text-center text-sm text-slate-400">
+                Logo upload placeholder
+              </div>
+
+              <button
+                onClick={() => setPreviewReady(true)}
+                className="mt-6 w-full px-6 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition"
+              >
+                Generate Preview
+              </button>
+
+              <p className="mt-3 text-xs text-slate-500">
+                This section can become fully interactive later. For now, it shows the concept clearly.
+              </p>
+            </div>
+
+            <div className="rounded-[2rem] border border-emerald-500/20 bg-[#06110b] p-6 md:p-8 shadow-2xl">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs uppercase tracking-[0.35em] text-emerald-400 font-semibold">
+                  Live Preview
+                </p>
+
+                <span className={`text-xs px-3 py-1 rounded-full border ${previewReady ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-white/10 bg-white/[0.04] text-slate-400"}`}>
+                  {previewReady ? "Ready" : "Placeholder"}
+                </span>
+              </div>
+
+              <div className="mt-6 flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center text-emerald-300 font-bold">
+                  {businessInitials}
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold display-font">
+                    {buildBotName}
+                  </h3>
+                  <p className="text-slate-400 text-sm mt-1">
+                    For {buildBusinessName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 space-y-3">
+                <div className="rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-4 text-sm leading-relaxed text-slate-200">
+                  Hello! ðŸ‘‹ I&apos;m {buildBotName}. How can I help {buildBusinessName} customers today?
+                </div>
+
+                <div className="rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-4 text-sm leading-relaxed text-slate-300">
+                  Prompt: {buildPrompt}
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {["Book Appointment", "Pricing", "Opening Hours", "Talk to Human"].map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-2 rounded-full border border-white/10 bg-white/[0.03] text-xs text-slate-300"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="py-20 md:py-28">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+              FAQ
+            </p>
+
+            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              Questions People <span className="text-emerald-400">Actually Ask</span>
+            </h2>
+
+            <p className="mt-6 text-slate-400 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Keep the answers short and clear so visitors understand the product fast.
+            </p>
+          </div>
+
+          <div className="mt-12 max-w-4xl mx-auto space-y-3">
+            {FAQ_ITEMS.map((item, index) => {
+              const open = openFaq === index;
+
+              return (
+                <div
+                  key={item.question}
+                  className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] overflow-hidden"
+                >
+                  <button
+                    onClick={() => setOpenFaq(open ? -1 : index)}
+                    className="w-full flex items-center justify-between gap-4 px-5 md:px-6 py-5 text-left"
+                  >
+                    <span className="font-semibold text-white">
+                      <span className="text-emerald-400 mr-3">
+                        {open ? "â–¼" : "â–¶"}
+                      </span>
+                      {item.question}
+                    </span>
+                  </button>
+
+                  {open && (
+                    <div className="px-5 md:px-6 pb-5 text-slate-400 leading-relaxed">
+                      {item.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="py-20 md:py-28">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+              Contact
+            </p>
+
+            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              Ready To <span className="text-emerald-400">Automate</span> Your Support?
+            </h2>
+
+            <p className="mt-6 text-slate-400 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Choose the way you want to reach us. You can add your real links later.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-3 max-w-5xl mx-auto">
+            {[
+              {
+                title: "WhatsApp",
+                desc: "Fastest way to reach us.",
+                icon: "ðŸ’¬"
+              },
+              {
+                title: "Instagram",
+                desc: "See updates and contact us.",
+                icon: "ðŸ“¸"
+              },
+              {
+                title: "Email",
+                desc: "For detailed inquiries.",
+                icon: "âœ‰ï¸"
+              }
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6"
+              >
+                <div className="text-3xl">{item.icon}</div>
+                <h3 className="mt-4 text-xl font-bold">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm text-slate-400 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <footer className="py-10 border-t border-white/10 text-center text-sm text-slate-500">
+          <div className="display-font text-white font-bold text-lg">
+            Vowed Bond
+          </div>
+          <div className="mt-2">
+            AI Customer Support For Modern Businesses
+          </div>
+          <div className="mt-2">
+            Â© 2026 Vowed Bond
+          </div>
+        </footer>
+
+      </div>
 
       {/* CHAT BUTTON */}
       <button
@@ -580,15 +895,13 @@ localStorage.setItem(
             !chatOpen
           )
         }
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.5)] flex items-center justify-center hover:scale-110 transition duration-300 overflow-hidden"
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-slate-900 border border-emerald-400/60 shadow-[0_0_25px_rgba(16,185,129,0.35)] flex items-center justify-center hover:scale-110 transition duration-300 overflow-hidden"
       >
-
         <img
           src="/chatbot-logo.png"
           alt="Chat"
           className="w-14 h-14 object-contain"
         />
-
       </button>
 
       {/* CHAT POPUP */}
@@ -600,16 +913,13 @@ localStorage.setItem(
 
             <div className="flex-1 flex flex-col justify-center p-6 pt-2 gap-4 relative">
 
-              {/* CLOSE BUTTON */}
               <button
                 onClick={() =>
                   setChatOpen(false)
                 }
                 className="absolute top-4 right-4 text-2xl text-slate-400 hover:text-white transition"
               >
-
-                ×
-
+                Ã—
               </button>
 
               <div className="flex flex-col items-center text-center">
@@ -697,17 +1007,19 @@ localStorage.setItem(
                   );
 
                   const newId =
-  "vb_" +
-  Math.random()
-    .toString(36)
-    .substring(2, 12);
+                    "vb_" +
+                    Math.random()
+                      .toString(36)
+                      .substring(2, 12);
 
-localStorage.setItem(
-  "conversation_id",
-  newId
-);
+                  localStorage.setItem(
+                    "conversation_id",
+                    newId
+                  );
 
-setConversationId(newId);
+                  setConversationId(
+                    newId
+                  );
 
                   setUserName(
                     cleaned
@@ -716,17 +1028,17 @@ setConversationId(newId);
                   setShowNamePopup(
                     false
                   );
-                  
+
                   localStorage.setItem(
-  "vb_popup_completed",
-  "true"
-);
+                    "vb_popup_completed",
+                    "true"
+                  );
 
                   setMessages([
                     {
                       role: "bot",
                       text:
-                        `Hello ${cleaned}! 👋 How can I assist you today?`,
+                        `Hello ${cleaned}! ðŸ‘‹ How can I assist you today?`,
                       time:
                         new Date().toLocaleTimeString([], {
                           hour: "2-digit",
@@ -736,11 +1048,9 @@ setConversationId(newId);
                   ]);
 
                 }}
-                className="bg-cyan-400 hover:bg-cyan-300 transition text-black py-4 rounded-2xl font-bold"
+                className="bg-emerald-500 hover:bg-emerald-400 transition text-black py-4 rounded-2xl font-bold"
               >
-
                 Continue
-
               </button>
 
             </div>
@@ -749,7 +1059,6 @@ setConversationId(newId);
 
             <>
 
-              {/* HEADER */}
               <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
 
                 <div className="flex items-center gap-3">
@@ -780,14 +1089,11 @@ setConversationId(newId);
                   }
                   className="text-2xl text-slate-400 hover:text-white transition"
                 >
-
-                  ×
-
+                  Ã—
                 </button>
 
               </div>
 
-              {/* CHAT AREA */}
               <div
                 ref={chatRef}
                 className="flex-1 overflow-y-auto px-4 py-5 space-y-6 custom-scrollbar"
@@ -805,137 +1111,135 @@ setConversationId(newId);
 
                 {messages.map((msg, i) => (
 
-  <React.Fragment key={i}>
+                  <React.Fragment key={i}>
 
-    {msg.role === "human" &&
-      i > 0 &&
-      messages[i - 1].role !== "human" && (
+                    {msg.role === "human" &&
+                      i > 0 &&
+                      messages[i - 1].role !== "human" && (
 
-      <div className="flex items-center gap-3 my-4">
+                      <div className="flex items-center gap-3 my-4">
 
-        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+                        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
 
-        <p className="text-xs text-yellow-300 uppercase tracking-[3px]">
+                        <p className="text-xs text-yellow-300 uppercase tracking-[3px]">
+                          Human Support Joined
+                        </p>
 
-          Human Support Joined
+                        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
 
-        </p>
+                      </div>
 
-        <div className="flex-1 h-[1px] bg-yellow-400/30"></div>
+                    )}
 
-       </div>
+                    <div
+                      className={`flex animate-[fadeIn_0.25s_ease] ${
+                        msg.role === "user"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
 
-    )}
+                      <div
+                        className={`flex gap-3 max-w-[90%] ${
+                          msg.role === "user"
+                            ? "flex-row-reverse"
+                            : ""
+                        }`}
+                      >
 
-    <div
-      className={`flex animate-[fadeIn_0.25s_ease] ${
-        msg.role === "user"
-          ? "justify-end"
-          : "justify-start"
-      }`}
-    >
+                        {(msg.role === "bot" ||
+                          msg.role === "human") && (
 
-      <div
-        className={`flex gap-3 max-w-[90%] ${
-          msg.role === "user"
-            ? "flex-row-reverse"
-            : ""
-        }`}
-      >
+                          <img
+                            src={
+                              msg.role === "human"
+                                ? "/human-logo.png"
+                                : "/chatbot-logo.png"
+                            }
+                            alt="Avatar"
+                            className="w-10 h-10 object-contain mt-1"
+                          />
 
-        {(msg.role === "bot" ||
-          msg.role === "human") && (
+                        )}
 
-          <img
-            src={
-              msg.role === "human"
-                ? "/human-logo.png"
-                : "/chatbot-logo.png"
-            }
-            alt="Avatar"
-            className="w-10 h-10 object-contain mt-1"
-          />
+                        <div>
 
-        )}
+                          <div
+                            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
+                              msg.role === "user"
+                                ? "bg-emerald-500 text-black rounded-br-md"
+                                : msg.role === "human"
+                                ? "bg-yellow-400 text-black rounded-bl-md"
+                                : "bg-white/10 text-white rounded-bl-md"
+                            }`}
+                          >
 
-        <div>
+                            {msg.text}
 
-          <div
-            className={`px-5 py-4 rounded-[26px] text-[15px] leading-relaxed ${
-              msg.role === "user"
-                ? "bg-cyan-400 text-black rounded-br-md"
-                : msg.role === "human"
-                ? "bg-yellow-400 text-black rounded-bl-md"
-                : "bg-white/10 text-white rounded-bl-md"
-            }`}
-          >
+                          </div>
 
-            {msg.text}
+                          <p
+                            className={`text-xs text-slate-500 mt-2 ${
+                              msg.role === "user"
+                                ? "text-right"
+                                : "text-left"
+                            }`}
+                          >
 
-          </div>
+                            {msg.time}
 
-          <p
-            className={`text-xs text-slate-500 mt-2 ${
-              msg.role === "user"
-                ? "text-right"
-                : "text-left"
-            }`}
-          >
+                          </p>
 
-            {msg.time}
+                        </div>
 
-          </p>
+                      </div>
 
-        </div>
+                    </div>
 
-      </div>
+                  </React.Fragment>
 
-    </div>
+                ))}
 
-  </React.Fragment>
-
-))}
                 {loading && (
 
-  <div className="flex justify-start animate-[fadeIn_0.25s_ease]">
+                  <div className="flex justify-start animate-[fadeIn_0.25s_ease]">
 
-    <div className="flex gap-3 max-w-[90%]">
+                    <div className="flex gap-3 max-w-[90%]">
 
-      <img
-        src="/chatbot-logo.png"
-        alt="Bot"
-        className="w-10 h-10 object-contain mt-1"
-      />
+                      <img
+                        src="/chatbot-logo.png"
+                        alt="Bot"
+                        className="w-10 h-10 object-contain mt-1"
+                      />
 
-      <div className="bg-white/10 text-white rounded-[26px] rounded-bl-md px-5 py-4 flex items-center gap-1">
+                      <div className="bg-white/10 text-white rounded-[26px] rounded-bl-md px-5 py-4 flex items-center gap-1">
 
-        <span className="w-2 h-2 bg-white rounded-full animate-bounce"></span>
+                        <span className="w-2 h-2 bg-white rounded-full animate-bounce"></span>
 
-        <span
-          className="w-2 h-2 bg-white rounded-full animate-bounce"
-          style={{
-            animationDelay: "0.2s"
-          }}
-        ></span>
+                        <span
+                          className="w-2 h-2 bg-white rounded-full animate-bounce"
+                          style={{
+                            animationDelay: "0.2s"
+                          }}
+                        ></span>
 
-        <span
-          className="w-2 h-2 bg-white rounded-full animate-bounce"
-          style={{
-            animationDelay: "0.4s"
-          }}
-        ></span>
+                        <span
+                          className="w-2 h-2 bg-white rounded-full animate-bounce"
+                          style={{
+                            animationDelay: "0.4s"
+                          }}
+                        ></span>
 
-      </div>
+                      </div>
 
-    </div>
+                    </div>
 
-  </div>
+                  </div>
 
-)}
+                )}
 
               </div>
 
-              {/* INPUT AREA */}
               <div className="p-4 border-t border-white/10 bg-white/[0.02]">
 
                 <div className="flex items-center gap-3">
@@ -964,13 +1268,11 @@ setConversationId(newId);
                     }
                     className={`w-14 h-14 rounded-full text-black font-bold text-xl flex items-center justify-center transition ${
                       loading
-                        ? "bg-cyan-700 cursor-not-allowed"
-                        : "bg-cyan-400 hover:scale-105"
+                        ? "bg-emerald-700 cursor-not-allowed"
+                        : "bg-emerald-500 hover:scale-105"
                     }`}
                   >
-
-                    ➤
-
+                    âž¤
                   </button>
 
                 </div>
@@ -988,7 +1290,7 @@ setConversationId(newId);
                       setHumanRequested(
                         true
                       );
- 
+
                       await fetch(
                         "/api/handoff",
                         {
@@ -1036,20 +1338,16 @@ setConversationId(newId);
                     className={`text-sm transition ${
                       humanRequested
                         ? "text-gray-500"
-                        : "text-cyan-400 hover:text-cyan-300"
+                        : "text-emerald-400 hover:text-emerald-300"
                     }`}
                   >
-
                     {humanRequested
                       ? "Human support requested"
                       : "Talk to a human"}
-
                   </button>
 
                   <p className="text-xs text-slate-500">
-
                     Powered by Vowed Bond AI
-
                   </p>
 
                 </div>
@@ -1063,51 +1361,6 @@ setConversationId(newId);
         </div>
 
       )}
-
-      <style>{`
-        @keyframes trace {
-          0% { clip-path: inset(0 100% 98% 0); }
-          25% { clip-path: inset(0 0 98% 0); }
-          50% { clip-path: inset(0 0 0 98%); }
-          75% { clip-path: inset(98% 0 0 0); }
-          100% { clip-path: inset(0 98% 0 0); }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes popup {
-          from {
-            opacity: 0;
-            transform: translateY(20px) scale(0.96);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.15);
-          border-radius: 999px;
-        }
-      `}</style>
 
     </div>
 
