@@ -105,6 +105,17 @@ export default function App() {
   const [loading, setLoading] =
     useState(false);
 
+  const [conversationId, setConversationId] =
+  useState(() => {
+
+    return (
+      localStorage.getItem(
+        "conversation_id"
+      ) || ""
+    );
+
+  });
+  
   const [humanRequested, setHumanRequested] =
     useState(false);
 
