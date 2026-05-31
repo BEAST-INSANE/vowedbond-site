@@ -468,7 +468,7 @@ export default function App() {
         {/* DASHBOARD PREVIEW */}
         <section id="dashboard" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.25em] text-[15px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.20em] text-[17px] md:text-xs font-semibold">
               Dashboard Preview
             </p>
 
