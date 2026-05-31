@@ -517,67 +517,61 @@ localStorage.setItem(
 
     <div className="min-h-screen px-8 pt-0 pb-8 font-sans bg-gradient-to-br from-black via-slate-900 to-blue-950 text-white">
 
-      {/* LOGO */}
-      <div className="h-24 md:h-28 overflow-hidden -mt-12 mb-2 flex items-center">
+      {/* NAVBAR */}
+<nav className="flex items-center justify-between py-6">
+  <img
+    src="/logo.png"
+    alt="Vowed Bond"
+    className="h-12 object-contain"
+  />
 
-        <img
-          src="/logo.png"
-          alt="Vowed Bond Logo"
-          className="w-48 md:w-64 object-contain translate-y-14"
-        />
+  <button className="px-5 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 transition font-medium">
+    Contact Us
+  </button>
+</nav>
 
-      </div>
+{/* HERO */}
+<section className="text-center py-20 max-w-5xl mx-auto">
 
-      <p className="text-slate-300 text-lg max-w-2xl mb-4">
+  <h1
+    className="text-5xl md:text-7xl font-bold leading-tight"
+    style={{ fontFamily: "var(--font-display)" }}
+  >
+    Support <span className="text-emerald-400">Customers</span> 24/7
+    <br />
+    Without Hiring More Staff
+  </h1>
 
-        Professional AI chatbots for business websites.
+  <p className="mt-8 text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
+    Custom <span className="text-emerald-400">AI assistants</span> trained on
+    your business to answer questions and manage conversations from one simple
+    <span className="text-emerald-400"> dashboard</span>.
+  </p>
 
-      </p>
+  <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+    <button className="px-7 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 transition font-medium">
+      Get Started
+    </button>
 
-      {/* CARDS */}
-      <section className="grid gap-4 md:grid-cols-3">
+    <button className="px-7 py-3 rounded-full border border-white/20 hover:border-white/40 transition">
+      Learn More
+    </button>
+  </div>
 
-        <TraceCard
-          title="Custom Bots"
-          text="Trained on your business data."
-        />
+  {/* HERO VIDEO */}
+  <div className="mt-16">
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="w-full rounded-3xl border border-white/10"
+    >
+      <source src="/hero-demo.mp4" type="video/mp4" />
+    </video>
+  </div>
 
-        <TraceCard
-          title="24/7 Support"
-          text="Instant replies for customers."
-        />
-
-        <TraceCard
-          title="Lead Generation"
-          text="Capture and qualify leads automatically."
-        />
-
-      </section>
-
-      {/* FOUNDERS */}
-      <div className="mt-8 rounded-3xl border border-yellow-300 shadow-[0_0_10px_rgba(253,224,71,0.8)]">
-
-        <GlowCard
-          title="Founders"
-          text="Built by Jaipreet & Moksh — helping businesses grow with smart AI chatbots."
-          color="192,132,252"
-          titleClass="text-2xl font-bold"
-          textClass="text-lg"
-        />
-
-      </div>
-
-      {/* DEMO */}
-      <div className="mt-10">
-
-        <GlowCard
-          title="Demo Bot"
-          text="Chatbot widget placeholder ready for integration."
-          titleClass="text-2xl font-bold"
-          textClass="text-lg"
-        />
-
-      </div>
+</section>
 
       {/* CHAT BUTTON */}
       <button
