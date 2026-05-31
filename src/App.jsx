@@ -1113,37 +1113,3 @@ setConversationId(newId);
 
   );
 }
-
-<section className="max-w-6xl mx-auto py-28 text-center">
-
-  <h2
-    className="text-4xl md:text-6xl font-bold"
-    style={{ fontFamily: "var(--font-display)" }}
-  >
-    Manage Everything From One
-    <span className="text-emerald-400">
-      {" "}Dashboard
-    </span>
-  </h2>
-
-  <p className="mt-6 text-slate-400 text-lg max-w-3xl mx-auto">
-    Monitor conversations, manage support requests,
-    and stay in control of your AI assistant.
-  </p>
-
-  <div className="mt-12">
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="w-full rounded-3xl border border-white/10"
-    >
-      <source
-        src="/dashboard-demo.mp4"
-        type="video/mp4"
-      />
-    </video>
-  </div>
-
-</section>
