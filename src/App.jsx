@@ -355,10 +355,10 @@ export default function App() {
             className="flex items-center gap-3 text-left"
           >
             <img
-              src="/logo.png"
-              alt="Vowed Bond"
-              className="h-72 md:h-76 w-auto object-contain"
-            />
+  src="/logo.png"
+  alt="Vowed Bond"
+  className="h-16 md:h-20 w-auto object-contain"
+/>
           </button>
 
           <button
