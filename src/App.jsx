@@ -466,7 +466,7 @@ export default function App() {
         {/* DASHBOARD PREVIEW */}
         <section id="dashboard" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.25em] text-[15px] md:text-xs font-semibold">
               Dashboard Preview
             </p>
 
@@ -597,7 +597,7 @@ export default function App() {
         {/* BUILD YOUR OWN AI ASSISTANT */}
         <section id="builder" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.25em] text-[15px] md:text-xs font-semibold">
               Build Your Own AI Assistant
             </p>
 
@@ -726,7 +726,7 @@ export default function App() {
         {/* FAQ */}
         <section id="faq" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.15em] text-[17px] md:text-xs font-semibold">
               FAQ
             </p>
 
@@ -774,7 +774,7 @@ export default function App() {
         {/* CONTACT */}
         <section id="contact" className="py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-emerald-400 uppercase tracking-[0.35em] text-[11px] md:text-xs font-semibold">
+            <p className="text-emerald-400 uppercase tracking-[0.25em] text-[15px] md:text-xs font-semibold">
               Contact
             </p>
 
