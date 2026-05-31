@@ -376,9 +376,9 @@ export default function App() {
           </p>
 
           <h1 className="display-font mt-6 text-4xl md:text-7xl lg:text-8xl font-bold leading-[0.92] tracking-tight">
-  Support <span className="text-emerald-400">Customers</span>
+  Support <span className="text-emerald-400">Customers</span> 24/7
   <br />
-  24/7 Without Hiring
+  Without Hiring
   <br />
   More Staff
 </h1>
