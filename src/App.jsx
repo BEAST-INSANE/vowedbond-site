@@ -472,12 +472,15 @@ export default function App() {
               Dashboard Preview
             </p>
 
-            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              Manage Everything From One <span className="text-emerald-400">Dashboard</span>
-            </h2>
+            <h2 className="display-font ...">
+  Answer And Manage
+  <br />
+  Every Conversation From One Simple <span className="text-emerald-400">Dashboard</span>
+</h2>
 
             <p className="mt-6 text-slate-300 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Monitor conversations, manage support requests, and stay in control of your AI assistant.
+               View chats, track leads, and manage support requests
+  from one simple dashboard.
             </p>
           </div>
 
@@ -603,12 +606,15 @@ export default function App() {
               Build Your Own AI Assistant
             </p>
 
-            <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              See How A Custom <span className="text-emerald-400">Assistant</span> Could Look
-            </h2>
+            <h2 className="display-font ...">
+  Create And Preview
+  <br />
+  Your <span className="text-emerald-400">Assistant</span> In Seconds
+</h2>
 
             <p className="mt-6 text-slate-300 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Enter a business name, bot name, and prompt to preview a custom AI assistant. The full customization system can be expanded later.
+              Try creating a custom AI assistant for your business and
+  instantly preview how it could answer customer questions.
             </p>
           </div>
 
