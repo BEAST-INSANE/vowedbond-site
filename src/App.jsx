@@ -357,7 +357,7 @@ export default function App() {
             <img
   src="/logo.png"
   alt="Vowed Bond"
-  className="h-28 md:h-32 w-auto object-contain -my-8"
+  className="h-24 w-auto object-contain scale-150 origin-left"
 />
           </button>
 
