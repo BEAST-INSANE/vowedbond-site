@@ -376,10 +376,12 @@ export default function App() {
           </p>
 
           <h1 className="display-font mt-6 text-4xl md:text-7xl lg:text-8xl font-bold leading-[0.92] tracking-tight">
-            Support <span className="text-emerald-400">Customers</span> 24/7
-            <br />
-            Without Hiring More Staff
-          </h1>
+  Support <span className="text-emerald-400">Customers</span>
+  <br />
+  24/7 Without Hiring
+  <br />
+  More Staff
+</h1>
 
           <p className="mt-8 max-w-4xl mx-auto text-base md:text-2xl text-slate-300 leading-relaxed">
             Custom <span className="text-emerald-400">AI assistants</span> trained on
