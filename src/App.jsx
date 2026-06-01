@@ -1,5 +1,3 @@
-import BellaItaliaDemo from "./BellaItaliaDemo";
-
 export default function App() {
-  return <BellaItaliaDemo />;
+  return <h1>TEST 123</h1>;
 }
