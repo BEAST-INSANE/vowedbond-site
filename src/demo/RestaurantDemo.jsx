@@ -106,3 +106,9 @@ export default function RestaurantDemo() {
 >
   Reserve a Table
 </button>
+    </div>
+</div>
+
+    </div>
+  );
+}
