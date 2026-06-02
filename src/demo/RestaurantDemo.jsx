@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 const [chatOpen, setChatOpen] = useState(false);
 const [showQuestion, setShowQuestion] = useState(false);
 const [showTyping, setShowTyping] = useState(false);
@@ -75,48 +75,73 @@ export default function RestaurantDemo() {
 
           {/* Messages */}
           <div
-            style={{
-              padding: "16px",
-              background: "#f8fafc",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginBottom: "12px",
-              }}
-            >
-              <div
-                style={{
-                  background: "#e5e7eb",
-                  padding: "10px 14px",
-                  borderRadius: "16px",
-                  maxWidth: "220px",
-                }}
-              >
-                Do you have vegetarian pizza?
-              </div>
-            </div>
+  style={{
+    padding: "16px",
+    background: "#f8fafc",
+    minHeight: "220px",
+  }}
+>
+  {showQuestion && (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        marginBottom: "12px",
+      }}
+    >
+      <div
+        style={{
+          background: "#e5e7eb",
+          padding: "10px 14px",
+          borderRadius: "16px",
+          maxWidth: "220px",
+        }}
+      >
+        Do you have vegetarian pizza?
+      </div>
+    </div>
+  )}
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  background: "#dcfce7",
-                  padding: "10px 14px",
-                  borderRadius: "16px",
-                  maxWidth: "240px",
-                }}
-              >
-                Yes! We offer Margherita, Veggie Supreme and several customizable vegetarian options.
-              </div>
-            </div>
-          </div>
+  {showTyping && (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        marginBottom: "12px",
+      }}
+    >
+      <div
+        style={{
+          background: "#dcfce7",
+          padding: "10px 14px",
+          borderRadius: "16px",
+        }}
+      >
+        Typing...
+      </div>
+    </div>
+  )}
+
+  {showAnswer && (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+      }}
+    >
+      <div
+        style={{
+          background: "#dcfce7",
+          padding: "10px 14px",
+          borderRadius: "16px",
+          maxWidth: "240px",
+        }}
+      >
+        Yes! We offer Margherita, Veggie Supreme and several customizable vegetarian options.
+      </div>
+    </div>
+  )}
+</div>
 
           {/* Input */}
           <div
@@ -141,4 +166,25 @@ export default function RestaurantDemo() {
       )}
     </div>
   );
+  useEffect(() => {
+  setTimeout(() => {
+    setChatOpen(true);
+
+    setTimeout(() => {
+      setShowQuestion(true);
+
+      setTimeout(() => {
+        setShowTyping(true);
+
+        setTimeout(() => {
+          setShowTyping(false);
+          setShowAnswer(true);
+        }, 3000);
+
+      }, 800);
+
+    }, 800);
+
+  }, 1000);
+}, []);
 }
