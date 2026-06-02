@@ -1,15 +1,17 @@
+import React from "react";
+
 export default function RestaurantDemo() {
-  return (
-    <div
-      style={{
+  return React.createElement(
+    "div",
+    {
+      style: {
         background: "red",
         color: "white",
         minHeight: "100vh",
         fontSize: "50px",
-        padding: "50px"
-      }}
-    >
-      RESTAURANT DEMO WORKS
-    </div>
+        padding: "50px",
+      },
+    },
+    "RESTAURANT DEMO WORKS"
   );
 }
