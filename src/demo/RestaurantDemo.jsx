@@ -135,10 +135,4 @@ export default function RestaurantDemo() {
       </div>
     </div>
   );
-}</button>
-    </div>
-</div>
-
-    </div>
-  );
 }
