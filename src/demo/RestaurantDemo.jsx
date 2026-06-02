@@ -4,22 +4,87 @@ export default function RestaurantDemo() {
   return (
     <div
       style={{
-        background: "white",
+        background: "#ffffff",
         minHeight: "100vh",
         padding: "40px",
+        fontFamily: "Arial, sans-serif",
       }}
     >
-      <h1>Bell Italia</h1>
-
-      <img
-        src="https://images.unsplash.com/photo-1513104890138-7c749659a591"
-        alt="Pizza"
+      {/* Navbar */}
+      <nav
         style={{
-          width: "100%",
-          maxWidth: "500px",
-          borderRadius: "12px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "80px",
         }}
-      />
+      >
+        <h2 style={{ margin: 0 }}>Bella Italia</h2>
+
+        <div style={{ display: "flex", gap: "24px" }}>
+          <span>Home</span>
+          <span>Menu</span>
+          <span>Reservations</span>
+          <span>Contact</span>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <div
+        style={{
+          maxWidth: "700px",
+        }}
+      >
+        <p
+          style={{
+            color: "#dc2626",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
+            fontSize: "14px",
+          }}
+        >
+          Authentic Italian Cuisine
+        </p>
+
+        <h1
+          style={{
+            fontSize: "56px",
+            lineHeight: "1",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          Fresh Italian Food
+          <br />
+          Made Every Day
+        </h1>
+
+        <p
+          style={{
+            color: "#666",
+            fontSize: "20px",
+            maxWidth: "600px",
+          }}
+        >
+          Authentic pizzas, pasta and desserts crafted with traditional
+          recipes and fresh ingredients.
+        </p>
+
+        <button
+          style={{
+            marginTop: "30px",
+            background: "#dc2626",
+            color: "white",
+            border: "none",
+            padding: "16px 28px",
+            borderRadius: "999px",
+            fontSize: "16px",
+            cursor: "pointer",
+          }}
+        >
+          Reserve a Table
+        </button>
+      </div>
     </div>
   );
 }
