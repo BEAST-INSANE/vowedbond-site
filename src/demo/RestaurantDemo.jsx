@@ -43,12 +43,8 @@ export default function RestaurantDemo() {
 
           {/* Right Side */}
           <div>
-            <div className="overflow-hidden rounded-3xl shadow-xl">
-              <img
-                src="/pizza.jpg"
-                alt="Bella Italia Chef"
-                className="w-full h-[500px] object-cover"
-              />
+            <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 h-[500px] flex items-center justify-center">
+  <p>IMAGE TEST</p>
             </div>
           </div>
 
