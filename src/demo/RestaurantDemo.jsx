@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-
+const [chatOpen, setChatOpen] = useState(false);
+const [showQuestion, setShowQuestion] = useState(false);
+const [showTyping, setShowTyping] = useState(false);
+const [showAnswer, setShowAnswer] = useState(false);
 export default function RestaurantDemo() {
   const [chatOpen, setChatOpen] = useState(false);
 
