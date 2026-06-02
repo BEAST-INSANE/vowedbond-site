@@ -100,3 +100,9 @@ export default function RestaurantDemo() {
         background: "#dc2626",
         color: "white",
         border: "none",
+        padding: "16px 28px",
+        borderRadius: "999px",
+  }}
+>
+  Reserve a Table
+</button>
