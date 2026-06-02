@@ -30,61 +30,73 @@ export default function RestaurantDemo() {
       </nav>
 
       {/* Hero */}
-      <div
-        style={{
-          maxWidth: "700px",
-        }}
-      >
-        <p
-          style={{
-            color: "#dc2626",
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-            fontSize: "14px",
-          }}
-        >
-          Authentic Italian Cuisine
-        </p>
+<div
+  style={{
+    maxWidth: "700px",
+    position: "relative",
+  }}
+>
 
-        <h1
-          style={{
-            fontSize: "56px",
-            lineHeight: "1",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          Fresh Italian Food
-          <br />
-          Made Every Day
-        </h1>
+  {/* Background Pizza */}
+  <img
+    src="/pizza.jpg"
+    alt="Pizza"
+    style={{
+      position: "absolute",
+      top: "-20px",
+      right: "-120px",
+      width: "450px",
+      opacity: "0.18",
+      zIndex: 0,
+      pointerEvents: "none",
+    }}
+  />
 
-        <p
-          style={{
-            color: "#666",
-            fontSize: "20px",
-            maxWidth: "600px",
-          }}
-        >
-          Authentic pizzas, pasta and desserts crafted with traditional
-          recipes and fresh ingredients.
-        </p>
+  {/* Content */}
+  <div
+    style={{
+      position: "relative",
+      zIndex: 1,
+    }}
+  >
+    <p
+      style={{
+        color: "#dc2626",
+        letterSpacing: "3px",
+        textTransform: "uppercase",
+        fontSize: "14px",
+      }}
+    >
+      Authentic Italian Cuisine
+    </p>
 
-        <button
-          style={{
-            marginTop: "30px",
-            background: "#dc2626",
-            color: "white",
-            border: "none",
-            padding: "16px 28px",
-            borderRadius: "999px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
-        >
-          Reserve a Table
-        </button>
-      </div>
-    </div>
-  );
-}
+    <h1
+      style={{
+        fontSize: "56px",
+        lineHeight: "1",
+        marginTop: "20px",
+        marginBottom: "20px",
+      }}
+    >
+      Fresh Italian Food
+      <br />
+      Made Every Day
+    </h1>
+
+    <p
+      style={{
+        color: "#666",
+        fontSize: "20px",
+        maxWidth: "600px",
+      }}
+    >
+      Authentic pizzas, pasta and desserts crafted with traditional
+      recipes and fresh ingredients.
+    </p>
+
+    <button
+      style={{
+        marginTop: "30px",
+        background: "#dc2626",
+        color: "white",
+        border: "none",
