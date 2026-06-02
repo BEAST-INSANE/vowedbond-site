@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-const [chatOpen, setChatOpen] = useState(false);
 const [showQuestion, setShowQuestion] = useState(false);
 const [showTyping, setShowTyping] = useState(false);
 const [showAnswer, setShowAnswer] = useState(false);
