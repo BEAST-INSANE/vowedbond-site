@@ -132,7 +132,7 @@ export default function RestaurantDemo() {
         }}
         style={{
           position: "fixed",
-          bottom: "55px",
+          bottom: "100px",
           right: "20px",
           background: "#10b981",
           color: "white",
