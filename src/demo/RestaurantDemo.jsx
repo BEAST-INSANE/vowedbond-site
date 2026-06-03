@@ -329,7 +329,8 @@ export default function RestaurantDemo() {
     ➤
   </button>
 </div>
-      }}
+</div>
+      )}
 
       <style>{`
         @keyframes bubbleIn {
