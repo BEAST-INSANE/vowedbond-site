@@ -290,28 +290,45 @@ export default function RestaurantDemo() {
           </div>
 
           {/* Input */}
-          <div
-            style={{
-              padding: "12px",
-              borderTop: "1px solid #e5e7eb",
-              background: "white",
-            }}
-          >
-            <input
-              placeholder="Ask Bella Italia..."
-              readOnly
-              style={{
-                width: "100%",
-                padding: "12px",
-                borderRadius: "12px",
-                border: "1px solid #d1d5db",
-                outline: "none",
-                boxSizing: "border-box",
-                background: "#fff",
-              }}
-            />
-          </div>
-        </div>
+<div
+  style={{
+    padding: "12px",
+    borderTop: "1px solid #e5e7eb",
+    background: "white",
+    display: "flex",
+    gap: "8px",
+    alignItems: "center",
+  }}
+>
+  <input
+    placeholder="Ask Bella Italia..."
+    readOnly
+    style={{
+      flex: 1,
+      padding: "12px",
+      borderRadius: "12px",
+      border: "1px solid #d1d5db",
+      outline: "none",
+      boxSizing: "border-box",
+      background: "#fff",
+    }}
+  />
+
+  <button
+    style={{
+      background: "#10b981",
+      color: "white",
+      border: "none",
+      borderRadius: "12px",
+      padding: "12px 16px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      opacity: 0.9,
+    }}
+  >
+    ➤
+  </button>
+</div>
       )}
 
       <style>{`
