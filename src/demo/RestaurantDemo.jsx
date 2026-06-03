@@ -91,14 +91,29 @@ export default function RestaurantDemo() {
       }}
     >
       {/* Website Screenshot */}
-      <img
-        src="/restaurant-home.png"
-        alt="Bella Italia"
-        style={{
-          width: "100%",
-          display: "block",
-        }}
-      />
+      <div
+  style={{
+    position: "relative",
+  }}
+>
+  <img
+    src="/restaurant-home.png"
+    alt="Bella Italia"
+    style={{
+      width: "100%",
+      display: "block",
+    }}
+  />
+
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      background: "rgba(0,0,0,0.06)",
+      pointerEvents: "none",
+    }}
+  />
+</div>
 
       {/* Chat Button */}
       <button
@@ -111,7 +126,7 @@ export default function RestaurantDemo() {
         }}
         style={{
           position: "fixed",
-          bottom: "20px",
+          bottom: "35px",
           right: "20px",
           background: "#10b981",
           color: "white",
@@ -126,7 +141,7 @@ export default function RestaurantDemo() {
           animation: "pulseGlow 2s infinite",
         }}
       >
-        💬 Ask Bella Italia
+        💬 Chat With Us
       </button>
 
       {/* Chat Window */}
@@ -134,7 +149,7 @@ export default function RestaurantDemo() {
         <div
           style={{
             position: "fixed",
-            bottom: "90px",
+            bottom: "105px",
             right: "20px",
             width: "340px",
             maxWidth: "calc(100vw - 40px)",
