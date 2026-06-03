@@ -91,6 +91,29 @@ export default function RestaurantDemo() {
     };
   }, [isChatOpen]);
 
+  const chatButtonStyle = {
+    position: "fixed",
+    bottom: "75px",
+    right: "20px",
+    background: "#10b981",
+    color: "white",
+    border: "none",
+    borderRadius: "999px",
+    padding: "14px 20px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+    zIndex: 9999,
+    opacity: isChatOpen ? 0 : 1,
+    transform: isChatOpen ? "translateY(12px) scale(0.96)" : "translateY(0) scale(1)",
+    pointerEvents: isChatOpen ? "none" : "auto",
+    transition: "opacity 260ms ease, transform 260ms ease",
+    animation: isChatOpen
+      ? "none"
+      : "pulseGlow 2s infinite, nudge 3.5s ease-in-out infinite",
+  };
+
   return (
     <div
       style={{
@@ -115,7 +138,7 @@ export default function RestaurantDemo() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(0,0,0,0.08)",
+            background: "rgba(0,0,0,0.1)",
             pointerEvents: "none",
           }}
         />
@@ -130,22 +153,8 @@ export default function RestaurantDemo() {
             openChat();
           }
         }}
-        style={{
-          position: "fixed",
-          bottom: "75px",
-          right: "20px",
-          background: "#10b981",
-          color: "white",
-          border: "none",
-          borderRadius: "999px",
-          padding: "14px 20px",
-          fontSize: "16px",
-          fontWeight: "bold",
-          cursor: "pointer",
-          boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-          zIndex: 9999,
-          animation: "pulseGlow 2s infinite",
-        }}
+        style={chatButtonStyle}
+        aria-label="Chat With Us"
       >
         💬 Chat With Us
       </button>
@@ -155,7 +164,7 @@ export default function RestaurantDemo() {
         <div
           style={{
             position: "fixed",
-            bottom: "110px",
+            bottom: "120px",
             right: "20px",
             width: "360px",
             maxWidth: "calc(100vw - 40px)",
@@ -326,8 +335,7 @@ export default function RestaurantDemo() {
                     maxWidth: "250px",
                   }}
                 >
-                  Absolutely! We'd be happy to help. What time would you like to
-                  arrive?
+                  Absolutely! We'd be happy to help. What time would you like to arrive?
                 </div>
               </div>
             )}
@@ -398,6 +406,24 @@ export default function RestaurantDemo() {
           50% {
             transform: translateY(-1px);
             box-shadow: 0 12px 28px rgba(16,185,129,0.28);
+          }
+        }
+
+        @keyframes nudge {
+          0%, 100% {
+            transform: translateX(0);
+          }
+          15% {
+            transform: translateX(-4px);
+          }
+          30% {
+            transform: translateX(4px);
+          }
+          45% {
+            transform: translateX(-2px);
+          }
+          60% {
+            transform: translateX(2px);
           }
         }
 
