@@ -329,6 +329,22 @@ export default function RestaurantDemo() {
     ➤
   </button>
 </div>
+
+  <button
+    style={{
+      background: "#10b981",
+      color: "white",
+      border: "none",
+      borderRadius: "12px",
+      padding: "12px 16px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      opacity: 0.9,
+    }}
+  >
+    ➤
+  </button>
+</div>
       )}
 
       <style>{`
