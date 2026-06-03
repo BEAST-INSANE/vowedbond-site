@@ -329,7 +329,7 @@ export default function RestaurantDemo() {
     ➤
   </button>
 </div>
-      )}
+      }}
 
       <style>{`
         @keyframes bubbleIn {
@@ -373,6 +373,6 @@ export default function RestaurantDemo() {
         }
       `}</style>
     </div>
-  )}
+  );
 }
 
