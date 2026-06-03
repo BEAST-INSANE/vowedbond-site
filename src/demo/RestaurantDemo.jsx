@@ -373,6 +373,6 @@ export default function RestaurantDemo() {
         }
       `}</style>
     </div>
-  );
+  )}
 }
-}
+
