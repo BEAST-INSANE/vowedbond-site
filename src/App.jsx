@@ -406,9 +406,13 @@ export default function App() {
           </div>
 
           {/* HERO LOOP PREVIEW */}
-          <p className="text-emerald-400 uppercase tracking-[0.20em] text-[17px] md:text-xs font-semibold mb-4">
+
+<div className="mt-24 md:mt-28 text-center">
+
+<p className="text-emerald-400 uppercase tracking-[0.20em] text-[17px] md:text-xs font-semibold mb-4">
   Chatbot Demo
 </p>
+  </div>
 
 <h2 className="display-font mt-6 text-4xl md:text-6xl font-bold leading-tight">
   See How An <span className="text-emerald-400">AI Assistant</span>
