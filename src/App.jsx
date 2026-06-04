@@ -424,7 +424,7 @@ export default function App() {
     className="w-full rounded-[1rem] md:rounded-[1.5rem]"
   >
     <source
-      src="/restaurant-demo.mp4"
+      src="/chatbot-demo.mp4"
       type="video/mp4"
     />
   </video>
