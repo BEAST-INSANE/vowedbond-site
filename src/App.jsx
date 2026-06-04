@@ -415,52 +415,20 @@ export default function App() {
                 <div className="ml-4 h-3 w-40 rounded-full bg-white/10"></div>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-3 p-4 md:p-6">
-                {[
-                  {
-                    title: "Restaurant Website",
-                    question: "What are your opening hours?",
-                    answer: "We're open Monday to Saturday from 9 AM to 8 PM."
-                  },
-                  {
-                    title: "Clinic Website",
-                    question: "Can I book an appointment?",
-                    answer: "Absolutely. You can book an appointment online or call us."
-                  },
-                  {
-                    title: "Fitness Website",
-                    question: "What are your membership plans?",
-                    answer: "We offer monthly, quarterly, and yearly membership options."
-                  }
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5"
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs uppercase tracking-[0.3em] text-emerald-400 font-semibold">
-                        Demo Site
-                      </p>
-                      <span className="text-[10px] px-2 py-1 rounded-full bg-white/[0.05] text-slate-400 border border-white/10">
-                        Loop
-                      </span>
-                    </div>
-
-                    <h3 className="mt-4 text-xl font-bold display-font">
-                      {item.title}
-                    </h3>
-
-                    <div className="mt-5 space-y-3 text-sm">
-                      <div className="rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-3 text-slate-200">
-                        {item.question}
-                      </div>
-                      <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3 text-emerald-100">
-                        {item.answer}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className="p-2 md:p-4">
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="w-full rounded-[1rem] md:rounded-[1.5rem]"
+  >
+    <source
+      src="/restaurant-demo.mp4"
+      type="video/mp4"
+    />
+  </video>
+</div>
             </div>
           </div>
         </section>
