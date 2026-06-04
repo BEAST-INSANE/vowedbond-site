@@ -414,7 +414,7 @@ export default function App() {
 </p>
   </div>
 
-<h2 className="display-font mt-6 text-4xl md:text-6xl font-bold leading-tight">
+<h2 className="display-font mt-6 text-3xl md:text-6xl font-bold leading-tight">
   See How An
   <br />
   <span className="text-emerald-400">AI Assistant</span>
