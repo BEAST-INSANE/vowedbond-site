@@ -410,10 +410,10 @@ export default function App() {
   Chatbot Demo
 </p>
 
-<h2 className="display-font text-3xl md:text-5xl font-bold leading-tight">
+<h2 className="display-font mt-6 text-4xl md:text-6xl font-bold leading-tight">
   See How An <span className="text-emerald-400">AI Assistant</span>
   <br />
-  Can Help Your Customers
+  Helps Your Customers
 </h2>
 
 <p className="mt-4 text-slate-300 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
