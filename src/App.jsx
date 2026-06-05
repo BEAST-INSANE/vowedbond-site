@@ -436,17 +436,18 @@ export default function App() {
 
               <div className="p-2 md:p-4">
   <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    className="w-full rounded-[1rem] md:rounded-[1.5rem]"
-  >
-    <source
-      src="/chatbot-demo.mp4"
-      type="video/mp4"
-    />
-  </video>
+  autoPlay
+  muted
+  loop
+  playsInline
+  poster="/chatbot-demo-poster.jpg"
+  className="w-full rounded-[1rem] md:rounded-[1.5rem]"
+>
+  <source
+    src="/chatbot-demo.mp4"
+    type="video/mp4"
+  />
+</video>
 </div>
           </div>
           </div>
