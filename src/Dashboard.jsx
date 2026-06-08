@@ -920,7 +920,7 @@ const totalUnread = useMemo(() => {
     <div className="flex items-center gap-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
       <span>🟢</span>
       <span className="text-sm">
-        AI resolved {aiResolvedCount} conversation{aiResolvedCount !== 1 ? "s" : ""}
+        AI resolved {resolvedByAiCount} conversation{resolvedByAiCount !== 1 ? "s" : ""}
       </span>
     </div>
 
