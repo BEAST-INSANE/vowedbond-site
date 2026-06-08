@@ -594,7 +594,11 @@ const totalUnread = useMemo(() => {
       <div className="min-h-screen bg-gradient-to-br from-[#030712] via-[#07111f] to-[#0b1220] flex items-center justify-center p-6 text-white">
         <div className="w-full max-w-md rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)]">
           <div className="flex items-center gap-3 mb-5">
-            <img src="/logo.png" alt="Vowed Bond" className="h-10 w-auto object-contain" />
+            <img
+  src="/logo.png"
+  alt="Vowed Bond"
+  className="h-16 w-auto object-contain"
+/>
             <div>
               <h1 className="text-3xl font-bold">Dashboard</h1>
               <p className="text-slate-400">Vowed Bond Support Center</p>
