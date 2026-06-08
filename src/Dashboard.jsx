@@ -906,7 +906,7 @@ const totalUnread = useMemo(() => {
     <div className="flex items-center gap-3 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3">
       <span>🔥</span>
       <span className="text-sm">
-        {leads.length} lead{leads.length !== 1 ? "s" : ""} waiting for review
+        {uniqueChats.length} lead{uniqueChats.length !== 1 ? "s" : ""}
       </span>
     </div>
 
