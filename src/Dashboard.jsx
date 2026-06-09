@@ -747,7 +747,7 @@ const totalUnread = useMemo(() => {
         </aside>
       </div>
 
-      <div className="relative min-h-screen lg:pl-[320px]">
+      <div className="relative min-h-screen lg:pl-[320px] w-full overflow-hidden">
         {/* DESKTOP SIDEBAR */}
         <aside className="hidden lg:flex fixed inset-y-0 left-0 w-[320px] bg-gradient-to-b from-[#101827] to-[#050816] border-r border-white/10 shadow-[inset_-1px_0_0_rgba(16,185,129,0.12)] flex-col z-40">
           <div className="p-6 border-b border-white/10">
