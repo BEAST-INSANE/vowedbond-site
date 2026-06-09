@@ -802,7 +802,7 @@ const totalUnread = useMemo(() => {
         </aside>
 
         {/* MAIN CONTENT */}
-        <div className="p-4 md:p-6">
+        <div className="p-4 md:p-6 w-full max-w-full overflow-hidden">
           {/* TOP HEADER */}
           <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-start gap-3">
