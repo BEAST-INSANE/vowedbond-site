@@ -1528,24 +1528,6 @@ const totalUnread = useMemo(() => {
 
             {activePage === "knowledge" && (
               <div className="space-y-4">
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {[
-                    { label: "Approved", value: approvedTopics },
-                    { label: "Pending Review", value: pendingTopics },
-                    { label: "Disabled", value: KNOWLEDGE_GROUPS.disabled.length },
-                    { label: "Total Topics", value: approvedTopics + pendingTopics + KNOWLEDGE_GROUPS.disabled.length }
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5"
-                    >
-                      <div className="text-sm text-slate-400">{item.label}</div>
-                      <div className="mt-2 text-3xl font-bold display-font">
-                        {item.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
 
                 <div className="rounded-[32px] border border-white/10 bg-white/[0.04] p-4 md:p-5">
                   <div className="flex items-center justify-between flex-wrap gap-3">
