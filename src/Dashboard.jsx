@@ -921,8 +921,6 @@ const totalUnread = useMemo(() => {
     </div>
   </div>
 </div>
-                  
-                  </div>
 
                   <div className="rounded-[28px] border border-white/10 bg-white/[0.04] overflow-hidden">
                     <div className="px-5 md:px-6 py-4 border-b border-white/10 flex items-center justify-between">
