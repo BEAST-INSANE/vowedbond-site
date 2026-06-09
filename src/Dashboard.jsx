@@ -964,7 +964,6 @@ const totalUnread = useMemo(() => {
                                 </div>
                               </div>
                             </div>
-                            )}
 
                             <div className="flex flex-col items-end gap-2">
                               <span
