@@ -391,7 +391,7 @@ export default function Dashboard() {
       if (!map[msg.conversation_id]) map[msg.conversation_id] = [];
       map[msg.conversation_id].push(msg);
     });
-
+    
     Object.values(map).forEach((messages) => {
       messages.sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
@@ -868,7 +868,7 @@ const totalUnread = useMemo(() => {
           {/* PAGE CONTENT */}
           <div className="pb-10 overflow-x-hidden">
             {activePage === "dashboard" && (
-              <div className="grid gap-4 xl:grid-cols-[1.55fr_0.9fr] min-w-0">
+              <div className="grid gap-4 grid-cols-1 xl:grid-cols-[1.55fr_0.9fr] min-w-0">
                 <div className="space-y-4">
                   <div className="rounded-[32px] max-w-full border border-white/10 bg-white/[0.04] p-5 md:p-6 shadow-[0_0_30px_rgba(0,0,0,0.2)]">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 min-w-0 overflow-hidden">
