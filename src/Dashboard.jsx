@@ -884,7 +884,7 @@ const totalUnread = useMemo(() => {
                         </p>
                       </div>
 
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 min-w-0">
                         <span className="px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 text-xs">
                           {uniqueChats.length} chats
                         </span>
