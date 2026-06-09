@@ -866,7 +866,7 @@ const totalUnread = useMemo(() => {
           </div>
 
           {/* PAGE CONTENT */}
-          <div className="pb-10">
+          <div className="pb-10 overflow-x-hidden">
             {activePage === "dashboard" && (
               <div className="grid gap-4 xl:grid-cols-[1.55fr_0.9fr]">
                 <div className="space-y-4">
