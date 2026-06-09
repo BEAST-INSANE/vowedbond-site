@@ -859,18 +859,6 @@ const totalUnread = useMemo(() => {
                           Conversations, leads, and knowledge are all in one place. Keep an eye on active chats, human requests, and what customers need most.
                         </p>
                       </div>
-
-                      <div className="flex flex-wrap gap-2 min-w-0">
-                        <span className="px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 text-xs">
-                          {uniqueChats.length} chats
-                        </span>
-                        <span className="px-3 py-1 rounded-full border border-yellow-400/20 bg-yellow-400/10 text-yellow-300 text-xs">
-                          {humanRequestsCount} human requests
-                        </span>
-                        <span className="px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-slate-300 text-xs">
-                          {approvedTopics + pendingTopics} knowledge topics
-                        </span>
-                      </div>
                     </div>                 
 
                     <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
