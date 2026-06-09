@@ -870,7 +870,7 @@ const totalUnread = useMemo(() => {
             {activePage === "dashboard" && (
               <div className="grid gap-4 xl:grid-cols-[1.55fr_0.9fr] min-w-0">
                 <div className="space-y-4">
-                  <div className="rounded-[32px] border border-white/10 bg-white/[0.04] p-5 md:p-6 shadow-[0_0_30px_rgba(0,0,0,0.2)]">
+                  <div className="rounded-[32px] max-w-full border border-white/10 bg-white/[0.04] p-5 md:p-6 shadow-[0_0_30px_rgba(0,0,0,0.2)]">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 min-w-0 overflow-hidden">
                       <div>
                         <div className="text-xs uppercase tracking-[0.25em] text-emerald-400">
