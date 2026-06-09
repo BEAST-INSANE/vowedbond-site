@@ -876,7 +876,7 @@ const totalUnread = useMemo(() => {
                         <div className="text-xs uppercase tracking-[0.25em] text-emerald-400">
                           Overview
                         </div>
-                        <h2 className="mt-3 text-2xl md:text-3xl font-bold display-font">
+                        <h2 className="mt-3 text-xl font-bold display-font break-words">
                           Good to see you, Jaipreet 👋
                         </h2>
                         <p className="mt-2 text-sm md:text-base text-slate-400 max-w-2xl">
