@@ -1041,7 +1041,7 @@ const totalUnread = useMemo(() => {
 
                 <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between min-w-0">
                       <div>
                         <div className="font-semibold text-lg">Today's Insights</div>
                         <div className="text-sm text-slate-400">What the dashboard is seeing</div>
