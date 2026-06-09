@@ -953,7 +953,7 @@ const totalUnread = useMemo(() => {
                         className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 shadow-[0_0_30px_rgba(0,0,0,0.2)]"
                       >
                         <div className="text-sm text-slate-400">{item.label}</div>
-                        <div className="mt-2 text-3xl font-bold display-font">
+                        <div className="mt-2 text-2xl font-bold display-font">
                           {item.value}
                         </div>
                         <div
