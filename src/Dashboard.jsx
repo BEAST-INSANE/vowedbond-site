@@ -528,30 +528,6 @@ const totalUnread = useMemo(() => {
     });
   }, [uniqueChats, groupedConversations, leadFilter]);
 
-  const dashboardMetrics = useMemo(() => {
-    return [
-      {
-        label: "Conversations",
-        value: uniqueChats.length,
-        accent: "emerald"
-      },
-      {
-        label: "Leads",
-        value: uniqueChats.length,
-        accent: "cyan"
-      },
-      {
-        label: "Human Requests",
-        value: humanRequestsCount,
-        accent: "yellow"
-      },
-      {
-        label: "AI Resolved",
-        value: resolvedByAiCount,
-        accent: "blue"
-      }
-    ];
-  }, [uniqueChats.length, humanRequestsCount, resolvedByAiCount]);
 
   const dashboardQuickActions = [
     {
