@@ -945,30 +945,7 @@ const totalUnread = useMemo(() => {
     </div>
   </div>
 </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-  {dashboardMetrics.map((item) => (
-                      <div
-                        key={item.label}
-                        className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 shadow-[0_0_30px_rgba(0,0,0,0.2)]"
-                      >
-                        <div className="text-sm text-slate-400">{item.label}</div>
-                        <div className="mt-2 text-2xl font-bold display-font">
-                          {item.value}
-                        </div>
-                        <div
-                          className={`mt-4 h-1 rounded-full ${
-                            item.accent === "emerald"
-                              ? "bg-emerald-400/60"
-                              : item.accent === "cyan"
-                              ? "bg-cyan-400/60"
-                              : item.accent === "yellow"
-                              ? "bg-yellow-400/60"
-                              : "bg-blue-400/60"
-                          }`}
-                        />
-                      </div>
-                    ))}
+                  
                   </div>
 
                   <div className="rounded-[28px] border border-white/10 bg-white/[0.04] overflow-hidden">
