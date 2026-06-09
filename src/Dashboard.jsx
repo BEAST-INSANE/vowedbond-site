@@ -733,7 +733,7 @@ const totalUnread = useMemo(() => {
 
           <div className="px-4 mt-4">
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between min-w-0">
                 <div>
                   <div className="text-sm font-semibold">Ask Vowed Bond</div>
                   <div className="text-xs text-slate-400">Coming soon</div>
