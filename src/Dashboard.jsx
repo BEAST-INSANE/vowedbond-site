@@ -1063,7 +1063,6 @@ const totalUnread = useMemo(() => {
                   </div>
                 </div>
               </div>
-            )}
 
             {activePage === "conversations" && (
               <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
