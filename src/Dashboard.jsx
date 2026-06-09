@@ -910,6 +910,42 @@ const totalUnread = useMemo(() => {
                     </div>
                   </div>
 
+                  <div className="mt-5 rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+  <div className="text-xs uppercase tracking-[0.2em] text-emerald-400">
+    Priority Alerts
+  </div>
+
+  <div className="mt-4 space-y-3">
+    <div className="flex items-center gap-3 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3">
+      <span>🔥</span>
+      <span className="text-sm">
+        {uniqueChats.length} lead{uniqueChats.length !== 1 ? "s" : ""}
+      </span>
+    </div>
+
+    <div className="flex items-center gap-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 px-4 py-3">
+      <span>🟡</span>
+      <span className="text-sm">
+        {humanRequestsCount} human support request{humanRequestsCount !== 1 ? "s" : ""}
+      </span>
+    </div>
+
+    <div className="flex items-center gap-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
+      <span>🟢</span>
+      <span className="text-sm">
+        AI resolved {resolvedByAiCount} conversation{resolvedByAiCount !== 1 ? "s" : ""}
+      </span>
+    </div>
+
+    <div className="flex items-center gap-3 rounded-xl bg-sky-500/10 border border-sky-500/20 px-4 py-3">
+      <span>🔵</span>
+      <span className="text-sm">
+        {approvedTopics + pendingTopics} knowledge topics available
+      </span>
+    </div>
+  </div>
+</div>
+
                   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                     {dashboardMetrics.map((item) => (
                       <div
