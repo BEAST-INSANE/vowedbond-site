@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+kimport React, { useEffect, useMemo, useRef, useState } from "react";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: "🏠" },
@@ -1110,7 +1110,7 @@ const totalUnread = useMemo(() => {
                   </div>
                 </div>
               </div>
-            )}}
+            )}
 
             {activePage === "conversations" && (
               <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
