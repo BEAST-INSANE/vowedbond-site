@@ -950,7 +950,7 @@ const totalUnread = useMemo(() => {
   {dashboardMetrics.map((item) => (
                       <div
                         key={item.label}
-                        className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_0_30px_rgba(0,0,0,0.2)]"
+                        className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4 shadow-[0_0_30px_rgba(0,0,0,0.2)]"
                       >
                         <div className="text-sm text-slate-400">{item.label}</div>
                         <div className="mt-2 text-3xl font-bold display-font">
