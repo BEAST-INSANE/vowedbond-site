@@ -946,8 +946,8 @@ const totalUnread = useMemo(() => {
   </div>
 </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                    {dashboardMetrics.map((item) => (
+                  <div className="grid grid-cols-2 gap-3">
+  {dashboardMetrics.map((item) => (
                       <div
                         key={item.label}
                         className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_0_30px_rgba(0,0,0,0.2)]"
