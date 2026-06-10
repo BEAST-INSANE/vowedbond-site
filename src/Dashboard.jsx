@@ -977,42 +977,7 @@ const totalUnread = useMemo(() => {
                     </div>
                   </div>
                 </div>
-
-                <div className="space-y-4">
-                  <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-                    <div className="flex items-center justify-between min-w-0">
-                      <div>
-                        <div className="font-semibold text-lg">Today's Insights</div>
-                        <div className="text-sm text-slate-400">What the dashboard is seeing</div>
-                      </div>
-                      <div className="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
-                        Live
-                      </div>
-                    </div>
-
-                    <div className="mt-4 space-y-3 text-sm">
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <div className="text-slate-400">Human Requests</div>
-                        <div className="mt-1 text-lg font-semibold text-white">
-                          {humanRequestsCount}
-                        </div>
-                      </div>
-
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <div className="text-slate-400">Unread Conversations</div>
-                        <div className="mt-1 text-lg font-semibold text-white">
-                          {totalUnread}
-                        </div>
-                      </div>
-
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <div className="text-slate-400">Knowledge Topics</div>
-                        <div className="mt-1 text-lg font-semibold text-white">
-                          {approvedTopics + pendingTopics}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+        
 
                   <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
                     <div className="font-semibold text-lg">Chatbot Status</div>
