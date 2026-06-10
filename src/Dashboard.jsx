@@ -978,7 +978,7 @@ const totalUnread = useMemo(() => {
                   </div>
                 </div>
         
-
+                   <div className="space-y-4">
                   <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
                     <div className="font-semibold text-lg">Chatbot Status</div>
                     <div className="mt-4 space-y-3 text-sm">
