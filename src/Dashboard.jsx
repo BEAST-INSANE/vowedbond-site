@@ -931,90 +931,67 @@ const totalUnread = useMemo(() => {
                         const interest = getLeadInterest(msgs);
 
                         return (
-                          <button
-                            key={chat.conversation_id}
-                            onClick={() => openConversation(chat.conversation_id)}
-                            className="w-full px-5 md:px-6 py-4 flex items-center justify-between text-left hover:bg-white/[0.03] transition"
-                          >
-                            <div className="flex items-center gap-4 min-w-0">
-                              <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-300">
-                                {chat.user_name?.charAt(0)?.toUpperCase() || "?"}
-                              </div>
+{activePage === "dashboard" && (
+  <div className="max-w-5xl mx-auto">
+    <div className="rounded-[36px] border border-white/10 bg-white/[0.04] p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+      <div className="text-xs uppercase tracking-[0.25em] text-emerald-400">
+        Welcome Back
+      </div>
 
-                              <div className="min-w-0">
-                                <div className="font-semibold text-white truncate">
-                                  {chat.user_name || "Unnamed"}
-                                </div>
-                                <div className="text-sm text-slate-400 truncate max-w-[260px]">
-                                  {chat.latestMessage?.message || "No message yet"}
-                                </div>
-                              </div>
-                            </div>
+      <h2 className="mt-3 text-3xl md:text-5xl font-bold display-font">
+        Good to see you, Jaipreet 👋
+      </h2>
 
-                            <div className="flex flex-col items-end gap-2">
-                              <span
-                                className={`text-[11px] px-2 py-1 rounded-full border ${
-                                  status === "Needs Human"
-                                    ? "bg-yellow-400/10 text-yellow-300 border-yellow-400/20"
-                                    : status === "Human Active" || status === "Resolved By Human"
-                                    ? "bg-orange-400/10 text-orange-300 border-orange-400/20"
-                                    : status === "AI Active"
-                                    ? "bg-cyan-400/10 text-cyan-300 border-cyan-400/20"
-                                    : "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"
-                                }`}
-                              >
-                                {status}
-                              </span>
-                              <span
-                                className={`text-[11px] px-2 py-1 rounded-full border ${interest.badgeClass}`}
-                              >
-                                Lead: {interest.label}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-        
-                   <div className="space-y-4">
-                  <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-                    <div className="font-semibold text-lg">Chatbot Status</div>
-                    <div className="mt-4 space-y-3 text-sm">
-                      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <span className="text-slate-400">Knowledge Topics</span>
-                        <span className="font-semibold">{approvedTopics + pendingTopics}</span>
-                      </div>
-                      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <span className="text-slate-400">Pending Reviews</span>
-                        <span className="font-semibold text-yellow-300">{pendingTopics}</span>
-                      </div>
-                      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <span className="text-slate-400">Auto-Learn</span>
-                        <span
-                          className={`font-semibold ${
-                            settings.autoLearnFAQ ? "text-emerald-300" : "text-slate-400"
-                          }`}
-                        >
-                          {settings.autoLearnFAQ ? "Enabled" : "Disabled"}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                        <span className="text-slate-400">Human Handoff</span>
-                        <span
-                          className={`font-semibold ${
-                            settings.humanHandoff ? "text-emerald-300" : "text-slate-400"
-                          }`}
-                        >
-                          {settings.humanHandoff ? "Enabled" : "Disabled"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                  )}
+      <p className="mt-3 text-slate-400 max-w-2xl">
+        Here's what's happening with your business right now.
+      </p>
+
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <div className="text-sm text-slate-400">
+            Active Conversations
+          </div>
+
+          <div className="mt-2 text-4xl font-bold display-font">
+            {uniqueChats.length}
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <div className="text-sm text-slate-400">
+            Need Human Support
+          </div>
+
+          <div className="mt-2 text-4xl font-bold display-font">
+            {humanRequestsCount}
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <div className="text-sm text-slate-400">
+            High Intent Leads
+          </div>
+
+          <div className="mt-2 text-4xl font-bold display-font">
+            {filteredLeads.filter(
+              (chat) =>
+                getLeadInterest(
+                  groupedConversations[chat.conversation_id] || []
+                ).label === "High"
+            ).length}
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setActivePage("conversations")}
+        className="mt-8 px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold transition shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+      >
+        Open Conversations →
+      </button>
+    </div>
+  </div>
+)}
             {activePage === "conversations" && (
               <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
                 {/* CHAT LIST */}
