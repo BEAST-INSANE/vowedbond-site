@@ -931,8 +931,6 @@ const totalUnread = useMemo(() => {
                         const interest = getLeadInterest(msgs);
 
                         return (
-
-
                               <span
                                 className={`text-[10px] px-2 py-1 rounded-full border ${
                                   status === "Needs Human"
