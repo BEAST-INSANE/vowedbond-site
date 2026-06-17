@@ -931,59 +931,6 @@ const totalUnread = useMemo(() => {
                         const interest = getLeadInterest(msgs);
 
                         return (
-{activePage === "dashboard" && (
-  <div className="max-w-5xl mx-auto">
-    <div className="rounded-[36px] border border-white/10 bg-white/[0.04] p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
-      <div className="text-xs uppercase tracking-[0.25em] text-emerald-400">
-        Welcome Back
-      </div>
-
-      <h2 className="mt-3 text-3xl md:text-5xl font-bold display-font">
-        Good to see you, Jaipreet 👋
-      </h2>
-
-      <p className="mt-3 text-slate-400 max-w-2xl">
-        Here's what's happening with your business right now.
-      </p>
-
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
-          <div className="text-sm text-slate-400">
-            Active Conversations
-          </div>
-
-          <div className="mt-2 text-4xl font-bold display-font">
-            {uniqueChats.length}
-          </div>
-        </div>
-
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
-          <div className="text-sm text-slate-400">
-            Need Human Support
-          </div>
-
-          <div className="mt-2 text-4xl font-bold display-font">
-            {humanRequestsCount}
-          </div>
-        </div>
-
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
-          <div className="text-sm text-slate-400">
-            High Intent Leads
-          </div>
-
-          <div className="mt-2 text-4xl font-bold display-font">
-            {filteredLeads.filter(
-              (chat) =>
-                getLeadInterest(
-                  groupedConversations[chat.conversation_id] || []
-                ).label === "High"
-            ).length}
-          </div>
-        </div>
-      </div>
-
-      <button
 
 
                               <span
