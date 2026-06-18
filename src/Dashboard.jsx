@@ -931,31 +931,52 @@ const totalUnread = useMemo(() => {
                         const interest = getLeadInterest(msgs);
 
                         return (
-                              <span
-                                className={`text-[10px] px-2 py-1 rounded-full border ${
-                                  status === "Needs Human"
-                                    ? "bg-yellow-400/10 text-yellow-300 border-yellow-400/20"
-                                    : status === "Human Active"
-                                    ? "bg-orange-400/10 text-orange-300 border-orange-400/20"
-                                    : status === "Resolved By Human"
-                                    ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"
-                                    : status === "AI Active"
-                                    ? "bg-cyan-400/10 text-cyan-300 border-cyan-400/20"
-                                    : "bg-slate-500/10 text-slate-300 border-white/10"
-                                }`}
-                              >
-                                {status}
-                              </span>
+  <button
+    key={chat.conversation_id}
+    onClick={() => openConversation(chat.conversation_id)}
+    className="w-full px-5 md:px-6 py-4 flex items-center justify-between text-left hover:bg-white/[0.03] transition"
+  >
+    <div className="flex items-center gap-4 min-w-0">
+      <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-300">
+        {chat.user_name?.charAt(0)?.toUpperCase() || "?"}
+      </div>
 
-                              <span
-                                className={`text-[10px] px-2 py-1 rounded-full border ${interest.badgeClass}`}
-                              >
-                                {interest.label} Lead
-                              </span>
-                            </div>
-                          </div>
-                        </button>
-                      );
+      <div className="min-w-0">
+        <div className="font-semibold text-white truncate">
+          {chat.user_name || "Unnamed"}
+        </div>
+
+        <div className="text-sm text-slate-400 truncate max-w-[260px]">
+          {chat.latestMessage?.message || "No message yet"}
+        </div>
+      </div>
+    </div>
+
+    <div className="flex flex-col items-end gap-2">
+      <span
+        className={`text-[10px] px-2 py-1 rounded-full border ${
+          status === "Needs Human"
+            ? "bg-yellow-400/10 text-yellow-300 border-yellow-400/20"
+            : status === "Human Active"
+            ? "bg-orange-400/10 text-orange-300 border-orange-400/20"
+            : status === "Resolved By Human"
+            ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"
+            : status === "AI Active"
+            ? "bg-cyan-400/10 text-cyan-300 border-cyan-400/20"
+            : "bg-slate-500/10 text-slate-300 border-white/10"
+        }`}
+      >
+        {status}
+      </span>
+
+      <span
+        className={`text-[10px] px-2 py-1 rounded-full border ${interest.badgeClass}`}
+      >
+        {interest.label} Lead
+      </span>
+    </div>
+  </button>
+);
                     })}
                   </div>
                 </div>
