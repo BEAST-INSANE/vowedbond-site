@@ -842,8 +842,10 @@ const totalUnread = useMemo(() => {
           </div>
 
           {/* PAGE CONTENT */}
-          <div className="pb-10 overflow-x-hidden">
+<div className="pb-10 overflow-x-hidden">
 
+            {activePage === "conversations" && (
+              <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
                 {/* CHAT PANEL */}
                 <div
                   className={`rounded-[32px] border border-white/10 bg-white/[0.04] overflow-hidden flex flex-col shadow-[0_0_30px_rgba(0,0,0,0.25)] ${
