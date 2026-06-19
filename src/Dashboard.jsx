@@ -980,6 +980,7 @@ const totalUnread = useMemo(() => {
                     })}
                   </div>
                 </div>
+             </div>
 
                 {/* CHAT PANEL */}
                 <div
