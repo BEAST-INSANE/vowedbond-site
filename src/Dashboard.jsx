@@ -843,6 +843,13 @@ const totalUnread = useMemo(() => {
 
           {/* PAGE CONTENT */}
 <div className="pb-10 overflow-x-hidden">
+{activePage === "dashboard" && (
+  <div className="max-w-5xl mx-auto">
+    <div className="rounded-[36px] border border-white/10 bg-white/[0.04] p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+
+      <div className="text-xs uppercase tracking-[0.25em] text-emerald-400">
+        Dashboard
+      </div>
 
             {activePage === "conversations" && (
               <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
