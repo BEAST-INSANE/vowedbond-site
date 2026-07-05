@@ -845,20 +845,135 @@ const totalUnread = useMemo(() => {
 <div className="pb-10 overflow-x-hidden">
 
   {activePage === "dashboard" && (
-  <div className="max-w-5xl mx-auto space-y-8">
-    <div>
-      <p className="text-sm uppercase tracking-[0.25em] text-emerald-400">
-        Dashboard
-      </p>
+  <div className="max-w-6xl mx-auto space-y-8">
 
-      <h2 className="mt-2 text-4xl font-bold">
+    <div>
+      <div className="text-sm uppercase tracking-[0.25em] text-emerald-400">
+        Dashboard
+      </div>
+
+      <h2 className="mt-2 text-4xl font-bold display-font">
         Good morning, Jaipreet
       </h2>
 
       <p className="mt-2 text-slate-400">
-        You have {humanRequestsCount} conversation{humanRequestsCount !== 1 ? "s" : ""} that need your attention.
+        {humanRequestsCount > 0
+          ? `${humanRequestsCount} conversation${humanRequestsCount !== 1 ? "s" : ""} need your attention.`
+          : "Everything looks good today."}
       </p>
     </div>
+
+    <div className="grid lg:grid-cols-[1.7fr_0.9fr] gap-6">
+
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.03] overflow-hidden">
+
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+          <div>
+            <h3 className="text-xl font-semibold">
+              Recent Conversations
+            </h3>
+
+            <p className="text-sm text-slate-400">
+              Latest customer activity
+            </p>
+          </div>
+
+          <button
+            onClick={() => setActivePage("conversations")}
+            className="text-emerald-400 hover:text-emerald-300"
+          >
+            Open →
+          </button>
+        </div>
+
+        <div className="divide-y divide-white/10">
+
+          {uniqueChats.slice(0,5).map((chat)=>{
+
+            const msgs =
+              groupedConversations[chat.conversation_id] || [];
+
+            const status =
+              getConversationStatus(msgs);
+
+            return (
+
+              <button
+                key={chat.conversation_id}
+                onClick={()=>openConversation(chat.conversation_id)}
+                className="w-full px-6 py-5 flex items-center justify-between hover:bg-white/[0.03] transition"
+              >
+
+                <div className="flex items-center gap-4">
+
+                  <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-black font-bold">
+                    {chat.user_name?.charAt(0)?.toUpperCase() || "?"}
+                  </div>
+
+                  <div className="text-left">
+
+                    <div className="font-semibold">
+                      {chat.user_name}
+                    </div>
+
+                    <div className="text-sm text-slate-400 truncate max-w-[260px]">
+                      {chat.latestMessage?.message}
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div className="text-sm text-slate-400">
+                  {status}
+                </div>
+
+              </button>
+
+            );
+
+          })}
+
+        </div>
+
+      </div>
+
+      <div className="space-y-4">
+
+        <div className="rounded-[28px] border border-red-500/20 bg-red-500/10 p-5">
+          <div className="text-red-300 text-sm">
+            Human Requests
+          </div>
+
+          <div className="text-4xl font-bold mt-2">
+            {humanRequestsCount}
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-yellow-500/20 bg-yellow-500/10 p-5">
+          <div className="text-yellow-300 text-sm">
+            Pending Reviews
+          </div>
+
+          <div className="text-4xl font-bold mt-2">
+            {pendingTopics}
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-emerald-500/20 bg-emerald-500/10 p-5">
+          <div className="text-emerald-300 text-sm">
+            Knowledge Topics
+          </div>
+
+          <div className="text-4xl font-bold mt-2">
+            {approvedTopics}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 )}
 
