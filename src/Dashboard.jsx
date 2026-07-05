@@ -842,7 +842,7 @@ const totalUnread = useMemo(() => {
           </div>
 
           {/* PAGE CONTENT */}
-<div className="pb-10 overflow-x-hidden">
+<div className="h-[calc(100vh-120px)] overflow-hidden">
 
   {activePage === "dashboard" && (
   <div className="max-w-6xl mx-auto space-y-8">
