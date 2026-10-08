@@ -1737,7 +1737,7 @@ const totalUnread = useMemo(() => {
                         {/* AI Summary and actions stay available in the normal view only. */}
                         <button
                           onClick={openSummary}
-                          className={`${chatFocusMode ? "hidden" : "flex mt-4 lg:mt-0 lg:col-start-1 lg:row-start-2 w-full min-w-0 px-4 py-4 lg:px-3 lg:py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 hover:bg-emerald-500/20 transition text-sm font-medium items-center justify-between gap-3 text-left"} ${demoSummaryHighlight ? "ring-2 ring-cyan-300/80 ring-offset-2 ring-offset-[#0b1220] bg-cyan-400/15 border-cyan-300/60 shadow-[0_0_28px_rgba(34,211,238,0.28)] scale-[1.015]" : ""}`
+                          className={(chatFocusMode ? "hidden" : "flex mt-4 lg:mt-0 lg:col-start-1 lg:row-start-2 w-full min-w-0 px-4 py-4 lg:px-3 lg:py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 hover:bg-emerald-500/20 transition text-sm font-medium items-center justify-between gap-3 text-left") + (demoSummaryHighlight ? " ring-2 ring-cyan-300/80 ring-offset-2 ring-offset-[#0b1220] bg-cyan-400/15 border-cyan-300/60 shadow-[0_0_28px_rgba(34,211,238,0.28)] scale-[1.015]" : "")}
                         >
                           <span className="flex items-center gap-3 min-w-0">
                             <span className="text-xl shrink-0">🧠</span>
